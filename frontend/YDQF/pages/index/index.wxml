@@ -1,0 +1,46 @@
+<!--index.wxml-->
+
+<!-- starting_text -->
+<text>
+
+</text>
+
+<text>
+您能接受的风险等级（数值越高风险更大）{{slider1}}
+
+</text>
+
+<!-- slider -->
+<view class="slider">
+  <slider
+  min="1"
+  max="5"
+  activeColor="transparent"
+  bindchanging="changeSlider1" 
+  step="1" value="{{slider1}}"/>
+</view>
+
+<!-- degree information -->
+<text>
+
+风险等级详情:
+
+1：基金没有产生明显收益时我会焦虑
+
+2：基金在损失0-10%时我会产生焦虑
+
+3：基金在损失10-30%时我会产生焦虑
+
+4：基金在损失30-50%时我会产生焦虑
+
+5：基金在损失50-70%时我会产生焦虑
+
+</text>
+
+  <!--默认的button, 默认大小default,默认加载false,默认按键不为镂空,默认可以点击，点击有效果    hover-class="other-button-hover"-->
+<view class="button">
+    <button type="primary" size="mini" loading="{{loading}}" plain="{{plain}}"
+            disabled="{{disabled}}" bindtap="setDefault"
+            hover-class="other-button-hover" class="margin-button"> 确认
+    </button>
+</view>

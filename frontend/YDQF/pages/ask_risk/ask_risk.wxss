@@ -1,0 +1,34 @@
+/* pages/ask_risk/ask_risl.wxss */
+
+/* text{
+  justify-items: center;
+} */
+
+view{
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-items: center;
+}
+
+text{
+  font-size: 200%;
+  margin-block-start: 30%;
+  margin-block-end: 5%;
+}
+
+
+button{
+  width: 80%;
+  margin-block-end: 5%;
+}
+
+.content{
+  display: flex;
+  align-items: center;
+}
+
+.content_son{
+  display: flex;
+  flex-direction: column; /**子元素上下排列*/
+}

@@ -1,0 +1,52 @@
+/**index.wxss**/
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 200px
+}
+
+
+/* Slider */
+.slider{
+  height: 40rpx;
+  border-radius: 25rpx;
+  background: linear-gradient(to right, #c6ffdd, #fbd786, #f7797d);
+}
+
+/* Button */
+.button{
+  display: flex;
+  align-items: center;
+  justify-items: center;
+}
+.other-button-hover {
+  background-color: green;
+  opacity: 0.7;
+}
+
+.margin-button{
+  margin-top: 10px;
+}
+
+
+/* justify-self: center;
+justify-content: center;
+justify-items: center;
+align-content: center;
+align-items: center;
+align-self: center; */
