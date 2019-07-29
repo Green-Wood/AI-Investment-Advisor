@@ -25,7 +25,7 @@ allocation = api.model(
     }
 )
 
-funds = pd.read_csv('./resources/instruments.csv', usecols=['code', 'symbol', 'fund_type'])
+funds = pd.read_csv('./funds/instruments.csv', usecols=['code', 'symbol', 'fund_type'])
 funds_value = funds.values
 
 
@@ -45,5 +45,5 @@ class Allocator(Resource):
             }
             for i in range(len(w))
         ]
-        return fund_list
+        return {'allocation': fund_list}, 200
 
