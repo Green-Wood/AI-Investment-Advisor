@@ -1,6 +1,4 @@
 from flask_restplus import Resource, Namespace, reqparse, fields
-import requests
-from os import getenv
 import pandas as pd
 
 api = Namespace('allocation', description='根据用户的风险指标和总资产，获得资产分配的比例（浮点数列表）')
@@ -25,7 +23,7 @@ allocation = api.model(
     }
 )
 
-funds = pd.read_csv('./funds/instruments.csv', usecols=['code', 'symbol', 'fund_type'])
+funds = pd.read_csv('funds/instruments.csv', usecols=['code', 'symbol', 'fund_type'])
 
 
 @api.route('')

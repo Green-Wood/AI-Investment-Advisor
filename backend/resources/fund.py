@@ -49,7 +49,7 @@ class Allocator(Resource):
 
         code = '0' * (6 - len(code)) + code    # 标准化基金代码
 
-        path = './funds/nav/{dir}/{file}.csv'.format(dir=code[-2:], file=code)
+        path = 'funds/nav/{dir}/{file}.csv'.format(dir=code[-2:], file=code)
 
         fund = pd.read_csv(path, usecols=['datetime', net_type])   # 基金时间转化格式
         fund['datetime'] = pd.to_datetime(fund['datetime'])

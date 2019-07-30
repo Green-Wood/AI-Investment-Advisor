@@ -4,3 +4,4 @@ gunicorn
 requests
 Werkzeug
 pandas
+pytest

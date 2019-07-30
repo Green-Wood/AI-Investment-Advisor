@@ -16,10 +16,9 @@ services:
 before_install:
   - sudo apt-get install -y sshpass
   - docker pull greenw00d/investment-advisor-backend:latest || true
-  - docker-compose -f docker-compose.yml up --build -d
 
 script:
-  - docker-compose run api python -m unittest
+  - docker-compose -f docker-compose.yml up --build -d
 
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_ID --password-stdin
@@ -27,4 +26,4 @@ after_success:
 
 after_script:
   - docker-compose -f docker-compose.yml down
-  - sshpass -e ssh $SERVER_USER@$SERVER_IP -o stricthostkeychecking=no 'cd ~/flask-user-demo/Flask-user-demo && git pull && sh deploy.sh'
+  - sshpass -e ssh $SERVER_USER@$SERVER_IP -o stricthostkeychecking=no 'cd ~/AI-Investment-Advisor && git pull && sh deploy.sh'

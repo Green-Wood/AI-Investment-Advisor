@@ -13,7 +13,7 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    image: greenw00d/flask-demo-nginx:latest
+    image: greenw00d/investment-advisor-nginx:latest
 
 #  ml:
 #    restart: always
