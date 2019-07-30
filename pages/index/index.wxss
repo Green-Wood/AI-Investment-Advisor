@@ -16,13 +16,6 @@
 /* Button */
 .button{
   display: flex;
-  align-items: center;
   justify-items: center;
-}
-.other-button-hover {
-  background-color: green;
-  opacity: 0.7;
-}
-.margin-button{
-  margin-top: 10px;
+  margin-top: 8%;
 }
