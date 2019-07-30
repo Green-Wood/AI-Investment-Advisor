@@ -2,6 +2,7 @@
   "pages": [
     "pages/ask_risk/ask_risk",
     "pages/index/index",
+    "pages/recommendation/recommendation",
     "pages/logs/logs"
   ],
   "window": {
