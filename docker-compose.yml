@@ -1,11 +1,11 @@
-version: '3'
+version: '3.5'
 services:
   api:
     build:
-      dockerfile: Dockerfile
-      context: ./backend
       cache_from:
         - greenw00d/investment-advisor-backend:latest
+      dockerfile: Dockerfile
+      context: ./backend
     environment:
       - APP_ENV=test
       - MODEL_HOST=ml
