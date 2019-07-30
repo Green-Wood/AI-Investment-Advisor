@@ -3,24 +3,70 @@
 /* text{
   justify-items: center;
 } */
-
-view{
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-items: center;
+page{
+  background: rgba(151, 189, 238, 0.459);
 }
 
-text{
-  font-size: 200%;
-  margin-block-start: 30%;
-  margin-block-end: 5%;
+.blk1{
+  margin-top:30rpx;
+  width:100%;
+  height:300rpx;
+  background-color: white;
 }
 
+.blk1_son{
+  width:90%;
+  margin-left:5%;
+}
 
-button{
-  width: 80%;
-  margin-block-end: 5%;
+.description1{
+  display:flex;
+  font-size:30rpx;
+  color: rgb(75, 73, 73);
+}
+
+.description2{
+  display:flex;
+  font-size:25rpx;
+  color:grey;
+}
+
+.title{
+  font-size:80rpx;
+  color:rgb(36, 133, 243);
+}
+
+.btn1{
+  margin-top:100rpx;
+  width: 40%;
+  background-color: rgb(36, 133, 243);
+  border-radius: 98rpx;
+}
+.btn1::after{
+  border:0;
+}
+
+.start{
+  font-size:40rpx;
+  color:white;
+}
+
+.btn2{
+  margin-top:50rpx;
+  width: 40%;
+  background-color: rgb(255, 255, 255);
+  border-radius: 98rpx;
+}
+
+.btn2::after{
+  border-radius: 98rpx;
+  border-width: 10rpx; 
+  border-color:rgb(36, 133, 243);  
+}
+
+.jump{
+  font-size:40rpx;
+  color: rgb(36, 133, 243);
 }
 
 .content{
@@ -28,7 +74,7 @@ button{
   align-items: center;
 }
 
-.content_son{
+.content{
   display: flex;
   flex-direction: column; /**子元素上下排列*/
 }

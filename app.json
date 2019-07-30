@@ -6,10 +6,11 @@
     "pages/logs/logs"
   ],
   "window": {
+    "navigationStyle":"custom",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
-    "navigationBarTextStyle": "black"
+    "navigationBarBackgroundColor": "2E6CC7",
+    "navigationBarTitleText": "原地起飞",
+    "navigationBarTextStyle": "white"
   },
   "sitemapLocation": "sitemap.json"
 }
