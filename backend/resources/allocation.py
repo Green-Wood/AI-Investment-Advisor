@@ -26,7 +26,6 @@ allocation = api.model(
 )
 
 funds = pd.read_csv('./funds/instruments.csv', usecols=['code', 'symbol', 'fund_type'])
-funds_value = funds.values
 
 
 @api.route('')
@@ -34,16 +33,17 @@ class Allocator(Resource):
 
     @api.response(200, 'allocate successfully', model=allocation)
     @api.expect(_allocation_parser)
-    def post(self):
+    @api.marshal_list_with(fund_model, envelope='allocation')
+    def get(self):
         w = [0.1, 0.2, 0.4, 0.15, 0.15]
         fund_list = [
             {
-                'code': funds_value[i, 0],
-                'symbol': funds_value[i, 1],
-                'fund_type': funds_value[i, 2],
+                'code': funds.iloc[i, 0],
+                'symbol': funds.iloc[i, 1],
+                'fund_type': funds.iloc[i, 2],
                 'ratio': w[i]
             }
             for i in range(len(w))
         ]
-        return {'allocation': fund_list}, 200
+        return fund_list, 200
 
