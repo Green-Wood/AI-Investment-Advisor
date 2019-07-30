@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, url_for
 from flask_restplus import Api
 from werkzeug.middleware.proxy_fix import ProxyFix
 from config import config
@@ -16,7 +16,6 @@ api = Api(app, version='1.0', title='Investment Advisor Api', prefix='/api')
 
 api.add_namespace(ns_allocation)
 api.add_namespace(ns_fund)
-
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
