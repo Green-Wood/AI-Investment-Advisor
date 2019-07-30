@@ -1,0 +1,27 @@
+version: '3'
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: ./backend
+      cache_from:
+        - greenw00d/investment-advisor-backend:latest
+    environment:
+      - APP_ENV=test
+      - MODEL_HOST=ml
+      - MODEL_PORT=8501
+    image: greenw00d/investment-advisor-backend:latest
+
+#  ml:
+#    build:
+#      dockerfile: Dockerfile
+#      context: ./saved_model_half_plus_two_cpu
+#    image: greenw00d/flask-demo-model
+
+  nginx:
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    image: greenw00d/flask-demo-nginx
+

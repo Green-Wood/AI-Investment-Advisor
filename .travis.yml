@@ -1,0 +1,30 @@
+sudo: required
+
+branches:
+  only:
+  - master
+
+addons:
+  ssh_konwn_hosts: $SERVER_IP
+  apt:
+    packages:
+    - sshpass
+
+services:
+  - docker
+
+before_install:
+  - sudo apt-get install -y sshpass
+  - docker pull greenw00d/investment-advisor-backend:latest || true
+  - docker-compose -f docker-compose.yml up --build -d
+
+script:
+  - docker-compose run api python -m unittest
+
+after_success:
+  - echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_ID --password-stdin
+  - docker-compose push
+
+after_script:
+  - docker-compose -f docker-compose.yml down
+  - sshpass -e ssh $SERVER_USER@$SERVER_IP -o stricthostkeychecking=no 'cd ~/flask-user-demo/Flask-user-demo && git pull && sh deploy.sh'
