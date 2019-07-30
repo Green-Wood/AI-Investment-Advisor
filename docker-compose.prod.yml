@@ -6,6 +6,8 @@ services:
       - MODEL_HOST=ml
       - MODEL_PORT=8501
     image: greenw00d/investment-advisor-backend:latest
+    volumes:
+      - ./backend/funds/nav:/usr/app/funds/nav
 
 
   nginx:

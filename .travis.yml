@@ -2,7 +2,7 @@ sudo: required
 
 branches:
   only:
-  - master
+  - backend
 
 addons:
   ssh_konwn_hosts: $SERVER_IP
@@ -15,7 +15,6 @@ services:
 
 before_install:
   - sudo apt-get install -y sshpass
-  - docker pull greenw00d/investment-advisor-backend:latest || true
 
 script:
   - docker-compose -f docker-compose.yml up --build -d
