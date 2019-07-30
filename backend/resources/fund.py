@@ -1,8 +1,7 @@
 from flask_restplus import Resource, Namespace, reqparse, fields
-import requests
-from os import getenv
 import pandas as pd
 import datetime
+from werkzeug.exceptions import NotFound
 
 api = Namespace('fund', description='基金的详细信息')
 
@@ -39,6 +38,7 @@ fund_info_list_model = api.model(
 class Allocator(Resource):
 
     @api.response(200, 'get fund info successfully', model=fund_info_list_model)
+    @api.response(404, 'fund not found')
     @api.expect(_fund_parser)
     @api.marshal_list_with(fund_info_model, envelope='info_list')
     def get(self):
@@ -50,11 +50,13 @@ class Allocator(Resource):
         code = '0' * (6 - len(code)) + code    # 标准化基金代码
 
         path = 'funds/nav/{dir}/{file}.csv'.format(dir=code[-2:], file=code)
-
-        fund = pd.read_csv(path, usecols=['datetime', net_type])   # 基金时间转化格式
+        try:
+            fund = pd.read_csv(path, usecols=['datetime', net_type])   # 基金时间转化格式
+        except FileNotFoundError:
+            raise NotFound('Fund not Found')
         fund['datetime'] = pd.to_datetime(fund['datetime'])
 
-        last_date = fund.iloc[-1, 0]
+        last_date = fund.iloc[-1, 0]       # 设置时间范围
         if recent_time == 'month':
             time_delta = datetime.timedelta(days=30)
         elif recent_time == 'half year':

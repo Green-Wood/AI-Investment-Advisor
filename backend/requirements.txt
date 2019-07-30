@@ -4,4 +4,4 @@ gunicorn
 requests
 Werkzeug
 pandas
-pytest
+PyportfolioOpt

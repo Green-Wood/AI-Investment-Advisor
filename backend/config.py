@@ -3,6 +3,7 @@ from os import getenv
 
 class BaseConfig:
     RESTPLUS_MASK_SWAGGER = False
+    ERROR_404_HELP = False
 
 
 class DevelopmentConfig(BaseConfig):
