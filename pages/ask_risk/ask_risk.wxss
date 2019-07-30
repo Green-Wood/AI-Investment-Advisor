@@ -3,12 +3,9 @@
 /* text{
   justify-items: center;
 } */
-page{
-  background: rgba(151, 189, 238, 0.459);
-}
 
 .blk1{
-  margin-top:30rpx;
+  margin-top:130rpx;
   width:100%;
   height:300rpx;
   background-color: white;
@@ -31,16 +28,15 @@ page{
   color:grey;
 }
 
-.title{
-  font-size:80rpx;
-  color:rgb(36, 133, 243);
+.question{
+  width: 300rpx;
+  height: 300rpx;
 }
 
 .btn1{
   margin-top:100rpx;
   width: 40%;
-  background-color: rgb(36, 133, 243);
-  border-radius: 98rpx;
+  background-color:rgb(9, 190, 190);
 }
 .btn1::after{
   border:0;
@@ -54,19 +50,17 @@ page{
 .btn2{
   margin-top:50rpx;
   width: 40%;
-  background-color: rgb(255, 255, 255);
-  border-radius: 98rpx;
+  background-color: rgb(255, 255, 255); 
 }
 
 .btn2::after{
-  border-radius: 98rpx;
   border-width: 10rpx; 
-  border-color:rgb(36, 133, 243);  
+  border-color:rgb(9, 190, 190);  
 }
 
 .jump{
   font-size:40rpx;
-  color: rgb(36, 133, 243);
+  color: rgb(9, 190, 190);
 }
 
 .content{

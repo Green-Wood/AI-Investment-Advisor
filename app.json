@@ -6,11 +6,12 @@
     "pages/logs/logs"
   ],
   "window": {
-    "navigationStyle":"custom",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "2E6CC7",
     "navigationBarTitleText": "原地起飞",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "white",
+    "navigationStyle": "custom"
   },
   "sitemapLocation": "sitemap.json"
 }
+

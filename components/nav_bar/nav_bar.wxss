@@ -2,8 +2,7 @@
   position: fixed;
   width: 100%;
   top: 0;
-  background: #fff;
-  color: #000;
+  background:linear-gradient(#2E6CC7,rgb(9, 151, 187),rgb(9, 190, 190));
   z-index: 9999999;
 }
 /* 标题要居中 */
@@ -19,9 +18,10 @@
   right: 0;
   bottom: 0;
   margin: auto;
-  font-size: 36rpx;
-  color: #2c2b2b;
+  font-size: 100%;
+  color: rgb(255, 255, 255);
   font-weight: 600;
+  font-family:;
 }
 
 .nav-capsule {
