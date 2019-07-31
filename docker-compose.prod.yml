@@ -5,6 +5,9 @@ services:
       - APP_ENV=prod
       - MODEL_HOST=ml
       - MODEL_PORT=8501
+      - MONGO_USERNAME=greenwood
+      - MONGO_PASSWORD=123
+      - MONGO_URI=mongodb://mongo:27017/investment-advisor
     image: greenw00d/investment-advisor-backend:latest
     volumes:
       - ./backend/funds/nav:/usr/app/funds/nav
@@ -16,6 +19,14 @@ services:
       - "80:80"
       - "443:443"
     image: greenw00d/investment-advisor-nginx:latest
+
+
+  mongo:
+    restart: always
+    image: mongo
+    environment:
+      - MONGO_USERNAME=greenwood
+      - MONGO_PASSWORD=123
 
 #  ml:
 #    restart: always

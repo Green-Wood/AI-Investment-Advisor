@@ -1,29 +1,43 @@
 from flask_restplus import Resource, Namespace, reqparse, fields
 import pandas as pd
+from db import mongo
+from bson.objectid import ObjectId
 
 api = Namespace('allocation', description='根据用户的风险指标和总资产，获得资产分配的比例（浮点数列表）')
-
-_allocation_parser = reqparse.RequestParser()
-_allocation_parser.add_argument('risk_index', required=True, type=float)
-_allocation_parser.add_argument('total_asset', required=True, type=float)
 
 fund_model = api.model(
     'fund_model',
     {
-        'code': fields.Integer,
+        'code': fields.String,
         'symbol': fields.String,
         'fund_type': fields.String,
         'ratio': fields.Float
     }
 )
+page_model = api.model(
+    'page_model',
+    {
+        'page': fields.Integer,
+        'page_size': fields.Integer,
+        'total_size': fields.Integer
+    }
+)
 allocation = api.model(
     'allocation',
     {
+        'allocation_id': fields.String,
+        'pagination': fields.Nested(page_model),
         'allocation': fields.List(fields.Nested(fund_model))
     }
 )
 
 funds = pd.read_csv('funds/instruments.csv', usecols=['code', 'symbol', 'fund_type'])
+
+# 新增一种配置
+_allocation_parser = reqparse.RequestParser()
+_allocation_parser.add_argument('risk_index', type=float, help='能够接受的风险')
+_allocation_parser.add_argument('total_asset', type=float, help='总资产')
+_allocation_parser.add_argument('page_size', default=5, type=int, help='一页的大小')
 
 
 @api.route('')
@@ -31,17 +45,57 @@ class Allocator(Resource):
 
     @api.response(200, 'allocate successfully', model=allocation)
     @api.expect(_allocation_parser)
-    @api.marshal_list_with(fund_model, envelope='allocation')
-    def get(self):
+    @api.marshal_list_with(allocation)
+    def post(self):
         w = [0.1, 0.2, 0.4, 0.15, 0.15]
+        args = _allocation_parser.parse_args()
+        page_size = args['page_size']
         fund_list = [
             {
-                'code': funds.iloc[i, 0],
-                'symbol': funds.iloc[i, 1],
-                'fund_type': funds.iloc[i, 2],
+                'code': str(funds.iloc[i, 0]),
+                'symbol': str(funds.iloc[i, 1]),
+                'fund_type': str(funds.iloc[i, 2]),
                 'ratio': w[i]
             }
             for i in range(len(w))
         ]
-        return fund_list, 200
+        allocation_id = mongo.db.allocation.insert_one({'allocation': fund_list}).inserted_id
+        return {
+                   'allocation_id': allocation_id,
+                   'pagination': {
+                       'page': 0,
+                       'page_size': page_size,
+                       'total_size': len(fund_list)
+                   },
+                   'allocation': fund_list[: page_size]
+               }, 200
+
+
+# 从缓存中获得配置信息
+_allo_info_parser = reqparse.RequestParser()
+_allo_info_parser.add_argument('page', required=True, type=int, help='需要第几页')
+_allo_info_parser.add_argument('page_size', required=True, type=int, help='一页的大小')
+
+
+@api.route('/<string:allocation_id>')
+@api.doc(params={'allocation_id': '资产分配的id'})
+class AllocationInfo(Resource):
+
+    @api.response(200, 'allocate successfully', model=allocation)
+    @api.expect(_allo_info_parser)
+    @api.marshal_list_with(allocation)
+    def get(self, allocation_id):
+        args = _allo_info_parser.parse_args()
+        page = args['page']
+        page_size = args['page_size']
+        fund_list = mongo.db.allocation.find_one({'_id': ObjectId(allocation_id)})['allocation']
+        return {
+                   'allocation_id': allocation_id,
+                   'pagination': {
+                       'page': page,
+                       'page_size': page_size,
+                       'total_size': len(fund_list)
+                   },
+                   'allocation': fund_list[page * page_size: (page + 1) * page_size]
+               }, 200
 

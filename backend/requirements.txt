@@ -5,3 +5,4 @@ requests
 Werkzeug
 pandas
 PyportfolioOpt
+flask-pymongo

@@ -34,6 +34,7 @@ fund_info_list_model = api.model(
 
 
 @api.route('/<string:code>')
+@api.doc(params={'code': '该基金的代码（字符串）'})
 class Allocator(Resource):
 
     @api.response(200, 'get fund info successfully', model=fund_info_list_model)
