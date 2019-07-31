@@ -1,4 +1,5 @@
 from pypfopt.efficient_frontier import EfficientFrontier
+from time import time
 import pypfopt.expected_returns as expected_returns
 import pypfopt.risk_models as risk_models
 import pandas as pd
@@ -7,7 +8,7 @@ import argparse
 
 
 if __name__ == '__main__':
-
+    start=time()
     parser = argparse.ArgumentParser()
     parser.add_argument("-p","--path", action='store',type=str,default=".")
     parser.add_argument("-s","--subdirs",action='store',type=str,default="all")
@@ -37,17 +38,19 @@ if __name__ == '__main__':
                         .rename(columns={'unit_net_value': filename[0:6]}, index=str).astype('float'))
             else: # 日结
                 data_list.append(
-                    (tdata[['weekly_yield']]+1)
-                        .rename(columns={'weekly_yield': filename[0:6]}, index=str).astype('float'))
+                    (tdata[['daily_profit']]/10000+1).cumprod(axis=1)
+                        .rename(columns={'daily_profit': filename[0:6]}, index=str).astype('float'))
 
-    data = pd.concat(data_list, axis=1)
+    data = pd.concat(data_list, axis=1).dropna(axis=1,how='all')
 
     print(data.head())
 
 
     # efficient frontier
     mu=expected_returns.ema_historical_return(data)
+    print(mu)
     S=risk_models.CovarianceShrinkage(data).ledoit_wolf()
+    print(S)
     ef=EfficientFrontier(mu,S)
 
     if args.volatility<0:
@@ -56,3 +59,5 @@ if __name__ == '__main__':
         print(ef.efficient_risk(args.volatility,args.risk_free_rate))
 
     ef.portfolio_performance(True)
+
+    print(str(time()-start)+" s")
