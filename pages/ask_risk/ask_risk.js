@@ -4,11 +4,6 @@
 const app = getApp()
 
 Page({
-  // skipToRiskChoices: function (options) {
-  //   wx.navigateTo({
-  //     url: '../index/index'
-  //   })
-  // },
   data: {
     // 组件所需的参数
     nvabarData: {
