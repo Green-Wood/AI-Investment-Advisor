@@ -16,6 +16,7 @@ fund_model = api.model(
         'ratio': fields.Float
     }
 )
+
 page_model = api.model(
     'page_model',
     {
@@ -24,10 +25,33 @@ page_model = api.model(
         'total_size': fields.Integer
     }
 )
+
+ration_model = api.model(
+    'ratio_model',
+    {
+        'Bond': fields.Float(default=0),
+        'Hybrid': fields.Float(default=0),
+        'QDII': fields.Float(default=0),
+        'Stock': fields.Float(default=0),
+        'Other': fields.Float(default=0),
+        'Money': fields.Float(default=0),
+        'Related': fields.Float(default=0),
+    }
+)
+
 allocation_model = api.model(
     'allocation',
     {
         'allocation_id': fields.String,
+        'pagination': fields.Nested(page_model),
+        'allocation': fields.List(fields.Nested(fund_model)),
+        'ratio': fields.Nested(ration_model)
+    }
+)
+
+allocation_info_model = api.model(
+    'allocation_info',
+    {
         'pagination': fields.Nested(page_model),
         'allocation': fields.List(fields.Nested(fund_model))
     }
@@ -45,10 +69,24 @@ _allocation_parser.add_argument('page_size', default=5, type=int, help='一页�
 @api.route('')
 class Allocator(Resource):
 
+    @staticmethod
+    def calculate_ratio(fund_list):
+        """计算一个资产配置的各种基金占比"""
+        d = dict()
+        for fund in fund_list:
+            fund_type = fund['fund_type']
+            d[fund_type] = d.get(fund_type, 0) + fund['ratio']
+        return d
+
     @api.response(200, 'allocate successfully', model=allocation_model)
     @api.expect(_allocation_parser)
     @api.marshal_list_with(allocation_model)
     def post(self):
+        """
+        新建一种资产配置方案，并以分页的形式返回
+        :param risk, asset, page_size
+        :return id, pagination, allocation, ratio
+        """
         w = [0.1, 0.2, 0.4, 0.15, 0.15]
         args = _allocation_parser.parse_args()
         page_size = args['page_size']
@@ -61,6 +99,7 @@ class Allocator(Resource):
             }
             for i in range(len(w))
         ]
+        ratio = self.calculate_ratio(fund_list)
         allocation_id = mongo.db.allocation.insert_one({'allocation': fund_list}).inserted_id
         return {
                    'allocation_id': allocation_id,
@@ -69,11 +108,12 @@ class Allocator(Resource):
                        'page_size': page_size,
                        'total_size': len(fund_list)
                    },
-                   'allocation': fund_list[: page_size]
+                   'allocation': fund_list[: page_size],
+                   'ratio': ratio
                }, 200
 
 
-# 从缓存中获得配置信息
+# 从缓存中获得资产配置信息
 _allo_info_parser = reqparse.RequestParser()
 _allo_info_parser.add_argument('page', required=True, type=int, help='需要第几页')
 _allo_info_parser.add_argument('page_size', required=True, type=int, help='一页的大小')
@@ -83,11 +123,16 @@ _allo_info_parser.add_argument('page_size', required=True, type=int, help='一�
 @api.doc(params={'allocation_id': '资产分配的id'})
 class AllocationInfo(Resource):
 
-    @api.response(200, 'allocate successfully', model=allocation_model)
+    @api.response(200, 'allocate successfully', model=allocation_info_model)
     @api.response(404, 'Allocation id doest not exist')
     @api.expect(_allo_info_parser)
-    @api.marshal_list_with(allocation_model)
+    @api.marshal_list_with(allocation_info_model)
     def get(self, allocation_id):
+        """
+        通过id获取资产配置方案，以分页的形式返回
+        :param allocation_id:
+        :return:
+        """
         args = _allo_info_parser.parse_args()
         page = args['page']
         page_size = args['page_size']
@@ -101,7 +146,6 @@ class AllocationInfo(Resource):
 
         fund_list = allocation['allocation']
         return {
-                   'allocation_id': allocation_id,
                    'pagination': {
                        'page': page,
                        'page_size': page_size,
@@ -109,4 +153,3 @@ class AllocationInfo(Resource):
                    },
                    'allocation': fund_list[page * page_size: (page + 1) * page_size]
                }, 200
-
