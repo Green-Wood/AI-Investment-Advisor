@@ -22,7 +22,7 @@ python -p C:\Users\xxx\funds\nav
 ```
 输出：
 ```
-{'000200': 0.02704022476877448, ..., '960000': 0.0}
+{...}
 Expected annual return: 22.9%
 Annual volatility: 7.1%
 Sharpe Ratio: 2.94
