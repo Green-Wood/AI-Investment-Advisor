@@ -3,15 +3,24 @@
     "pages/ask_risk/ask_risk",
     "pages/index/index",
     "pages/logs/logs",
-    "pages/recommendation/recommendation"
+    "pages/risk_test/risk_test",
+    "pages/risk_test/risk_test1",
+    "pages/risk_test/risk_test2",
+    "pages/risk_test/risk_test3",
+    "pages/risk_test/risk_test4",
+    "pages/risk_test/risk_test5",
+    "pages/risk_test/risk_test6",
+    "pages/risk_test/risk_test7",
+    "pages/risk_test/risk_test8",
+    "pages/risk_test/risk_test9",
+    "pages/risk_test/risk_test10",
+    "pages/risk_test/risk_test11"
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "2E6CC7",
-    "navigationBarTitleText": "原地起飞",
-    "navigationBarTextStyle": "white",
-    "navigationStyle": "custom"
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
   },
   "sitemapLocation": "sitemap.json"
 }
-

@@ -39,9 +39,10 @@
   </text>
 </view>
 
-<!-- 确认按钮 -->
+  <!--默认的button, 默认大小default,默认加载false,默认按键不为镂空,默认可以点击，点击有效果    hover-class="other-button-hover"-->
 <view class="button">
     <button type="primary" size="mini" loading="{{loading}}" plain="{{plain}}"
-            disabled="{{disabled}}" bindtap="jumpToRecommendation"> 确认
+            disabled="{{disabled}}" bindtap="setDefault"
+            hover-class="other-button-hover" class="margin-button"> 确认
     </button>
 </view>
