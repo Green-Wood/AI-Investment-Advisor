@@ -18,7 +18,7 @@ pip install PyPortfolioOpt
 
 # 示例
 ```
-python -p C:\Users\xxx\funds\nav
+python cluster_select.py -p C:\Users\xxx\funds\nav
 ```
 输出：
 ```
