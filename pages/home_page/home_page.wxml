@@ -1,2 +1,16 @@
-<image class='backgd' src='/pictures/背景.png' mode='widthFix'>
-</image>
+
+<view>
+  <view>
+    <background-image class='backgd' src='/pictures/背景.png' mode='widthFix'>
+          
+          </background-image>
+          <view class="button">
+    <button class="start_to_use"
+            type="setDefault" loading="{{loading}}" plain="{{plain}}"
+            disabled="{{disabled}}" bindtap="jumpToWelcome"> 开始使用
+    </button>
+  </view>
+  </view>
+
+  
+</view>

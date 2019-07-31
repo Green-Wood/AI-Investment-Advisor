@@ -1,8 +1,7 @@
 {
   "pages": [
-    "pages/ask_risk/ask_risk",
     "pages/home_page/home_page",
-    
+    "pages/ask_risk/ask_risk",
     "pages/index/index",
     "pages/logs/logs",
     "pages/risk_test/risk_test",
