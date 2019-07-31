@@ -13,6 +13,10 @@
   border-radius: 25rpx;
 }
 
+.description{
+  margin-left: 15%;
+}
+
 /* Button */
 .button{
   display: flex;

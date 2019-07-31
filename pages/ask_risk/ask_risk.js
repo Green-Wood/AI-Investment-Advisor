@@ -21,5 +21,10 @@ Page({
   },
   onLoad() {
     console.log(this.data.height)
+  },
+  skipToRiskChoices: function(){
+    wx.navigateTo({
+      url: '../index/index',
+    })
   }
 })

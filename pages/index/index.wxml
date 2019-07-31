@@ -1,8 +1,9 @@
-
 <!--index.wxml-->
 
 <!-- 滑块 -->
 <view class="tui-content">
+  
+  <!-- 滑块属性 -->
   <view class="tui-slider-box">
     <slider 
     color="transparent" 
@@ -12,26 +13,31 @@
     step="1"
     bindchanging="changeSlider1" value="{{str}}"/>
   </view>
-  <view class="tui-slider-head">您能接受的风险等级:（数值越高风险更大)
-  <text>{{str}}</text>
+
+  <!-- 滑块描述 -->
+  <view class="tui-slider-head">
+    您能接受的风险等级(数值越高风险更大): {{str}}
   </view>
+  
 </view>
 
 <!-- 风险等级信息 -->
-<text>
+<view class="description">
+  <text>
 
-风险等级详情:
+  风险等级详情:
 
-1：基金没有产生明显收益时我会焦虑
+  1：大约收益？%（可能损失0%）
 
-2：基金在损失0-10%时我会产生焦虑
+  2：大约收益？%（可能损失0-10%）
 
-3：基金在损失10-30%时我会产生焦虑
+  3：大约收益？%（可能损失10-30%）
 
-4：基金在损失30-50%时我会产生焦虑
+  4：大约收益？%（可能损失30-50%）
 
-5：基金在损失50-70%时我会产生焦虑
-</text>
+  5：大约收益？%（可能损失50-70%）
+  </text>
+</view>
 
 <!-- 确认按钮 -->
 <view class="button">

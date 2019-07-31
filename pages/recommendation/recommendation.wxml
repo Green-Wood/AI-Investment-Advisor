@@ -1,2 +1,23 @@
-<!--pages/recommendation/recommendation.wxml-->
-<text>pages/recommendation/recommendation.wxml</text>
+<!--index.wxml-->
+
+<!-- <view class="inportant_info">
+  
+</view>
+
+
+<view class="container">
+
+  <ec-canvas id="mychart-dom-pie" canvas-id="mychart-pie" ec="{{ ec }}"       
+            bind:init="initChart"></ec-canvas>
+
+</view> -->
+
+<!-- 走势图 -->
+<view class="lineChart">
+  <ec-canvas 
+    id="mychart-dom-line" 
+    canvas-id="mychart-line" 
+    ec="{{ ec }}"
+    bind:init="initLineChart">
+  </ec-canvas>
+</view>

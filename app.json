@@ -2,8 +2,8 @@
   "pages": [
     "pages/ask_risk/ask_risk",
     "pages/index/index",
-    "pages/recommendation/recommendation",
-    "pages/logs/logs"
+    "pages/logs/logs",
+    "pages/recommendation/recommendation"
   ],
   "window": {
     "backgroundTextStyle": "light",
