@@ -4,6 +4,8 @@
     <view bindtap='_navback'>
       <image src='/pictures/back.png' mode='aspectFill' class='back-pre'></image>
     </view>
+    
+    <view class='navbar-v-line' wx:if='{{!share}}'></view>
 
     <view bindtap='_backhome'>
       <image src='/pictures/back_home.png' mode='aspectFill' class='back-home'></image>

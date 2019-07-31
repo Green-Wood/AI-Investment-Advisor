@@ -4,8 +4,8 @@
   display: flex;
   align-items: center;
   width: 100%;
-  min-height: 90rpx;
-  max-height: 100rpx;
+  min-height: 160rpx;
+  max-height: 160rpx;
   background: linear-gradient(#2E6CC7,rgb(9, 151, 187),rgb(9, 190, 190));
   z-index: 9999999;
 }
@@ -13,13 +13,14 @@
 /* 标题要居中 */
 .nav-title {
   position: absolute;
-  left: 41%;
-  right: 39%;
+  top: 5.75%;
+  bottom: 2%;
+  left: 40.5%;
+  right: 39.5%;
   width: 20%;
-  font-size: 100%;
+  font-size: 110%;
   color: rgb(255, 188, 64);
   font-weight: 600;
-  /* font-family:; */
 }
 
 .nav-capsule {
@@ -31,17 +32,27 @@
 .back-pre{
   position: absolute;
   left: 3%;
-  top: 2%;
+  top: 6%;
   bottom: 2%;
   width: 40rpx;
   height: 35rpx;
 }
 
+.navbar-v-line {
+  position: absolute;
+  left: 9%;
+  top: 6%;
+  bottom: 2%;
+  width: 1px;
+  height: 35rpx;
+  background-color: rgb(255, 188, 64);
+}
+
 /* Home键 */
 .back-home{
   position: absolute;
-  left: 11%;
-  top: 2%;
+  left: 11.5%;
+  top: 6%;
   bottom: 2%;
   width: 40rpx;
   height: 35rpx;

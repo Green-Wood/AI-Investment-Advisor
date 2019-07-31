@@ -40,6 +40,8 @@
 /* 开始按钮 */
 .btn1{
   margin-top: 10%;
+  box-shadow: 10rpx;
+  scrollbar-shadow-color: black;
   width: 40%;
   background-color:rgb(9, 190, 190);
 }
@@ -48,7 +50,7 @@
 }
 .start{ /* “开始”按钮文字 */
   font-size:40rpx;
-  color:rgb(0, 0, 0);
+  color: white;
 }
 
 /* 跳过按钮 */
