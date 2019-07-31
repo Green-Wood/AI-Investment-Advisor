@@ -10,7 +10,7 @@
 
 # 示例
 ```
-python -p C:\Users\xxx\funds\nav -s 00 -v 0.04
+python example.py -p C:\Users\xxx\funds\nav -s 00 -v 0.04
 ```
 输出：
 ```
