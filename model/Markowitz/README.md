@@ -1,5 +1,5 @@
 # 使用说明
-- pip install PyportfolioOpt
+- pip install PyPortfolioOpt
 - [用户手册](https://pyportfolioopt.readthedocs.io/en/latest/index.html)
 
 # 命令行参数
