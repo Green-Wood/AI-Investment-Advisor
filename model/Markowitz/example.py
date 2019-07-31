@@ -5,6 +5,7 @@ import pypfopt.risk_models as risk_models
 import pandas as pd
 import os
 import argparse
+import numpy as np
 
 
 if __name__ == '__main__':
@@ -32,25 +33,27 @@ if __name__ == '__main__':
                                 index_col='datetime',
                                 date_parser=dateparser  # 按时间对齐
                                 )
-            if 'unit_net_value' in tdata.columns: # 非日结
+            if 'unit_net_value' in tdata.columns and not np.isnan(tdata['unit_net_value']).all(): # 非日结
                 data_list.append(
                     tdata[['unit_net_value']]
                         .rename(columns={'unit_net_value': filename[0:6]}, index=str).astype('float'))
-            else: # 日结
+            elif 'daily_profit' in tdata.columns and not np.isnan(tdata['daily_profit']).all(): # 日结
                 data_list.append(
                     (tdata[['daily_profit']]/10000+1).cumprod(axis=1)
                         .rename(columns={'daily_profit': filename[0:6]}, index=str).astype('float'))
+            else:
+                print("BAD file: "+filename)
 
-    data = pd.concat(data_list, axis=1).dropna(axis=1,how='all')
+    data = pd.concat(data_list, axis=1)
 
-    print(data.head())
+    print(data.info())
 
 
     # efficient frontier
     mu=expected_returns.ema_historical_return(data)
-    print(mu)
+    print(np.isnan(mu).any())
     S=risk_models.CovarianceShrinkage(data).ledoit_wolf()
-    print(S)
+    print(np.isnan(S).any().any())
     ef=EfficientFrontier(mu,S)
 
     if args.volatility<0:
