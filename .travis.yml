@@ -25,4 +25,4 @@ after_success:
 
 after_script:
   - docker-compose -f docker-compose.yml down
-  - sshpass -e ssh $SERVER_USER@$SERVER_IP -o stricthostkeychecking=no 'cd ~/AI-Investment-Advisor && git pull && sh deploy.sh'
+  - sshpass -e ssh $SERVER_USER@$SERVER_IP -o stricthostkeychecking=no 'cd ~/AI-Investment-Advisor && git pull origin backend && sh deploy.sh'
