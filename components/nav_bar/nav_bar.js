@@ -31,8 +31,8 @@ Component({
     },
     //返回到首页
     _backhome() {
-      wx.switchTab({
-        url: '/pages/index/index',
+      wx.navigateTo({
+        url: '/pages/home_page/home_page',
       })
     }
   }
