@@ -4,23 +4,63 @@
   justify-items: center;
 } */
 
-view{
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-items: center;
+.blk1{
+  margin-top:130rpx;
+  width:100%;
+  height:300rpx;
+  background-color: white;
 }
 
-text{
-  font-size: 200%;
-  margin-block-start: 30%;
-  margin-block-end: 5%;
+.blk1_son{
+  width:90%;
+  margin-left:5%;
 }
 
+.description1{
+  display:flex;
+  font-size:30rpx;
+  color: rgb(75, 73, 73);
+}
 
-button{
-  width: 80%;
-  margin-block-end: 5%;
+.description2{
+  display:flex;
+  font-size:25rpx;
+  color:grey;
+}
+
+.question{
+  width: 300rpx;
+  height: 300rpx;
+}
+
+.btn1{
+  margin-top:100rpx;
+  width: 40%;
+  background-color:rgb(9, 190, 190);
+}
+.btn1::after{
+  border:0;
+}
+
+.start{
+  font-size:40rpx;
+  color:white;
+}
+
+.btn2{
+  margin-top:50rpx;
+  width: 40%;
+  background-color: rgb(255, 255, 255); 
+}
+
+.btn2::after{
+  border-width: 10rpx; 
+  border-color:rgb(9, 190, 190);  
+}
+
+.jump{
+  font-size:40rpx;
+  color: rgb(9, 190, 190);
 }
 
 .content{
@@ -28,7 +68,7 @@ button{
   align-items: center;
 }
 
-.content_son{
+.content{
   display: flex;
   flex-direction: column; /**子元素上下排列*/
 }

@@ -8,3 +8,9 @@
   padding: 200rpx 0;
   box-sizing: border-box;
 } 
+
+pages {
+  position: relative;
+  z-index: 9999998;
+  background: #fff;
+}
