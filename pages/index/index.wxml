@@ -1,3 +1,4 @@
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
 <!--index.wxml-->
 
 <!-- 滑块 -->

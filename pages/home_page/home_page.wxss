@@ -4,7 +4,26 @@ page{
   overflow: hidden;
 }
 
-.backgd{
-  width: 100%;
-  height: 100%;
+.logotext{
+  color:rgb(97, 97, 97);
+  margin-left:20rpx;
+  margin-top:15rpx;
+}
+
+.container1{
+  display:inline-flex;
+}
+
+.logo1{
+  width:60rpx;
+  height:80rpx;
+}
+
+.container2{
+  display:inline-flex;
+}
+
+.logo2{
+  width:80rpx;
+  height:80rpx;
 }

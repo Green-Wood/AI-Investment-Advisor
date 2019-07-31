@@ -1,32 +1,32 @@
-<!--pages/ask_risk/ask_risl.wxml-->
+
 
 <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
 
-    <view class='content'>
-      <view class='blk1'>
-        <view class='blk1_son'>
-          <text class='description1'>
-            测试介绍
-          </text>
-          <text class='description2'> 
-            本测试综合评估您在投资行为中的风险承受能力和风险偏好，采用了“金融+AI大数据”的分析方法，确定您的风险承受能力等级，更理性地为您推荐个性化基金产品组合，便于您合理地配置资产，实现财富增值。
-          </text>
-        </view>
-      </view>
-      <image src='/pictures/问卷.jpg' mode='aspectFill' class='icon'></image>
-     
-      <button
-        class="btn1" 
-        loading="{{loading}}" 
-        disabled="{{disabled}}" 
-        bindtap="jumpToRiskTest">
-                <text class="start"> 开始 </text>
-      </button>
-      <button 
-        class="btn2"  
-        loading="{{loading}}" 
-        disabled="{{disabled}}" 
-        bindtap="skipToRiskChoices">
-                <text class="skip"> 跳过 </text>
-      </button>
+<view class='content'>
+  <view class='blk1'>
+    <view class='blk1_son'>
+      <text class='description1'>
+        测试介绍
+      </text>
+      <text class='description2'> 
+        本测试综合评估您在投资行为中的风险承受能力和风险偏好，采用了“金融+AI大数据”的分析方法，确定您的风险承受能力等级，更理性地为您推荐个性化基金产品组合，便于您合理地配置资产，实现财富增值。
+      </text>
     </view>
+  </view>
+  <image src='/pictures/question.jpg' mode='aspectFill' class='icon'></image>
+
+  <button
+    class="btn1" 
+    loading="{{loading}}" 
+    disabled="{{disabled}}" 
+    bindtap="jumpToRiskTest">
+            <text class="start"> 开始 </text>
+  </button>
+  <button 
+    class="btn2"  
+    loading="{{loading}}" 
+    disabled="{{disabled}}" 
+    bindtap="skipToRiskChoices">
+            <text class="skip"> 跳过 </text>
+  </button>
+</view>
