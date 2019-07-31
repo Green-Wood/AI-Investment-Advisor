@@ -1,12 +1,11 @@
 from flask_restplus import Resource, Namespace, reqparse, fields
 import pandas as pd
 import datetime
-from werkzeug.exceptions import NotFound
+from werkzeug.exceptions import NotFound, BadRequest
 
 api = Namespace('fund', description='基金的详细信息')
 
 _fund_parser = reqparse.RequestParser()
-_fund_parser.add_argument('code', required=True, type=str, help='该基金的代码')
 _fund_parser.add_argument('net_value_type',
                           default='unit_net_value',
                           type=str,
@@ -34,16 +33,16 @@ fund_info_list_model = api.model(
 )
 
 
-@api.route('')
+@api.route('/<string:code>')
 class Allocator(Resource):
 
     @api.response(200, 'get fund info successfully', model=fund_info_list_model)
     @api.response(404, 'fund not found')
+    @api.response(400, 'This fund does not contain net_value, only daily_profit')
     @api.expect(_fund_parser)
     @api.marshal_list_with(fund_info_model, envelope='info_list')
-    def get(self):
+    def get(self, code):
         args = _fund_parser.parse_args()
-        code = args['code']
         net_type = args['net_value_type']
         recent_time = args['recent_time']
 
@@ -54,6 +53,8 @@ class Allocator(Resource):
             fund = pd.read_csv(path, usecols=['datetime', net_type])   # 基金时间转化格式
         except FileNotFoundError:
             raise NotFound('Fund not Found')
+        except ValueError:
+            raise BadRequest('This fund does not contain net_value, only daily_profit')
         fund['datetime'] = pd.to_datetime(fund['datetime'])
 
         last_date = fund.iloc[-1, 0]       # 设置时间范围
