@@ -17,15 +17,13 @@
      
       <button 
       class="btn1" 
-      open-type="openSetting" 
       loading="{{loading}}" 
       disabled="{{disabled}}" 
       bindtap="jumpToRiskTest">
               <text class="start"> 开始 </text>
       </button>
       <button 
-      class="btn2" 
-      opentype="openSetting" 
+      class="btn2"  
       loading="{{loading}}" 
       disabled="{{disabled}}" 
       bindtap="skipToRiskChoices">

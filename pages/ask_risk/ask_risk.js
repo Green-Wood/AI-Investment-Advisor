@@ -22,6 +22,11 @@ Page({
   onLoad() {
     console.log(this.data.height)
   },
+  jumpToRiskTest:function(){
+    wx.navigateTo({
+      url: '../risk_test/risk_test',
+    })
+  },
   skipToRiskChoices: function(){
     wx.navigateTo({
       url: '../index/index',
