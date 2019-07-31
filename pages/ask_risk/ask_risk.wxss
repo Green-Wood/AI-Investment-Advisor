@@ -13,8 +13,10 @@ page{
 }
 
 .blk1{
-  width: 100%;
-  background-color: white;
+  margin-top:30rpx;
+  width: 90%;
+  background-color: rgba(211, 211, 211, 0.521);
+  border-radius:30rpx;
 }
 
 .blk1_son{
@@ -34,24 +36,31 @@ page{
   display: flex;
   font-size: 75%;
   color: grey;
+  margin-bottom:40rpx;
 }
 
 /* 问卷图标 */
 .icon{
   margin-top: 10%;
-  width: 300rpx;
-  height: 300rpx;
+  width: 600rpx;
+  height: 400rpx;
 }
 
 /* 开始按钮 */
 .btn1{
-  margin-top: 10%;
-  width: 40%;
-  background-color:rgb(9, 190, 190);
+  margin-top:50rpx;
+  width:50%;
+  border-radius:98rpx;
+  background-color:#0082c8;
+  color:white;
+  border-style:outset;
 }
+
 .btn1::after{
+  border-radius:98rpx;
   border:0;
 }
+
 .start{ /* “开始”按钮文字 */
   font-size:40rpx;
   color: white;
@@ -59,16 +68,19 @@ page{
 
 /* 跳过按钮 */
 .btn2{
-  margin-top: 5%;
-  margin-bottom: 5%;
-  width: 40%;
-  background-color: rgb(255, 255, 255); 
+  margin-top:50rpx;
+  width:50%;
+  border-radius:98rpx;
+  background-color:#ffffff;
+  border-style:outset;
 }
+
 .btn2::after{
-  border-width: 10rpx; 
-  border-color:rgb(9, 190, 190);  
+  border-radius:98rpx;
+  border:0;
 }
+
 .skip{
   font-size:40rpx;
-  color: rgb(9, 190, 190);
+  color: rgb(2, 108, 179);
 }
