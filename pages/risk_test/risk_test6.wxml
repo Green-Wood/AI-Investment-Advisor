@@ -1,0 +1,28 @@
+<!--pages/risk_test/risk_test6.wxml-->
+<view class="window">
+  <text>
+    7、??????????
+  </text>
+  
+  <view class="choices">
+    <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
+            disabled="{{disabled}}" bindtap="jumpToQ8"
+            hover-class="button-hover"> A
+    </button>
+
+    <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
+            disabled="{{disabled}}" bindtap="jumpToQ8"
+            hover-class="button-hover"> B
+    </button>
+
+    <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
+            disabled="{{disabled}}" bindtap="jumpToQ8"
+            hover-class="button-hover"> C
+    </button>
+
+    <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
+            disabled="{{disabled}}" bindtap="jumpToQ8"
+            hover-class="button-hover"> D
+    </button>
+  </view>
+</view>

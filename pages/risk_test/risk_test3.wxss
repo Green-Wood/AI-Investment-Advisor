@@ -1,0 +1,41 @@
+/* pages/risk_test/risk_test3.wxss */
+
+page{
+  background: rgba(205, 205, 240, 0.5)
+}
+
+
+.window{
+  height: 90%;
+  width: 90%;
+  margin-top: 20%;
+  margin-left: 5%;
+  margin-right: 5%;
+  background: white;
+  border-style: outset;
+  justify-items: center;
+  text-align: center;
+  font-size: 150%;
+  border-radius: 40rpx;
+}
+
+.choices{
+  margin-bottom: 5%;
+}
+
+button{
+  height: 10%;
+  width: 90%;
+  margin-top: 3%;
+  marker-end: 1%;
+  color: black;
+  border-style: solid;
+  border-color: rgba(175, 168, 168, 0.5);
+  border-width: 4rpx;
+  background-color: white;
+}
+
+.button-hover{
+  background-color: transparent;
+  border-color: rgb(255, 188, 64);
+}
