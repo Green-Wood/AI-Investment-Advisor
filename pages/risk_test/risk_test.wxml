@@ -1,29 +1,34 @@
-
-
+<!--pages/risk_test/risk_test.wxml-->
 <view class="window">
   <text>
-    1、???????????????????????
+    1、您的主要收入来源是： 
   </text>
   
   <view class="choices">
     <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
             disabled="{{disabled}}" bindtap="jumpToQ2"
-            hover-class="button-hover"> A
+            hover-class="button-hover" class=""> A、工资、劳务报酬 
     </button>
 
     <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
             disabled="{{disabled}}" bindtap="jumpToQ2"
-            hover-class="button-hover"> B
+            hover-class="button-hover"> B、生产经营所得
     </button>
 
     <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
             disabled="{{disabled}}" bindtap="jumpToQ2"
-            hover-class="button-hover"> C
+            hover-class="button-hover"> C、利息、股息、转让等金融性资产收入 
     </button>
 
     <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
             disabled="{{disabled}}" bindtap="jumpToQ2"
-            hover-class="button-hover"> D
+            hover-class="button-hover"> D、出租、出售房地产等非金融性资产收入 
     </button>
+
+    <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
+            disabled="{{disabled}}" bindtap="jumpToQ2"
+            hover-class="button-hover"> E、无固定收入
+    </button>
+
   </view>
 </view>

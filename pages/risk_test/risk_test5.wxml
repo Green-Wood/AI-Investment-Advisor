@@ -1,29 +1,28 @@
 <!--pages/risk_test/risk_test5.wxml-->
-
 <view class="window">
   <text>
-    6、??????????
+    6、您的投资经验可描述为：
   </text>
   
   <view class="choices">
     <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
             disabled="{{disabled}}" bindtap="jumpToQ7"
-            hover-class="button-hover"> A
+            hover-class="button-hover"> A、除银行储蓄外，基本没有其他投资经验
     </button>
 
     <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
             disabled="{{disabled}}" bindtap="jumpToQ7"
-            hover-class="button-hover"> B
+            hover-class="button-hover"> B、购买过债券、保险等理财产品 
     </button>
 
     <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
             disabled="{{disabled}}" bindtap="jumpToQ7"
-            hover-class="button-hover"> C
+            hover-class="button-hover"> C、参与过股票、基金等产品的交易
     </button>
 
     <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
             disabled="{{disabled}}" bindtap="jumpToQ7"
-            hover-class="button-hover"> D
+            hover-class="button-hover"> D、参与过权证、期货、期权等产品的交易
     </button>
   </view>
 </view>

@@ -1,28 +1,28 @@
 <!--pages/risk_test/risk_test8.wxml-->
 <view class="window">
   <text>
-    9、??????????
+    9、您打算重点投资于哪些种类的投资品种：
   </text>
   
   <view class="choices">
     <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
             disabled="{{disabled}}" bindtap="jumpToQ10"
-            hover-class="button-hover"> A
+            hover-class="button-hover"> A、债券、货币市场基金、债券基金等固定收益类投资品种 
     </button>
 
     <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
             disabled="{{disabled}}" bindtap="jumpToQ10"
-            hover-class="button-hover"> B
+            hover-class="button-hover"> B、股票、混合型基金、股票型基金等权益类投资品种
     </button>
 
     <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
             disabled="{{disabled}}" bindtap="jumpToQ10"
-            hover-class="button-hover"> C
+            hover-class="button-hover"> C、期货、期权等金融衍生品
     </button>
 
     <button type="setDefault" size="setDefault" loading="{{loading}}" plain="{{plain}}"
             disabled="{{disabled}}" bindtap="jumpToQ10"
-            hover-class="button-hover"> D
+            hover-class="button-hover"> D、其他产品
     </button>
   </view>
 </view>
