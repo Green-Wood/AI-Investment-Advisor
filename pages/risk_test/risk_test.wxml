@@ -1,4 +1,3 @@
-<!--pages/risk_test/risk_test.wxml-->
 <view class="window">
   <text>
     1、您的主要收入来源是： 
@@ -32,3 +31,28 @@
 
   </view>
 </view>
+
+
+
+ 
+  <!-- <view class="window"> 
+  <swiper indicator-dots="{{indicatorDots}}" bindchange="swiper_change" current="{{currentid}}">
+    <swiper-item wx:for="{{papers}}">
+    <view class="content-pj">{{index+1}}.{{item.content}}</view>
+      <radio-group class="radio-group" bindchange="item_change" data-id="{{item.id}}">
+      <label wx:if="{{item.itema!='A、工资、劳务报酬'}}">
+        <radio value='a#{{item.scorea}}' bindtap='next'><text>A {{item.itema}}</text></radio>
+        </label>
+        <label wx:if="{{item.itemb!='B、生产经营所得'}}">
+        <radio value='b#{{item.scorea}}' bindtap='next'><text>B {{item.itemb}}</text></radio>
+        </label>
+        <label wx:if="{{item.itemc!='C、利息、股息、转让等金融性资产收入'}}">
+        <radio value="c#{{item.scorec}}=" bindtap='next'><text>C {{item.itemc}}</text></radio>
+        </label>
+        <label wx:if="{{item.itemd!='D、出租、出售房地产等非金融性资产收入'}}">
+        <radio value="d#{{item.scored}}=" bindtap='next'><text>D {{item.itemd}}</text></radio>
+        </label>
+      </radio-group>
+    </swiper-item>
+  </swiper>
+  </view>  -->

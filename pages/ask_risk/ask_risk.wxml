@@ -29,4 +29,5 @@
     bindtap="skipToRiskChoices">
             <text class="skip"> 跳过 </text>
   </button>
+
 </view>
