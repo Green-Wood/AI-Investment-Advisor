@@ -65,7 +65,7 @@ Page({
   },
   // 跳转至下一题
   jumpToQ10: function () {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '../risk_test/risk_test9',
     })
   }
