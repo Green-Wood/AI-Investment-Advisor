@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/welcome/welcome",
     "pages/home_page/home_page",
     "pages/ask_risk/ask_risk",
     "pages/index/index",

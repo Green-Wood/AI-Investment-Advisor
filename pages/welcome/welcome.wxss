@@ -1,0 +1,24 @@
+/* pages/welcome/welcome.wxss */
+
+.welcome{
+  width:100%;
+}
+
+.enter{
+  width:50%;
+  border-radius:98rpx;
+  background-color:#0082c8;
+  color:white;
+  border-style:outset;
+}
+
+.enter::after{
+  border-radius:98rpx;
+  border:0;
+}
+.poweredby{
+  font-size: 25rpx;
+  color:grey;
+  bottom:0;
+  position:fixed;
+}
