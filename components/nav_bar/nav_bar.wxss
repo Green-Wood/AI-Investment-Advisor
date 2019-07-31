@@ -9,6 +9,7 @@
   background: linear-gradient(#2E6CC7,rgb(9, 151, 187),rgb(9, 190, 190));
   z-index: 9999999;
 }
+
 /* 标题要居中 */
 .nav-title {
   position: absolute;
@@ -16,7 +17,7 @@
   right: 39%;
   width: 20%;
   font-size: 100%;
-  color: rgb(255, 255, 255);
+  color: rgb(255, 188, 64);
   font-weight: 600;
   /* font-family:; */
 }

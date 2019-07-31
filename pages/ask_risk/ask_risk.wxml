@@ -5,7 +5,7 @@
     <view class='content'>
       <view class='blk1'>
         <view class='blk1_son'>
-          <text class='description1'> 
+          <text class='description1'>
             测试介绍
           </text>
           <text class='description2'> 
@@ -15,7 +15,7 @@
       </view>
       <image src='/pictures/问卷.jpg' mode='aspectFill' class='icon'></image>
      
-      <button 
+      <button
         class="btn1" 
         loading="{{loading}}" 
         disabled="{{disabled}}" 

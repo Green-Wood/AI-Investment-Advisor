@@ -48,7 +48,7 @@
 }
 .start{ /* “开始”按钮文字 */
   font-size:40rpx;
-  color:white;
+  color:rgb(0, 0, 0);
 }
 
 /* 跳过按钮 */
