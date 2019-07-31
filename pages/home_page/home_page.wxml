@@ -1,7 +1,6 @@
-
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
 <view>
   <view>
-    <image class='backgd' 
-      src='/pictures/1.PNG' mode='widthFix' bindtap="jumpToWelcome"></image>
+   
   </view>
 </view>
