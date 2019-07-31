@@ -1,17 +1,17 @@
-<view class='nav-wrap' style='height: {{height*2 + 20}}px;'>
+<view class='nav-wrap'>
    
-  <view class='nav-title' style='line-height: {{height*2 + 44}}px;'>{{navbarData.title}}</view>
-  <view style='display: flex; justify-content: space-around;flex-direction: column'>
-  
-    <view class='nav-capsule' style='height: {{height*2 + 44}}px;' wx:if='{{navbarData.showCapsule}}'>
-       
-      <view bindtap='_navback' wx:if='{{!share}}'>
-        <image src='/pictures/back.png' mode='aspectFill' class='back-pre'></image>
-      </view>
-      <view class='navbar-v-line' wx:if='{{!share}}'></view>
-      <view bindtap='_backhome'>
-        <image src='/pictures/back_home.png' mode='aspectFill' class='back-home'></image>
-      </view>
+  <view class='nav-capsule'>
+    <view bindtap='_navback'>
+      <image src='/pictures/back.png' mode='aspectFill' class='back-pre'></image>
+    </view>
+
+    <view bindtap='_backhome'>
+      <image src='/pictures/back_home.png' mode='aspectFill' class='back-home'></image>
     </view>
   </view>
+  
+  <view class='nav-title'>
+    {{navbarData.title}}
+  </view>
+
 </view>

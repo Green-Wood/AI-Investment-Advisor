@@ -1,74 +1,68 @@
-/* pages/ask_risk/ask_risl.wxss */
+/* pages/ask_risk/ask_risk.wxss */
 
-/* text{
-  justify-items: center;
-} */
+.content{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
 
 .blk1{
-  margin-top:130rpx;
-  width:100%;
-  height:300rpx;
+  width: 100%;
   background-color: white;
 }
 
 .blk1_son{
-  width:90%;
-  margin-left:5%;
+  width: 90%;
+  margin-left: 5%;
 }
 
+/* “测试介绍”文字 */
 .description1{
-  display:flex;
-  font-size:30rpx;
+  display: flex;
+  font-size: 100%;
   color: rgb(75, 73, 73);
 }
 
+/* 测试介绍内容 */
 .description2{
-  display:flex;
-  font-size:25rpx;
-  color:grey;
+  display: flex;
+  font-size: 75%;
+  color: grey;
 }
 
-.question{
+/* 问卷图标 */
+.icon{
+  margin-top: 10%;
   width: 300rpx;
   height: 300rpx;
 }
 
+/* 开始按钮 */
 .btn1{
-  margin-top:100rpx;
+  margin-top: 10%;
   width: 40%;
   background-color:rgb(9, 190, 190);
 }
 .btn1::after{
   border:0;
 }
-
-.start{
+.start{ /* “开始”按钮文字 */
   font-size:40rpx;
   color:white;
 }
 
+/* 跳过按钮 */
 .btn2{
-  margin-top:50rpx;
+  margin-top: 5%;
+  margin-bottom: 5%;
   width: 40%;
   background-color: rgb(255, 255, 255); 
 }
-
 .btn2::after{
   border-width: 10rpx; 
   border-color:rgb(9, 190, 190);  
 }
-
-.jump{
+.skip{
   font-size:40rpx;
   color: rgb(9, 190, 190);
-}
-
-.content{
-  display: flex;
-  align-items: center;
-}
-
-.content{
-  display: flex;
-  flex-direction: column; /**子元素上下排列*/
 }

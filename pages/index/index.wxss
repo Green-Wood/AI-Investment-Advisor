@@ -2,6 +2,7 @@
 
 .tui-content{
   text-align: center;
+  font-size: 90%;
   margin-top: 30%;
 }
 
@@ -15,6 +16,7 @@
 
 .description{
   margin-left: 15%;
+  font-size: 90%;
 }
 
 /* Button */
