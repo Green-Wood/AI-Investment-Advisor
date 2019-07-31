@@ -2,6 +2,8 @@ from flask_restplus import Resource, Namespace, reqparse, fields
 import pandas as pd
 from db import mongo
 from bson.objectid import ObjectId
+from bson.errors import InvalidId
+from werkzeug.exceptions import NotFound
 
 api = Namespace('allocation', description='根据用户的风险指标和总资产，获得资产分配的比例（浮点数列表）')
 
@@ -22,7 +24,7 @@ page_model = api.model(
         'total_size': fields.Integer
     }
 )
-allocation = api.model(
+allocation_model = api.model(
     'allocation',
     {
         'allocation_id': fields.String,
@@ -43,9 +45,9 @@ _allocation_parser.add_argument('page_size', default=5, type=int, help='一页�
 @api.route('')
 class Allocator(Resource):
 
-    @api.response(200, 'allocate successfully', model=allocation)
+    @api.response(200, 'allocate successfully', model=allocation_model)
     @api.expect(_allocation_parser)
-    @api.marshal_list_with(allocation)
+    @api.marshal_list_with(allocation_model)
     def post(self):
         w = [0.1, 0.2, 0.4, 0.15, 0.15]
         args = _allocation_parser.parse_args()
@@ -81,14 +83,23 @@ _allo_info_parser.add_argument('page_size', required=True, type=int, help='一�
 @api.doc(params={'allocation_id': '资产分配的id'})
 class AllocationInfo(Resource):
 
-    @api.response(200, 'allocate successfully', model=allocation)
+    @api.response(200, 'allocate successfully', model=allocation_model)
+    @api.response(404, 'Allocation id doest not exist')
     @api.expect(_allo_info_parser)
-    @api.marshal_list_with(allocation)
+    @api.marshal_list_with(allocation_model)
     def get(self, allocation_id):
         args = _allo_info_parser.parse_args()
         page = args['page']
         page_size = args['page_size']
-        fund_list = mongo.db.allocation.find_one({'_id': ObjectId(allocation_id)})['allocation']
+
+        try:
+            allocation = mongo.db.allocation.find_one({'_id': ObjectId(allocation_id)})
+        except InvalidId:
+            raise NotFound('Allocation id doest not exist')
+        if allocation is None:
+            raise NotFound('Allocation id doest not exist')
+
+        fund_list = allocation['allocation']
         return {
                    'allocation_id': allocation_id,
                    'pagination': {
