@@ -37,9 +37,11 @@ Page({
           }
         } else if (res.cancel) {
           console.log('用户点击取消')
-          wx.navigateTo({
-            url: '../risk_test/risk_test',
-          })
+          {
+            wx.navigateTo({
+              url: '../ask_risk/ask_risk',
+            })
+          }
         }
       }
     })

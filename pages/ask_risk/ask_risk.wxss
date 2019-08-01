@@ -6,17 +6,27 @@ page{
   overflow: hidden;
 }
 
+.background{
+  width:100%;
+  height:20%;
+  background: #0082c8;
+  position:fixed;
+}
+
 .content{
+  margin-top:25%;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
 
 .blk1{
-  margin-top:30rpx;
   width: 90%;
-  background-color: rgba(211, 211, 211, 0.521);
-  border-radius:30rpx;
+  background-color: rgba(255, 255, 255, 0.952);
+  border-radius:10rpx;
+  border-left-style:outset;
+  border-left-color: #0082c8;
+  box-shadow: 3px 3px 5px 1px rgb(196, 196, 196);
 }
 
 .blk1_son{
@@ -36,24 +46,25 @@ page{
   display: flex;
   font-size: 75%;
   color: grey;
-  margin-bottom:40rpx;
+  margin-bottom:3%;
+  line-height:180%;
 }
 
 /* 问卷图标 */
 .icon{
-  margin-top: 10%;
+  margin-top: 5%;
   width: 600rpx;
-  height: 400rpx;
+  height: 350rpx;
 }
 
 /* 开始按钮 */
 .btn1{
-  margin-top:50rpx;
+  margin-top:5%;
   width:50%;
   border-radius:98rpx;
   background-color:#0082c8;
   color:white;
-  border-style:outset;
+  box-shadow: 3px 3px 5px 1px rgb(196, 196, 196);
 }
 
 .btn1::after{
@@ -62,17 +73,17 @@ page{
 }
 
 .start{ /* “开始”按钮文字 */
-  font-size:40rpx;
+  font-size:33rpx;
   color: white;
 }
 
 /* 跳过按钮 */
 .btn2{
-  margin-top:50rpx;
+  margin-top:5%;
   width:50%;
   border-radius:98rpx;
   background-color:#ffffff;
-  border-style:outset;
+  box-shadow: 3px 3px 5px 1px rgb(196, 196, 196);
 }
 
 .btn2::after{
@@ -81,6 +92,6 @@ page{
 }
 
 .skip{
-  font-size:40rpx;
+  font-size:33rpx;
   color: rgb(2, 108, 179);
 }

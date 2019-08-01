@@ -4,6 +4,13 @@ page{
   overflow: hidden;
 }
 
+.background{
+  width:100%;
+  height:20%;
+  background: #0082c8;
+  position:fixed;
+}
+
 .logotext{
   color:rgb(97, 97, 97);
   margin-left:20rpx;
@@ -11,19 +18,28 @@ page{
 }
 
 .container1{
-  display:inline-flex;
+  margin-top:50%;
+  display:column;
+  
 }
 
 .logo1{
-  width:60rpx;
-  height:80rpx;
+  width:80rpx;
+  height:100rpx;
+  margin-left:40rpx;
 }
 
 .container2{
-  display:inline-flex;
+  margin-top:50%;
+  display:column;
 }
 
 .logo2{
-  width:80rpx;
-  height:80rpx;
+  width:100rpx;
+  height:100rpx;
+  margin-left:40rpx;
+}
+
+.all_logo{
+  display:flex;
 }

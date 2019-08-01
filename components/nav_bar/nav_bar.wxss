@@ -4,22 +4,25 @@
   display: flex;
   align-items: center;
   width: 100%;
-  min-height: 10%;
-  max-height: 10%;
-  background: #0082c8;
-  z-index: 9999999;
+  min-height: 120rpx;
+  max-height: 120rpx;
+  background: rgb(241, 241, 241);
+  position:fixed;
+  bottom:0;
+  border-top-style: outset;
+  border-top-color:#73b6da;
 }
 
 /* 标题要居中 */
 .nav-title {
   position: absolute;
-  top: 5.75%;
+  top: 30%;
   bottom: 2%;
   left: 40.5%;
   right: 39.5%;
   width: 20%;
   font-size: 110%;
-  color: white;
+  color: rgb(75, 75, 75);
   font-weight: 600;
 }
 
@@ -32,13 +35,13 @@
 .back-pre{
   position: absolute;
   left: 6%;
-  top: 6%;
+  top: 30%;
   bottom: 2%;
-  width: 40rpx;
+  width: 50rpx;
   height: 35rpx;
 }
 
-.navbar-v-line {
+/* .navbar-v-line {
   position: absolute;
   left: 17%;
   top: 6%;
@@ -46,14 +49,14 @@
   width: 1px;
   height: 35rpx;
   background-color:white;
-}
+} */
 
 /* Home键 */
 .back-home{
   position: absolute;
-  left: 24%;
-  top: 6%;
+  left:45%;
+  top: 15%;
   bottom: 2%;
-  width: 40rpx;
-  height: 35rpx;
+  width: 80rpx;
+  height: 70rpx;
 }

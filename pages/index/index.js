@@ -16,24 +16,24 @@ Page({
       title: '原地起飞', //导航栏 中间的标题
     }
   },
-  changeSlider1(e) {
-    this.setData({ str: e.detail.value })
-    // if (e.detail.value == 1) {
-    //   this.setData({ str: e.detail.value })
-    // }
-    // else if (e.detail.value == 2) {
-    //   this.setData({ str: e.detail.value })
-    // }
-    // else if (e.detail.value == 3) {
-    //   this.setData({ str: e.detail.value })
-    // }
-    // else if (e.detail.value == 4) {
-    //   this.setData({ str: e.detail.value })
-    // }
-    // else if (e.detail.value == 5) {
-    //   this.setData({ str: e.detail.value })
-    // }
-  },
+  // changeSlider1(e) {
+  //   this.setData({ str: e.detail.value })
+  //   if (e.detail.value == 1) {
+  //     this.setData({ str: e.detail.value })
+  //   }
+  //   else if (e.detail.value == 2) {
+  //     this.setData({ str: e.detail.value })
+  //   }
+  //   else if (e.detail.value == 3) {
+  //     this.setData({ str: e.detail.value })
+  //   }
+  //   else if (e.detail.value == 4) {
+  //     this.setData({ str: e.detail.value })
+  //   }
+  //   else if (e.detail.value == 5) {
+  //     this.setData({ str: e.detail.value })
+  //   }
+  // },
 
   // onReady: function () {
   //   //获得popup组件

@@ -6,18 +6,67 @@ page{
   overflow: hidden;
 }
 
+.background{
+  width:100%;
+  height:20%;
+  background: #0082cb;
+  position:absolute;
+}
+
+.content{
+  margin-top:25%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.blk1{
+  width: 90%;
+  background-color: rgba(255, 255, 255, 0.952);
+  border-radius:10rpx;
+  border-left-style:outset;
+  border-left-color: #0082c8;
+  box-shadow: 3px 3px 5px 1px rgb(196, 196, 196);
+}
+
+.ask{
+  color:rgb(75, 73, 73);
+  font-size: 33rpx;
+  margin-left:10%;
+  margin-top:50rpx;
+}
+
 .tui-content{
   text-align: center;
   font-size: 90%;
-  margin-top: 30%;
+  margin-top: 20%;
 }
+
+.low{
+  position:absolute;
+  left:10%;
+  color:grey;
+}
+
+.high{
+  position:absolute;
+  right:9%;
+  color:grey;
+}
+
 
 /* Slider */
 .tui-slider-box{
   margin-left: 10%;
   margin-right: 10%;
-  background: linear-gradient(to right, #c6ffdd, #fbd786, #f7797d);
+  background: linear-gradient(to right, #7fc0df, #3363c9);
   border-radius: 25rpx;
+}
+
+.tui-slider-head{
+  color:grey;
+  font-size:28rpx;
+  margin-bottom:5%;
 }
 
 .description{
@@ -25,9 +74,32 @@ page{
   font-size: 90%;
 }
 
+.blk2{
+  margin-top:10%;
+  width: 90%;
+  background-color: rgba(255, 255, 255, 0.952);
+  border-radius:10rpx;
+  border-left-style:outset;
+  border-left-color: #0082c8;
+  box-shadow: 3px 3px 5px 1px rgb(196, 196, 196);
+}
+
+
 /* Button */
-.button{
-  display: flex;
-  justify-items: center;
-  margin-top: 8%;
+.btn{
+  margin-top:5%;
+  width:50%;
+  border-radius:98rpx;
+  background-color:#0082c8;
+  color:white;
+  box-shadow: 3px 3px 5px 1px rgb(196, 196, 196);
+}
+
+.btn{
+  border-radius:98rpx;
+  border:0;
+}
+
+.confirm{
+  font-size:33rpx;
 }
