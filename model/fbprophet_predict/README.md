@@ -1,6 +1,6 @@
 # 使用说明
 - pip install fbprophet
-- Facebook出的预测工具fbprophet，有不少功能暂时没有放在这个程序里,有些可调整参数因为太多的缘故没有设置外部可调。另外只做了单基金的，大家熟悉了之后可以随便改。
+- Facebook出的时间序列预测工具fbprophet，有不少功能暂时没有放在这个程序里,有些参数因为太多的缘故没有设置外部可调。另外只做了单基金的，大家熟悉了之后可以随便改。
 - [用户手册](https://facebook.github.io/prophet/docs/quick_start.html#python-api)
 - [参考博客](https://blog.csdn.net/anshuai_aw1/article/details/83412058)
 
