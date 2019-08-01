@@ -22,7 +22,7 @@
   right: 39.5%;
   width: 20%;
   font-size: 110%;
-  color: rgb(75, 75, 75);
+  color: rgb(201, 201, 201);
   font-weight: 600;
   z-index:9999;
 }

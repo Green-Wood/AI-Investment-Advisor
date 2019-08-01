@@ -1,5 +1,5 @@
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
 <view class='background'>
-  <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
   <!--index.wxml-->
   <view class='content'>
     <!-- 滑块板块的所有元素 -->
