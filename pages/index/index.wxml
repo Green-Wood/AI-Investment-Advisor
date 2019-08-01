@@ -2,76 +2,55 @@
   <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
   <!--index.wxml-->
   <view class='content'>
-      <view class='blk1'>
-        <view class='ask'>
-        请您自行选择您的风险偏好等级：
-        </view>
+    <!-- 滑块板块的所有元素 -->
+    <view class='bar-background'>
 
-        <!-- 滑块 -->
-        <view class="tui-content">
-          <!-- 滑块属性 -->
-          <view class='low'>
-          低</view>
-          <view class='high'>
-          高</view>
-          <view class="tui-slider-box">
-            <slider 
-            color="transparent" 
-            activeColor="transparent"
-            min="1"
-            max="5"
-            step="1"
-            bindchanging="changeSlider1" value="{{str}}"/>
-          </view>
-          
-
-          <!-- 滑块描述 -->
-          <view class="tui-slider-head">
-            您能接受的风险等级(数值越高风险更大): {{str}}
-          </view>
-        </view>  
+      <view class="ask-risk-text">
+        <text class='ask'>请选择您的风险偏好等级：</text>
+        <text class="risk-level">{{str}}</text>
       </view>
 
-      <!-- 风险等级信息 -->
-      <view class="blk2">
-        <view class="description">
-
-        风险等级详情:
-
-        1：大约收益？%（可能损失0%）
-
-        2：大约收益？%（可能损失0-10%）
-
-        3：大约收益？%（可能损失10-30%）
-
-        4：大约收益？%（可能损失30-50%）
-
-        5：大约收益？%（可能损失50-70%）
+      <!-- 滑块 -->
+      <view class="tui-content">
+        <!-- 滑块属性 -->
+        <view class='low'>低</view>
+        <view class='high'>高</view>
+        <view class="tui-slider-box">
+          <slider 
+          color="transparent" 
+          activeColor="transparent"
+          min="1"
+          max="5"
+          step="1"
+          bindchanging="changeSlider1" 
+          value="{{str}}"/>
         </view>
+        
+        <!-- 滑块描述 -->
+        <text class="tui-slider-head">( 数值越大风险越高 )</text>
       </view>
+    </view>
 
-        <!--默认的button, 默认大小default,默认加载false,默认按键不为镂空,默认可以点击，点击有效果    hover-class="other-button-hover"-->
+    <!-- 风险等级信息 -->
+    <view class="description-background">
+      <text class="description_title">风险等级详情：</text>
+      <text class="description">
+      1：大约收益？%（可能损失0%）
       
-      <button class="btn"size="mini" loading="{{loading}}"
-              disabled="{{disabled}}" bindtap="jumpToRecommendation"> 
-        <view class='confirm'>确认</view>
-      </button>
+      2：大约收益？%（可能损失0-10%）
       
+      3：大约收益？%（可能损失10-30%）
+      
+      4：大约收益？%（可能损失30-50%）
+      
+      5：大约收益？%（可能损失50-70%）
+      </text>
+    </view>
+
+    <!-- 确认按钮样式 -->
+    <button class="confirm-btn"size="mini" loading="{{loading}}"
+            disabled="{{disabled}}" bindtap="jumpToRecommendation"> 
+      <view class='confirm'>确认</view>
+    </button>
   </view>
 </view>
-
-
-<!-- index.wxml
-<view class="container">
-  <view class="userinfo">
-    <button bindtap="showPopup"> 点我 </button>
-  </view>
-  <popup id='popup' 
-      title='小组件' 
-      content='风险测评还没有做完，确定退出？'
-      btn_no='想好退出' 
-      btn_ok='继续完成'
-      bind:error="_error"  
-      bind:success="_success">
-  </popup>
-</view> -->
