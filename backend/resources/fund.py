@@ -43,6 +43,11 @@ class Allocator(Resource):
     @api.expect(_fund_parser)
     @api.marshal_list_with(fund_info_model, envelope='info_list')
     def get(self, code):
+        """
+        根据基金代码获取该基金的详细信息（一个月、半年、一年）
+        :param code:
+        :return:
+        """
         args = _fund_parser.parse_args()
         net_type = args['net_value_type']
         recent_time = args['recent_time']
