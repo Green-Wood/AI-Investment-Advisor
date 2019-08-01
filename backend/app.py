@@ -10,8 +10,8 @@ from resources.fund import api as ns_fund
 
 APP_ENV = getenv('APP_ENV', 'dev')
 app = Flask(__name__)
-app.wsgi_app = ProxyFix(app.wsgi_app)
 app.config.from_object(config[APP_ENV])
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
 mongo.init_app(app)
 api = Api(app, version='1.0', title='Investment Advisor Api', prefix='/api')
