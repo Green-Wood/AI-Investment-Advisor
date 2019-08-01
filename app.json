@@ -11,13 +11,7 @@
     "pages/risk_test/risk_test2",
     "pages/risk_test/risk_test3",
     "pages/risk_test/risk_test4",
-    "pages/risk_test/risk_test5",
-    "pages/risk_test/risk_test6",
-    "pages/risk_test/risk_test7",
-    "pages/risk_test/risk_test8",
-    "pages/risk_test/risk_test9",
-    "pages/risk_test/risk_test10",
-    "pages/risk_test/risk_test11"
+    "pages/risk_test/risk_test5"
   ],
   "window": {
     "backgroundTextStyle": "light",

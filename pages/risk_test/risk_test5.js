@@ -67,7 +67,7 @@ Page({
   // 跳转至下一题
   jumpToQ7: function () {
     wx.navigateTo({
-      url: '../risk_test/risk_test6',
+      url: '../recommendation/recommendation',
     })
   }
 })

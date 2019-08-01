@@ -1,6 +1,5 @@
-
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
 <view class='background'>
-  <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
   <view class='all_logo'>
     <view class='container1' loading="{{loading}}" disabled="{{disabled}}" bindtap="logo1">
       <image src='/pictures/questionlogo.png' class='logo1'></image>

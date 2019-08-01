@@ -1,6 +1,5 @@
-
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
 <view class='background'>
-  <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
   <view class='content'>
     <view class='blk1'>
       <view class='blk1_son'>
