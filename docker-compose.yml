@@ -1,0 +1,39 @@
+version: '3'
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: ./backend
+    environment:
+      - APP_ENV=test
+      - MODEL_HOST=ml
+      - MODEL_PORT=8501
+      - MONGO_USERNAME=greenwood
+      - MONGO_PASSWORD=123
+      - MONGO_URI=mongodb://mongo:27017/investment-advisor
+    image: greenw00d/investment-advisor-backend
+
+#  ml:
+#    build:
+#      dockerfile: Dockerfile
+#      context: ./saved_model_half_plus_two_cpu
+#    image: greenw00d/flask-demo-model
+
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    image: greenw00d/investment-advisor-nginx
+
+  mongo:
+    restart: always
+    image: mongo
+    environment:
+      - MONGO_USERNAME=greenwood
+      - MONGO_PASSWORD=123
+
+

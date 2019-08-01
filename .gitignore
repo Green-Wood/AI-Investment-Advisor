@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Windows
 [Dd]esktop.ini
 Thumbs.db
@@ -12,3 +13,13 @@ $RECYCLE.BIN/
 
 # Node.js
 node_modules/
+=======
+.idea
+*/venv/*
+*/__pycache__/*
+/__pycache__/
+.DS_Store
+*.pyc
+*.pyo
+nav/
+>>>>>>> 2402a4d30757157a7be9f5f450f64bdd208ede0d

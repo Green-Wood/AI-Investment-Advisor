@@ -1,0 +1,8 @@
+flask
+flask-restplus
+gunicorn
+requests
+Werkzeug
+pandas
+PyportfolioOpt
+flask-pymongo
