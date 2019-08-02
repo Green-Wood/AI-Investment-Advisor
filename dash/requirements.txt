@@ -5,3 +5,4 @@ scipy
 PyPortfolioOpt
 sklearn
 cvxopt
+matplotlib
