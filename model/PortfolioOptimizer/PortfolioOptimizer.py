@@ -9,7 +9,7 @@ class PortfolioOptimizer:
     """
     PortfolioOptimizer
 
-    Solves portfolio optimization problem.
+    Solve portfolio optimization problem.
 
     Parameters
     ----------
@@ -35,82 +35,83 @@ class PortfolioOptimizer:
         self.risk_free_rate = risk_free_rate
 
     def optimize(self, N=100):
-        """Solve the problem with different parameters and store the answers. This method
-            costs about 140 seconds when N = 100.
+        """
+        Solve the problem with different parameters and store the answers. This method
+        costs about 140 seconds when N = 100.
 
-            Parameters
-            ----------
-            N : int
-                Number of points to calculate, defaults to 100.
+        Parameters
+        ----------
+        N : int
+            Number of points to calculate, defaults to 100.
 
-            Returns
-            -------
-            self
+        Returns
+        -------
+        None
 
         """
         self.returns, self.risks, self.sharpe, self.weights = self.__optimize(self.data.columns, self.mu, self.cov, N)
 
-        return self
-
     def get_fixed_ans(self, fixed='sharpe', value=0.05):
-        """Get the closest answer with fixed parameter.
+        """
+        Get the closest answer with fixed parameter.
         NOTICE: Call optimize() before calling this method.
 
-            Parameters
-            ----------
+        Parameters
+        ----------
 
-            fixed : str, 'sharpe' or 'volatility' or 'return'
-                    Optimization constraints, defaults to 'sharpe'.
+        fixed : str, 'sharpe' or 'volatility' or 'return'
+                Optimization constraints, defaults to 'sharpe'.
 
-            value : float
-                    Optimization constraints. No need to set if fixed is
-                    'sharpe', defaults to 0.05.
+        value : float
+                Optimization constraints. No need to set if fixed is
+                'sharpe', defaults to 0.05.
 
-            Returns
-            -------
-            answer : tuple, (float, float, float)
-                    The closest answer given fixed constraints.
-                    (return, volatility, Sharpe ratio)
+        Returns
+        -------
+        answer : tuple, (float, float, float)
+                The closest answer given fixed constraints.
+                (return, volatility, Sharpe ratio)
 
         """
 
         if fixed == 'sharpe':
-            id = self.sharpe.index(max(self.sharpe))
+            idx = self.sharpe.index(max(self.sharpe))
         elif fixed == 'volatility':
-            id = self.risks.index(min(self.risks, key=lambda x: abs(x - value)))
+            idx = self.risks.index(min(self.risks, key=lambda x: abs(x - value)))
         elif fixed == 'return':
-            id = self.returns.index(min(self.returns, key=lambda x: abs(x - value)))
+            idx = self.returns.index(min(self.returns, key=lambda x: abs(x - value)))
         else:
             raise ValueError("fixed should be 'sharpe' or 'volatility' or 'return'"
                              " %s was provided." % str(fixed))
-        return self.returns[id], self.risks[id], self.sharpe[id], self.weights[id]
+        return self.returns[idx], self.risks[idx], self.sharpe[idx], self.weights[idx]
 
     def get_all_ans(self):
-        """Get all caculated answers.
+        """
+        Get all caculated answers.
 
-            Returns
-            -------
-            answers : tuple, (list of float, list of float, list of float, list of dict)
-                (list of returns, list of volatility, list of Sharpe ratio, list of weight)
+        Returns
+        -------
+        answers : tuple, (list of float, list of float, list of float, list of dict)
+            (list of returns, list of volatility, list of Sharpe ratio, list of weight)
         """
         return self.returns, self.weights, self.sharpe, self.weights
 
-    def efficient_frontier(self, columns='all', risk_free_rate=0.02):
-        """Calculate efficient frontier of given funds.
-            Parameters
-                ----------
-                columns : str or list of str, 'all' or ['id1', 'id2', ...]
-                        Funds to use to get efficient frontier. Use 'all' only
-                        if optimize() has been called. Otherwise use less than
-                        40 funds to make time cost acceptable.
+    def efficient_frontier(self, columns='all'):
+        """
+        Calculate efficient frontier of given funds.
 
-                risk_free_rate : float
-                    Risk free rate, defaults to 0.02.
+        Parameters
+        ----------
+        columns : str or list of str, 'all' or ['id1', 'id2', ...]
+                Funds to use to get efficient frontier. Use 'all' only
+                if optimize() has been called. Otherwise use less than
+                40 funds to make time cost acceptable.
 
-                Returns
-                -------
-                performance : list of tuples, [(float, float, float),...,(float,float,float)]
-                        Each tuple is (expected return, volatility, Sharpe ratio).
+
+        Returns
+        -------
+        performance : list of tuples, [(float, float, float),...,(float,float,float)]
+                Each tuple is (expected return, volatility, Sharpe ratio).
         """
         if columns != 'all':
             t_mu = self.mu.loc[columns]
@@ -119,7 +120,7 @@ class PortfolioOptimizer:
         else:
             return self.returns, self.risks, self.sharpe, self.weights
 
-    def __optimize(self, names, mu, cov, N):
+    def __optimize(self, names, mu, cov, N, show_progress=False):
         n = len(mu)
         S = matrix(cov.values)
         pbar = matrix(mu.values)
@@ -129,7 +130,7 @@ class PortfolioOptimizer:
         A = matrix(1.0, (1, n))
         b = matrix(1.0)
 
-        cvxopt.solvers.options['show_progress'] = False
+        cvxopt.solvers.options['show_progress'] = show_progress
         mus = [10 ** (5.0 * t / N - 1.0) for t in range(N)]
         portfolios = [qp(t * S, -pbar, G, h, A, b)['x'] for t in mus]
         returns = [dot(pbar, x) for x in portfolios]
@@ -137,8 +138,7 @@ class PortfolioOptimizer:
         sharpe = [(returns[i] - self.risk_free_rate) / risks[i] for i in range(N)]
         weights = []
         for portfolio in portfolios:
-            w = {}
-            for name, weight in zip(names, portfolio):
-                w[name] = weight
-            weights.append(w)
+            weights.append(dict(zip(names, portfolio)))
+
+        # weights = [dict(zip(names, portfolio)) for portfolio in portfolios]
         return returns, risks, sharpe, weights

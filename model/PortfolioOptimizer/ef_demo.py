@@ -30,17 +30,16 @@ if __name__ == '__main__':
     print('-' * 80)
     print("Maximum Sharpe ratio:")
     ret, risk, sharpe, weights = optimizer.get_fixed_ans(fixed='sharpe')
-    print(" return = " + str(ret) + " risk = " + str(risk) + " sharpe = " + str(sharpe))
-
+    print("return = {}, risk = {}, sharpe = {}".format(ret, risk, sharpe))
     print('-' * 80)
     print("Fixed risk = 0.05:")
     ret, risk, sharpe, weights = optimizer.get_fixed_ans(fixed='volatility', value=0.05)
-    print(" return = " + str(ret) + " risk = " + str(risk) + " sharpe = " + str(sharpe))
+    print("return = {}, risk = {}, sharpe = {}".format(ret, risk, sharpe))
 
     print('-' * 80)
     print("Fixed return = 0.15:")
     ret, risk, sharpe, weights = optimizer.get_fixed_ans(fixed='return', value=0.15)
-    print(" return = " + str(ret) + " risk = " + str(risk) + " sharpe = " + str(sharpe))
+    print("return = {}, risk = {}, sharpe = {}".format(ret, risk, sharpe))
 
     print('-' * 80)
     print("Plotting efficient frontier of all funds...")
