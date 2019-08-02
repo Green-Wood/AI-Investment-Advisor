@@ -5,19 +5,22 @@
 </view>
 
 
-<view class="container">
-
-  <ec-canvas id="mychart-dom-pie" canvas-id="mychart-pie" ec="{{ ec }}"       
-            bind:init="initChart"></ec-canvas>
-
-</view> -->
+<!-- 雷达图 -->
+<view class="radarChart">
+  <ec-canvas 
+    id="mychart-dom-graph" 
+    canvas-id="mychart-graph" 
+    ec="{{ ecradar }}"
+    bind:init="initRadarChart">
+  </ec-canvas>
+</view>
 
 <!-- 走势图 -->
 <view class="lineChart">
   <ec-canvas 
     id="mychart-dom-line" 
     canvas-id="mychart-line" 
-    ec="{{ ec }}"
+    ec="{{ ecline }}"
     bind:init="initLineChart">
   </ec-canvas>
 </view>

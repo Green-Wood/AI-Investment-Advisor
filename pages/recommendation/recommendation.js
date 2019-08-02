@@ -3,6 +3,68 @@ import * as echarts from '../../ec-canvas/echarts';
 
 const app = getApp();
 
+function initRadarChart(canvas, width, height) {
+  const chart = echarts.init(canvas, null, {
+    width: width,
+    height: height
+  });
+  canvas.setChart(chart);
+  var option = {
+    backgroundColor: "#ffffff",
+    color: ["#37A2DA", "#FF9F7F"],
+    tooltip: {},
+    xAxis: {
+      show: false
+    },
+    yAxis: {
+      show: false
+    },
+    radar: {
+      // shape: 'circle',
+      indicator: [{
+        name: '股票型',
+        max: 500
+      },
+      {
+        name: '联接型',
+        max: 500
+      },
+      {
+        name: 'QDII',
+        max: 500
+      },
+      {
+        name: '混合型',
+        max: 500
+      },
+      {
+        name: '货币型',
+        max: 500
+      },
+      {
+        name: '债券型',
+        max: 500
+      }
+      ]
+    },
+    series: [{
+      name: '预算 vs 开销',
+      type: 'radar',
+      data: [{
+        value: [430, 340, 500, 300, 490, 400],
+        name: '预算'
+      },
+      {
+        value: [300, 430, 150, 300, 420, 250],
+        name: '开销'
+      }
+      ]
+    }]
+  };
+  chart.setOption(option);
+  return chart;
+}
+
 function initLineChart(canvas, width, height) {
   const chart = echarts.init(canvas, null, {
     width: width,
@@ -11,15 +73,15 @@ function initLineChart(canvas, width, height) {
   canvas.setChart(chart);
   var option = {
     title: {
-      text: '测试下面legend的红色区域不应被裁剪',
+      text: '基金走势',
       left: 'center'
     },
     color: ["#37A2DA", "#67E0E3", "#9FE6B8"],
     legend: {
       data: ['A', 'B', 'C'],
-      top: 50,
+      top: 25,
       left: 'center',
-      backgroundColor: 'red',
+      backgroundColor: 'cyan',
       z: 100
     },
     grid: {
@@ -76,8 +138,11 @@ Page({
     }
   },
   data: {
-    ec: {
+    ecline: {
       onInit: initLineChart
+    },
+    ecradar: {
+      onInit: initRadarChart
     }
   },
   onReady() {

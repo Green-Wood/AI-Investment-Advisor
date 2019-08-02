@@ -1,65 +1,72 @@
-<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<!-- <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
 <view class='background'>
     <view class="content">
       <view class='question'>
+<<<<<<< HEAD
         1、您的家庭可支配年收入为(折合人民币) ：  
+=======
+        1、您的家庭可支配年收入为(折合人民币):
+>>>>>>> frontend
       </view>
       
       <view class="choices">
         <button loading="{{loading}}" plain="{{plain}}"
             disabled="{{disabled}}" bindtap="jumpToQ2"
             hover-class="button-hover" class="btn">
+<<<<<<< HEAD
                 <text class="choice">A、100万一下</text> 
+=======
+                <text class="choice">A、100万元以下</text> 
+>>>>>>> frontend
         </button>
 
         <button loading="{{loading}}" plain="{{plain}}"
                 disabled="{{disabled}}" bindtap="jumpToQ2"
                 hover-class="button-hover"class="btn"> 
-                <view class="choice">B、生产经营所得</view> 
+                <view class="choice">B、100—500万元</view> 
         </button>
 
         <button loading="{{loading}}" plain="{{plain}}"
                 disabled="{{disabled}}" bindtap="jumpToQ2"
                 hover-class="button-hover" class="btn"> 
-                <view class="choice">C、利息、股息、转让等金融性资产收入</view> 
+                <view class="choice">C、500—1000万元</view> 
         </button>
 
         <button loading="{{loading}}" plain="{{plain}}"
                 disabled="{{disabled}}" bindtap="jumpToQ2"
                 hover-class="button-hover"class="btn"> 
-                <view class="choice">D、出租、出售房地产等非金融性资产收入</view> 
-        </button>
-
-        <button loading="{{loading}}" plain="{{plain}}"
-                disabled="{{disabled}}" bindtap="jumpToQ2"
-                hover-class="button-hover"class="btn"> 
-                <view class="choice">E、无固定收入</view> 
+                <view class="choice">D、1000万元以上</view> 
         </button>
 
       </view>
     </view>
+</view> -->
+
+<view class="page">
+  <view class='page__hd'>
+    <view class="page__title" >{{index+1}}、{{questionDetail}}</view>
+  </view>
+  <view class="page__bd">
+    <view class="weui-cells weui-cells_after-title">
+            <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap='answerClickA'>
+                <view class="weui-cell__bd">{{optionA}}、{{answerA}}</view>
+                <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+            </view>
+            <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap='answerClickB'>
+                <view class="weui-cell__bd">{{optionB}}、{{answerB}}</view>
+                <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+            </view>
+            <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap='answerClickC'>
+                <view class="weui-cell__bd">{{optionC}}、{{answerC}}</view>
+                <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+            </view>
+             <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active"
+bindtap='answerClickD'>
+                <view class="weui-cell__bd">{{optionD}}、{{answerD}}</view>
+                <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+            </view>
+            <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+          </view>
+        </view>
+  </view>
 </view>
-
-
- 
-  <!-- <view class="window"> 
-  <swiper indicator-dots="{{indicatorDots}}" bindchange="swiper_change" current="{{currentid}}">
-    <swiper-item wx:for="{{papers}}">
-    <view class="content-pj">{{index+1}}.{{item.content}}</view>
-      <radio-group class="radio-group" bindchange="item_change" data-id="{{item.id}}">
-      <label wx:if="{{item.itema!='A、工资、劳务报酬'}}">
-        <radio value='a#{{item.scorea}}' bindtap='next'><text>A {{item.itema}}</text></radio>
-        </label>
-        <label wx:if="{{item.itemb!='B、生产经营所得'}}">
-        <radio value='b#{{item.scorea}}' bindtap='next'><text>B {{item.itemb}}</text></radio>
-        </label>
-        <label wx:if="{{item.itemc!='C、利息、股息、转让等金融性资产收入'}}">
-        <radio value="c#{{item.scorec}}=" bindtap='next'><text>C {{item.itemc}}</text></radio>
-        </label>
-        <label wx:if="{{item.itemd!='D、出租、出售房地产等非金融性资产收入'}}">
-        <radio value="d#{{item.scored}}=" bindtap='next'><text>D {{item.itemd}}</text></radio>
-        </label>
-      </radio-group>
-    </swiper-item>
-  </swiper>
-  </view>  -->

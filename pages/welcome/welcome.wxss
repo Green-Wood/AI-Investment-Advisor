@@ -16,9 +16,10 @@
   border-radius:98rpx;
   border:0;
 }
+
 .poweredby{
+  position: fixed;
+  bottom: 0%;
   font-size: 25rpx;
-  color:grey;
-  bottom:0;
-  position:fixed;
+  color: grey;
 }

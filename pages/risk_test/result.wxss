@@ -1,0 +1,27 @@
+page{
+  width: 100%;
+  height: 100%;
+}
+
+
+.result-text{
+  font-size: 200%;      /*设置文字字号*/
+  color:rgb(0, 0, 0);           /*设置文字颜色*/
+  font-weight: bold;    /*设置字体加粗*/
+  /* border:1px solid red;添加边框样式（粗细为1px， 颜色为红色的实线） */
+  font-family:"宋体";   /*设置字体为宋体*/
+  margin-top: 20%;
+}
+
+.content{
+  margin-left:5%;
+  width: 90%;
+  background-color: rgba(255, 255, 255, 0.952);
+  border-radius:8rpx;
+  border-left-style:outset;
+  border-left-color: #0082c8;
+  box-shadow: 0px 0px 5px 1px rgb(196, 196, 196);
+  margin-top:35%;
+  display: flex;
+  flex-direction: column;
+}

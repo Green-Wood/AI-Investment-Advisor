@@ -7,11 +7,7 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/risk_test/risk_test",
-    "pages/risk_test/risk_test1",
-    "pages/risk_test/risk_test2",
-    "pages/risk_test/risk_test3",
-    "pages/risk_test/risk_test4",
-    "pages/risk_test/risk_test5"
+    "pages/risk_test/result"
   ],
   "window": {
     "backgroundTextStyle": "light",

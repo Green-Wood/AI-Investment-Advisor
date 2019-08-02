@@ -1,0 +1,10 @@
+<!--pages/risk_test/result.wxml-->
+ 
+<!--pages/result/result.wxml-->
+<view class="top-background"></view>
+
+<view class="content">
+  <view class="result-text">
+    <view><text>您的风险承受类型是：{{Kind}}</text></view>
+  </view>
+</view>
