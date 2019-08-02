@@ -93,7 +93,7 @@ class PortfolioOptimizer:
             answers : tuple, (list of float, list of float, list of float, list of dict)
                 (list of returns, list of volatility, list of Sharpe ratio, list of weight)
         """
-        return self.returns, self.risks, self.sharpe, self.weights
+        return self.returns, self.weights, self.sharpe, self.weights
 
     def efficient_frontier(self, columns='all', risk_free_rate=0.02):
         """Calculate efficient frontier of given funds.
