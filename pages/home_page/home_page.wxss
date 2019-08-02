@@ -4,11 +4,12 @@ page{
   overflow: hidden;
 }
 
-.background{
+
+.picture{
   width:100%;
-  height:20%;
-  background: #0082c8;
-  position:fixed;
+  display: block;
+  z-index:-1;
+
 }
 
 .logotext{
@@ -17,29 +18,59 @@ page{
   margin-top:15rpx;
 }
 
+/* 风险测评 */
 .container1{
-  margin-top:50%;
+  margin-top:0%;
   display:column;
   
 }
 
 .logo1{
-  width:80rpx;
-  height:100rpx;
+  width:70rpx;
+  height:90rpx;
   margin-left:40rpx;
 }
 
+/* 关于我们 */
 .container2{
-  margin-top:50%;
+  margin-top:0%;
   display:column;
 }
 
 .logo2{
-  width:100rpx;
-  height:100rpx;
+  width:90rpx;
+  height:90rpx;
+  margin-left:40rpx;
+}
+
+.container3{
+  margin-top:10rpx;
+  display:column;
+  
+}
+
+.logo3{
+  width:105rpx;
+  height:75rpx;
+  margin-left:40rpx;
+  margin-bottom:6rpx;
+}
+
+.container4{
+  margin-top:0%;
+  display:column;
+  
+}
+
+.logo4{
+  width:90rpx;
+  height:90rpx;
   margin-left:40rpx;
 }
 
 .all_logo{
   display:flex;
+  margin-top:0;
+  z-index:100;
 }
+

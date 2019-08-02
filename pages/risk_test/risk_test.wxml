@@ -2,14 +2,14 @@
 <view class='background'>
     <view class="content">
       <view class='question'>
-        1、您的主要收入来源是： 
+        1、您的家庭可支配年收入为(折合人民币) ：  
       </view>
       
       <view class="choices">
         <button loading="{{loading}}" plain="{{plain}}"
             disabled="{{disabled}}" bindtap="jumpToQ2"
             hover-class="button-hover" class="btn">
-                <text class="choice">A、工资、劳务报酬</text> 
+                <text class="choice">A、100万一下</text> 
         </button>
 
         <button loading="{{loading}}" plain="{{plain}}"

@@ -22,8 +22,9 @@
   right: 39.5%;
   width: 20%;
   font-size: 110%;
-  color: rgb(201, 201, 201);
-  font-weight: 600;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: rgb(255, 255, 255);
+  font-weight: 200;
   z-index:9999;
 }
 

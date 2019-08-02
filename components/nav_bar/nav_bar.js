@@ -8,6 +8,13 @@ Component({
     }
   },
   data: {
+    
+  // 导航栏标题
+    nvabarData: {
+    showCapsule: 1, //是否显示左上角图标   1表示显示    0表示不显示
+    title: '原地起飞', //导航栏 中间的标题
+  },
+
     height: '',
     //默认值  默认显示左上角
     navbarData: {
