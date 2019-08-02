@@ -1,8 +1,8 @@
 import plotly.graph_objs as go
 import pandas as pd
-from utils.init_opt import optimizer
+import numpy as np
 
-risk_list = range(12, 48, 6)
+risk_list = range(0, 11, 2)
 df = pd.read_csv(
     'https://raw.githubusercontent.com/plotly/'
     'datasets/master/gapminderDataFiveYear.csv')

@@ -4,3 +4,4 @@ pandas
 scipy
 PyPortfolioOpt
 sklearn
+cvxopt

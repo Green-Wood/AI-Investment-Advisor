@@ -6,19 +6,14 @@ from dash.dependencies import Input, Output
 import pandas as pd
 
 from plots.show_funds import risk_list, fund_data_layout
+from plots.efficirnt_frontier import efficient_frontier_data_layout
 
-df = pd.read_csv(
-    'https://raw.githubusercontent.com/plotly/'
-    'datasets/master/gapminderDataFiveYear.csv')
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
-    html.Header([
-        html.Script(src='./echarts.min.js')
-    ]),
     html.Div([
         dcc.Graph(id='show-funds'),
         dcc.Slider(
@@ -35,12 +30,13 @@ app.layout = html.Div([
         }
     ),
     html.Div([
-        dcc.Graph(id='efficient-frontier')
+        dcc.Graph(id='efficient-frontier', figure=efficient_frontier_data_layout('all'))
     ],
         style={
             'width': '45%',
         }
     ),
+    html.Div(id='allocation', style={'display': 'none'})
 ])
 
 
@@ -53,24 +49,18 @@ def update_funds(risk_val):
 
 
 @app.callback(
-    Output('click-data', 'children'),
-    [Input('basic-interactions', 'clickData')]
+    Output('allocation', 'children'),
+    [Input('risk-slider', 'value'),
+     Input('show-funds', 'clickData'),
+     Input('show-funds', 'selectedData')]
 )
-def update_click():
-    pass
-
-
-@app.callback(
-    Output('selected-data', 'children'),
-    [Input('basic-interactions', 'selectedData')]
-)
-def update_select():
-    pass
+def update_allocation(risk_val, clickData, selectedData):
+    risk_val = risk_val / 10
+    data = optimizer.optimize(fixed='volatility', value=risk_val)
+    allocation = [(key, val) for key, val in data.items() if val > 0]
+    print(allocation)
+    return allocation
 
 
 if __name__ == '__main__':
     app.run_server(debug=True)
-    {
-        '0123': 0.19,
-        '0001': 0.2,
-    }
