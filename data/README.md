@@ -3,7 +3,7 @@
 - -p nav文件路径，如 -p C:/Users/xxx/funds/nav
 - -key 需要提取的数据，如单位净值数据 adjusted_net_value ,可选字段unit_net_value	acc_net_value	adjusted_net_value	subscribe_status
   redeem_status  (日收益、7日年化数据符合要求的仅100多支基金，建议舍弃)
-- -u 输出的csv文件的位置，输出结构为时间\*基金号(1227\*1258)，数值为key的值
+- -u 输出的csv文件的位置，输出结构为时间\*基金号(1227\*1257)，数值为key的值
 
 
 # 示例
