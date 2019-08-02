@@ -4,6 +4,8 @@ Thumbs.db
 $RECYCLE.BIN/
 .DS_Store
 .png
+.DS_Store~HEAD
+.DS_Store~HEAD~frontend
 
 # macOS
 .DS_Store
@@ -12,6 +14,8 @@ $RECYCLE.BIN/
 .TemporaryItems
 .Trashes
 .png
+.DS_Store~HEAD
+.DS_Store~HEAD~frontend
 
 # Node.js
 node_modules/
