@@ -15,7 +15,7 @@ Page({
 
   whichKind: function () {
     this.data.Mark = this.data.A * 2 + this.data.B * 3 + this.data.C * 5 + this.data.D * 8
-    if (this.data.Mark >= 10 && this.data.Mark <= 20) {
+    if (this.data.Mark >= 0 && this.data.Mark <= 20) {
       return "谨慎型"
     } else if (this.data.Mark > 20 && this.data.Mark <= 28) {
       return "稳健型"

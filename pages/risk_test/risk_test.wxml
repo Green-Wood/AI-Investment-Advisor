@@ -1,72 +1,28 @@
-<!-- <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
 <view class='background'>
-    <view class="content">
-      <view class='question'>
-<<<<<<< HEAD
-        1、您的家庭可支配年收入为(折合人民币) ：  
-=======
-        1、您的家庭可支配年收入为(折合人民币):
->>>>>>> frontend
+
+    <view class="frame">
+      <view class='page__hd'>
+        <view class="page__title" >{{index+1}}、{{questionDetail}}</view>
       </view>
-      
-      <view class="choices">
-        <button loading="{{loading}}" plain="{{plain}}"
-            disabled="{{disabled}}" bindtap="jumpToQ2"
-            hover-class="button-hover" class="btn">
-<<<<<<< HEAD
-                <text class="choice">A、100万一下</text> 
-=======
-                <text class="choice">A、100万元以下</text> 
->>>>>>> frontend
-        </button>
-
-        <button loading="{{loading}}" plain="{{plain}}"
-                disabled="{{disabled}}" bindtap="jumpToQ2"
-                hover-class="button-hover"class="btn"> 
-                <view class="choice">B、100—500万元</view> 
-        </button>
-
-        <button loading="{{loading}}" plain="{{plain}}"
-                disabled="{{disabled}}" bindtap="jumpToQ2"
-                hover-class="button-hover" class="btn"> 
-                <view class="choice">C、500—1000万元</view> 
-        </button>
-
-        <button loading="{{loading}}" plain="{{plain}}"
-                disabled="{{disabled}}" bindtap="jumpToQ2"
-                hover-class="button-hover"class="btn"> 
-                <view class="choice">D、1000万元以上</view> 
-        </button>
-
+      <view class="page__bd">
+        <view class="weui-cells weui-cells_after-title">
+                <view url="" class="weui-cell_access" hover-class="weui-cell_active" bindtap='answerClickA'>
+                    <view class="weui-cell__bd">{{optionA}}、{{answerA}}</view>
+                </view>
+                <view url="" class="weui-cell_access" hover-class="weui-cell_active" bindtap='answerClickB'>
+                    <view class="weui-cell__bd">{{optionB}}、{{answerB}}</view>
+                </view>
+                <view url="" class="weui-cell_access" hover-class="weui-cell_active" bindtap='answerClickC'>
+                    <view class="weui-cell__bd">{{optionC}}、{{answerC}}</view>
+                </view>
+                <view url="" class="weui-cell_access" hover-class="weui-cell_active"
+    bindtap='answerClickD'>
+                    <view class="weui-cell__bd">{{optionD}}、{{answerD}}</view>
+                </view>
+                
+              
+            </view>
       </view>
     </view>
-</view> -->
-
-<view class="page">
-  <view class='page__hd'>
-    <view class="page__title" >{{index+1}}、{{questionDetail}}</view>
-  </view>
-  <view class="page__bd">
-    <view class="weui-cells weui-cells_after-title">
-            <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap='answerClickA'>
-                <view class="weui-cell__bd">{{optionA}}、{{answerA}}</view>
-                <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-            </view>
-            <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap='answerClickB'>
-                <view class="weui-cell__bd">{{optionB}}、{{answerB}}</view>
-                <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-            </view>
-            <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active" bindtap='answerClickC'>
-                <view class="weui-cell__bd">{{optionC}}、{{answerC}}</view>
-                <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-            </view>
-             <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active"
-bindtap='answerClickD'>
-                <view class="weui-cell__bd">{{optionD}}、{{answerD}}</view>
-                <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-            </view>
-            <view url="" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-          </view>
-        </view>
-  </view>
 </view>

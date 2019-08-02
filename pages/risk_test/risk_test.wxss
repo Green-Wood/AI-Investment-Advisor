@@ -19,7 +19,7 @@ page{
   flex-direction: column;
 } */
 
-.content{
+.frame{
   margin-left:5%;
   width: 90%;
   background-color: rgba(255, 255, 255, 0.952);
@@ -30,39 +30,43 @@ page{
   margin-top:35%;
   display: flex;
   flex-direction: column;
+  justify-items: center;
 }
 
 
-.btn{
+.weui-cell_access{
+  display: flex;
+  align-items: center;
+  margin-left: 5%;
+  margin-right: 5%;
   margin-top:5%;
-  width:90%;
-  height:80rpx;
-  border-radius:98rpx;
+  margin-bottom: 5%;
+  width: 90%;
+  height: 90rpx;
+  border-radius: 98rpx;
   background-color:#0082c8;
-  /* border-color: #0082c8;
-  border-style: solid;
-  border-width:5rpx; */
   box-shadow: 3px 3px 5px 1px rgb(196, 196, 196);
-  margin-bottom:5%;
 }
 
-.question{
+.page__title{
   color:grey;
   font-size:30rpx;
   margin-top:10%;
   margin-left:10%;
 }
-.choice{
+.weui-cell__bd{
   color:rgb(255, 255, 255);
   font-size: 30rpx;
+  margin-left:8%;
+
 }
 
-.btn::after{
+.weui-cell_access::after{
   border-radius:98rpx;
   border:0;
 }
 
-.button-hover{
+.weui-cell_active{
   background-color: #026faa;
   border-style: ridge;
 }

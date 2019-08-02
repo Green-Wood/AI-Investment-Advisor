@@ -5,12 +5,13 @@ page{
 
 
 .result-text{
-  font-size: 200%;      /*设置文字字号*/
+  margin-top: 10%;
+  margin-bottom: 10%;
+  font-size: 160%;      /*设置文字字号*/
   color:rgb(0, 0, 0);           /*设置文字颜色*/
   font-weight: bold;    /*设置字体加粗*/
   /* border:1px solid red;添加边框样式（粗细为1px， 颜色为红色的实线） */
   font-family:"宋体";   /*设置字体为宋体*/
-  margin-top: 20%;
 }
 
 .content{
