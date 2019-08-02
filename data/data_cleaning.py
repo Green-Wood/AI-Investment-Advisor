@@ -24,13 +24,10 @@ if __name__ == '__main__':
             continue
         for filename in os.listdir(nav_path + "/" + subdir):
             filepath = nav_path + "/" + subdir + "/" + filename
-<<<<<<< HEAD
             tdata = pd.read_csv(str(filepath), index_col='datetime')
-=======
             tdata = pd.read_csv(str(filepath),index_col='datetime')
             if filename == '511880.csv':  #网络图异常数据点
                 continue
->>>>>>> 99bcd52a50666b644f71a45b035ad5a0d376ee7f
             if len(tdata) != 1226 and len(tdata) != 1483:
                 continue
             if key in tdata.columns and not np.isnan(tdata[key]).all():  # 非日结
