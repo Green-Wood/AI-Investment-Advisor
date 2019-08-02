@@ -1,0 +1,46 @@
+from time import time
+import pandas as pd
+import os
+import argparse
+import numpy as np
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-p","--path", action='store',type=str,default=".")
+    parser.add_argument("-key","--key_value", action='store',type=str,default=".")
+    parser.add_argument("-out","--output_dirs",action='store',type=str,default=".")
+
+
+    args=parser.parse_args()
+
+    nav_path = args.path
+    key = args.key_value
+    # dateparser = lambda x: pd.datetime.strptime(x, "%Y-%m-%d")
+    data_list = []
+    out_path = args.output_dirs
+
+    for subdir in os.listdir(nav_path):
+        print(subdir)
+        if not os.path.isdir(nav_path + "/" + subdir):
+            continue
+        for filename in os.listdir(nav_path + "/" + subdir):
+            filepath = nav_path + "/" + subdir + "/" + filename
+            tdata = pd.read_csv(str(filepath), index_col='datetime')
+            if len(tdata) != 1226 and len(tdata) != 1483:
+                continue
+            if key in tdata.columns and not np.isnan(tdata[key]).all(): # 非日结
+                data_list.append(
+                    tdata[[key]].rename(columns={key: filename[0:6]}, index=str).astype('float'))
+            else:
+                # print("BAD file: "+filename)
+                continue
+    data = pd.concat(data_list, axis=1)
+
+    print(data.head())
+    data.to_csv(out_path + key + '.csv')
+
+
+
+
+
