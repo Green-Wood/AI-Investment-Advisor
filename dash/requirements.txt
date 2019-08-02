@@ -1,3 +1,5 @@
 dash
 dash-daq
 pandas
+scipy
+PyPortfolioOpt
