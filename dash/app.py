@@ -16,6 +16,9 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
+    html.Header([
+        html.Script(src='./echarts.min.js')
+    ]),
     html.Div([
         dcc.Graph(id='show-funds'),
         dcc.Slider(
@@ -37,7 +40,7 @@ app.layout = html.Div([
         style={
             'width': '45%',
         }
-    )
+    ),
 ])
 
 
@@ -67,3 +70,7 @@ def update_select():
 
 if __name__ == '__main__':
     app.run_server(debug=True)
+    {
+        '0123': 0.19,
+        '0001': 0.2,
+    }

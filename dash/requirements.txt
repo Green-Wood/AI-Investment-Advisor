@@ -3,3 +3,4 @@ dash-daq
 pandas
 scipy
 PyPortfolioOpt
+sklearn

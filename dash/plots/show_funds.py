@@ -1,5 +1,6 @@
 import plotly.graph_objs as go
 import pandas as pd
+from utils.init_opt import optimizer
 
 risk_list = range(12, 48, 6)
 df = pd.read_csv(
