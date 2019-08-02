@@ -2,6 +2,8 @@
 [Dd]esktop.ini
 Thumbs.db
 $RECYCLE.BIN/
+.DS_Store
+.png
 
 # macOS
 .DS_Store
@@ -9,6 +11,7 @@ $RECYCLE.BIN/
 .Spotlight-V100
 .TemporaryItems
 .Trashes
+.png
 
 # Node.js
 node_modules/
