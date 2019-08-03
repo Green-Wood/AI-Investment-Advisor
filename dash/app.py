@@ -117,12 +117,19 @@ app.layout = html.Div(
                         }),
                         dash_table.DataTable(
                             id='fund_table',
+                            filter_action="native",
+                            columns=[{"name": i, "id": i} for i in ['code', 'symbol', 'fund_type', 'weight']],
+                            row_selectable="multi",
+                            selected_rows=[],
                             sort_action="native",
                             sort_mode="multi",
                             fixed_rows={'headers': True, 'data': 0},
                             page_action="native",
                             page_current=0,
-                            page_size=15,
+                            page_size=14,
+                            style_cell={
+                                'minWidth': '40px'
+                            }
                         )
                     ],
                     className="pretty_container four columns",
@@ -254,7 +261,6 @@ def get_best_sharp_ratio():
      Output('volatility_text', 'children'),
      Output('sharp_text', 'children'),
      Output('fund_table', 'data'),
-     Output('fund_table', 'columns')
      ],
     [Input('fund_graph', 'selectedData'),
      Input('fund_graph', 'clickData')]
@@ -266,8 +272,7 @@ def update_select(selectedData, clickData):
     click_code = [p['code'] for p in click_points]
     efficient_frontier_data = get_efficient_frontier(selected_code, click_code)
     ret, vol, sharp, ins_wei_df = get_best_sharp_ratio()
-    return efficient_frontier_data, len(ins_wei_df), ret, vol, sharp, ins_wei_df.to_dict('records'), [
-        {"name": i, "id": i} for i in ins_wei_df.columns]
+    return efficient_frontier_data, len(ins_wei_df), ret, vol, sharp, ins_wei_df.to_dict('records')
 
 
 if __name__ == '__main__':
