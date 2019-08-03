@@ -3,3 +3,6 @@ dash-daq
 pandas
 scipy
 PyPortfolioOpt
+sklearn
+cvxopt
+matplotlib
