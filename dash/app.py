@@ -18,8 +18,7 @@ mapbox_access_token = "pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NW
 
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
-instruments = pd.read_csv(DATA_PATH.joinpath('instruments.csv'),
-                          usecols=['code', 'symbol', 'fund_manager', 'fund_type'])
+instruments = pd.read_csv(DATA_PATH.joinpath('instruments.csv'), usecols=['code', 'symbol', 'fund_type'])
 
 layout = dict(
     autosize=True,
@@ -117,8 +116,9 @@ app.layout = html.Div(
                             'text-align': 'center'
                         }),
                         dash_table.DataTable(
-                            data=instruments.to_dict('records'),
-                            columns=[{"name": i, "id": i} for i in instruments.columns],
+                            id='fund_table',
+                            sort_action="native",
+                            sort_mode="multi",
                             fixed_rows={'headers': True, 'data': 0},
                             page_action="native",
                             page_current=0,
@@ -229,7 +229,13 @@ def get_best_sharp_ratio():
     ret = '%.5f' % ret
     vol = '%.5f' % vol
     sharp = '%.5f' % sharp
-    return ret, vol, sharp, weight
+    weight_df = pd.DataFrame.from_dict(weight, orient='index', columns=['weight'])
+    weight_df.reset_index(inplace=True)
+    weight_df['index'] = weight_df['index'].astype(int)
+    weight_df['weight'] = weight_df['weight'].apply(lambda x: '%.5f' % x)
+    ins_wei_df = instruments.merge(weight_df, left_on='code', right_on='index')
+    ins_wei_df = ins_wei_df.drop(['index'], axis=1)
+    return ret, vol, sharp, ins_wei_df
 
 
 # @app.callback(
@@ -246,7 +252,10 @@ def get_best_sharp_ratio():
      Output('fund_text', 'children'),
      Output('return_text', 'children'),
      Output('volatility_text', 'children'),
-     Output('sharp_text', 'children')],
+     Output('sharp_text', 'children'),
+     Output('fund_table', 'data'),
+     Output('fund_table', 'columns')
+     ],
     [Input('fund_graph', 'selectedData'),
      Input('fund_graph', 'clickData')]
 )
@@ -256,8 +265,9 @@ def update_select(selectedData, clickData):
     selected_code = [p['code'] for p in selected_points]
     click_code = [p['code'] for p in click_points]
     efficient_frontier_data = get_efficient_frontier(selected_code, click_code)
-    ret, vol, sharp, weight = get_best_sharp_ratio()
-    return efficient_frontier_data, len(weight), ret, vol, sharp
+    ret, vol, sharp, ins_wei_df = get_best_sharp_ratio()
+    return efficient_frontier_data, len(ins_wei_df), ret, vol, sharp, ins_wei_df.to_dict('records'), [
+        {"name": i, "id": i} for i in ins_wei_df.columns]
 
 
 if __name__ == '__main__':
