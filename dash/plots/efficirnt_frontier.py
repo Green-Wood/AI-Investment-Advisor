@@ -36,3 +36,7 @@ def efficient_frontier_data_layout(id_list):
             }
         }
     }
+
+
+def best_sharp_ratio():
+    return optimizer.get_fixed_ans()
