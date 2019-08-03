@@ -19,5 +19,5 @@ python fbprophet_predict.py -p C:\Users\xxx\funds\nav -s 00 -f 000400 -t 0.7 -pe
 ```
 
 # 更新日志
-##2019.8.2
+## 2019.8.2
 - 增加了对周末日期的考虑，模型预测结果有轻微变化。
