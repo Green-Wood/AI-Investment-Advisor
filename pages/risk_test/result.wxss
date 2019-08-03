@@ -5,7 +5,7 @@ page{
 }
 /* 知道按钮 */
 .btn3{
-  margin-top: 30%;
+  margin-top: 10%;
   width: 50%;
   border-radius:98rpx;
   background-color:#0082c8;
@@ -25,8 +25,8 @@ page{
 
 /* 返回按钮 */
 .btn4{
-  margin-top: 3%;
-  width:50%;
+  margin-top: 5%;
+  width: 50%;
   border-radius:98rpx;
   background-color:#ffffff;
   box-shadow: 3px 3px 5px 1px rgb(196, 196, 196);
@@ -41,25 +41,16 @@ page{
   font-size:33rpx;
   color: rgb(2, 108, 179);
 }
-/*设置“您的风险等级是”的字体样式*/
-/* .result-text{
-  margin-top: 40%;
-  margin-left: 5%;
-  font-size: 160%;      /*设置文字字号*/
-  /* color:rgb(0, 0, 0);           /*设置文字颜色*/
-  /* font-family:"宋体";   设置字体为宋体 */ 
-/* } */ 
 
 .riskrank{
   display: flex;
-  margin-top: 10%;
-  margin-left: 10%;
+  margin-left: 15%;
   font-size: 160%;
   color:rgb(0, 0, 0);
   font-style: SimHei;
 }
 .riskrank2{
-  margin-left: 10%;
+  margin-left: 15%;
   margin-block-end:90%;
   font-size: 320%;
   color: rgb(2, 108, 179);
@@ -67,9 +58,9 @@ page{
 }
 .riskrank3{
  display: flex;
- margin-top: 8%;
+ margin-top: 6%;
  margin-left: 10%;
- margin-right:5%;
+ margin-right: 15%;
  font-size: 110%;
  color:grey;
  font-style: SimHei;
@@ -77,16 +68,26 @@ page{
 
 .background{
   width:100%;
-  height:10%;
+  height:20%;
   background: #0082c8;
   position:fixed;
+  top:0;
 }
 
 .resultpic{
-  width:80%;
-  height:90%;
-  margin-top:15%;
-  margin-left:10%;
+  width: 90%;
+  height: 10%;
+  margin-top: 14%;
+  margin-left: 5%;
+  margin-right: 5%;
 }
 
-
+.extra{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-top: 1200rpx;
+  min-height: 500rpx;
+}

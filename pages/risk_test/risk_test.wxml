@@ -6,7 +6,7 @@
 
     <view class='page__hd'>
       <text class="page__title">
-        {{realIndex+1}}, {{questionDetail}}
+        {{realIndex+1}}、 {{questionDetail}}
       </text>
     </view>
 
@@ -14,19 +14,19 @@
       <view class="weui-cells weui-cells_after-title">
 
         <view class="weui-cell_access" hover-class="weui-cell_active" bindtap='answerClickA'>
-          <view class="weui-cell__bd">{{optionA}}, {{answerA}}</view>
+          <view class="weui-cell__bd">{{optionA}}、 {{answerA}}</view>
         </view>
 
         <view class="weui-cell_access" hover-class="weui-cell_active" bindtap='answerClickB'>
-          <view class="weui-cell__bd">{{optionB}}, {{answerB}}</view>
+          <view class="weui-cell__bd">{{optionB}}、 {{answerB}}</view>
         </view>
 
         <view class="weui-cell_access" hover-class="weui-cell_active" bindtap='answerClickC'>
-          <view class="weui-cell__bd">{{optionC}}, {{answerC}}</view>
+          <view class="weui-cell__bd">{{optionC}}、 {{answerC}}</view>
         </view>
 
         <view class="weui-cell_access" hover-class="weui-cell_active" bindtap='answerClickD'>
-          <view class="weui-cell__bd">{{optionD}}, {{answerD}}</view>
+          <view class="weui-cell__bd">{{optionD}}、 {{answerD}}</view>
         </view>
       </view>
     </view>

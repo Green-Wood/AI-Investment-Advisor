@@ -53,15 +53,15 @@ page{
 
 /* 问卷图标 */
 .icon{
-  margin-top: 5%;
+  margin-top: 10%;
   width: 600rpx;
   height: 350rpx;
 }
 
 /* 开始按钮 */
 .btn1{
-  margin-top:5%;
-  width:60%;
+  margin-top: 15%;
+  width: 60%;
   border-radius:98rpx;
   background-color:#0082c8;
   color:white;
@@ -76,25 +76,6 @@ page{
 .start{ /* “开始”按钮文字 */
   font-size:33rpx;
   color: white;
-}
-
-/* 跳过按钮 */
-.btn2{
-  margin-top:5%;
-  width:60%;
-  border-radius: 98rpx;
-  background-color:#ffffff;
-  box-shadow: 3px 3px 5px 1px rgb(196, 196, 196);
-}
-
-.btn2::after{
-  border-radius:98rpx;
-  border:0;
-}
-
-.skip{
-  font-size:33rpx;
-  color: rgb(2, 108, 179);
 }
 
 .extra{

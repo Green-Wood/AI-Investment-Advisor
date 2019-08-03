@@ -38,7 +38,7 @@ Component({
     },
     //返回到首页
     _backhome() {
-      wx.navigateTo({
+      wx.redirectTo({
         url: '/pages/home_page/home_page',
       })
     }

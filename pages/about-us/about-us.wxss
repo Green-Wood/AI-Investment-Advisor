@@ -24,7 +24,32 @@ page{
   border-top-style:outset;
   border-top-color:rgb(133, 193, 228);
   width:95%;
-  height:20%;
+  border-radius:10rpx;
+  /* box-shadow: 3px 3px 5px 1px rgb(196, 196, 196); */
+  background-color: rgba(243, 243, 243, 0.952);
+  margin-bottom:5%;
+}
+.blk2{
+  display: flex;
+  justify-content: center;
+  margin-top:2.5%;
+  margin-left:2.5%;
+  border-top-style:outset;
+  border-top-color:rgb(133, 193, 228);
+  width:95%;
+  border-radius:10rpx;
+  /* box-shadow: 3px 3px 5px 1px rgb(196, 196, 196); */
+  background-color: rgba(243, 243, 243, 0.952);
+  margin-bottom:5%;
+}
+.blk3{
+  display: flex;
+  justify-content: center;
+  margin-top:2.5%;
+  margin-left:2.5%;
+  border-top-style:outset;
+  border-top-color:rgb(133, 193, 228);
+  width:95%;
   border-radius:10rpx;
   /* box-shadow: 3px 3px 5px 1px rgb(196, 196, 196); */
   background-color: rgba(243, 243, 243, 0.952);
@@ -37,6 +62,7 @@ page{
   color: grey;
   margin-bottom:3%;
   line-height:180%;
+  width:90%;
 }
 
 .extra{
@@ -46,5 +72,5 @@ page{
   left: 0;
   right: 0;
   margin-top: 1200rpx;
-  min-height: 400rpx;
+  min-height: 600rpx;
 }

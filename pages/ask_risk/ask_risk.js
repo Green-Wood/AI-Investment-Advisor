@@ -18,32 +18,8 @@ Page({
     console.log(this.data.height)
   },
   jumpToRiskTest:function(){
-    wx.navigateTo({
+    wx.redirectTo({
       url: '../risk_test/risk_test',
     })
   },
-
-  onTap: function () {
-    wx.showModal({
-      title: '提示',
-      content: '确定要跳过风险测评，直接去投资吗？',
-      success: function (res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
-          {
-            wx.navigateTo({
-              url: '../index/index',
-            })
-          }
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-          {
-            wx.navigateTo({
-              url: '../ask_risk/ask_risk',
-            })
-          }
-        }
-      }
-    })
-  }
 })

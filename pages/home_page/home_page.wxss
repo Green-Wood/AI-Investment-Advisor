@@ -36,14 +36,13 @@ page{
 .container2{
   text-align: center;
   min-width: 170rpx;
-  margin-top: 0%;
   display: table-column;
 }
 
 .logo2{
   max-width: 70rpx;
   max-height: 70rpx;
-  margin-bottom:4rpx;
+  margin-bottom: 4rpx;
 }
 
 /* 大数据 */

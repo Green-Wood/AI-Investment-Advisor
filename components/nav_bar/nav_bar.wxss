@@ -27,7 +27,6 @@
 .nav-title {
   display: flex;
   align-items: center;
-  width: 20%;
   margin-top: 5%;
   font-size: 35rpx;
   font-weight: 600;

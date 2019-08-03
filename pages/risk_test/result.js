@@ -60,7 +60,7 @@ Page({
     })
   },
   jumpToHome_page: function(){
-    wx.navigateTo({
+    wx.redirectTo({
       url:'../home_page/home_page'
     })
   }
