@@ -2,35 +2,53 @@ import plotly.graph_objects as go
 import pandas as pd
 
 
-# todo: instruments.csv文件调用
-def radar_type(df: dict):
+def get_w(dic: dict):
     """
-    :param df:dict（多只）基金代码:该基金权重
-    :return:data_list: dict  基金类型:该类型占比
+    :param dic:dict（多只）基金代码:该基金权重
+    :return:data_dic: dict  基金类型:该类型占比
     """
     # 此处路径应为instruments.csv的路径，注意编码
     # data = pd.read_csv('Data/instruments.csv',encoding='utf-8')
     try:
-        data = pd.read_csv('../../Data/instruments_ansi.csv',encoding='ANSI')
+        data = pd.read_csv('../Data/instruments.csv')
     except:
         print('Error!:instruments.csv的路径错误，请核对')
         return ''
-    data_list = {'Hybrid':0,
+    data_dic = {'Hybrid':0,
                  'Bond':0,
                  'Stock':0,
                  'QDII':0,
                  'Money':0,
                  'Related':0
                   }
-    for key in df.keys():
+    for key in dic.keys():
         idx = list(data['code']).index(int(key))
         a_type = data['fund_type'][idx]
-        if a_type in data_list.keys():
-            data_list[a_type] = data_list[a_type] + df[key]
+        if a_type in data_dic.keys():
+            data_dic[a_type] = data_dic[a_type] + dic[key]
         else:
             print("Warning:This type is not in type_list")
+    return data_dic
 
-    return data_list
+
+def radar_type(dic: dict):
+    """
+    :param df:  df:dict （多只）基金代码:该基金权重
+    :return:   dict : {
+                        'data':go.Figure.data ,
+                        'layout':go.Figure.layout
+                    }
+    """
+    w_dic = get_w(dic)
+    fig = go.Figure(data=go.Scatterpolar(
+                r=list(w_dic.values()),
+                theta=list(w_dic.keys()),
+                fill='toself'
+    ))
+    return {
+            'data':fig.data,
+            'layout':fig.layout
+    }
 
 
 if __name__ == '__main__':
@@ -39,23 +57,7 @@ if __name__ == '__main__':
     data = {'000001':0.5,
             '000003':0.3,
             '000007':0.2,
-            '000008':0.1,
+            '000028':0.1,
             }
-    w_list = radar_type(data)
-    print(w_list)
-
-    # 画雷达图
-    fig = go.Figure(data=go.Scatterpolar(
-        r=list(w_list.values()),
-        theta=list(w_list.keys()),
-        fill='toself'
-    ))
-    fig.update_layout(
-        polar=dict(
-            radialaxis=dict(
-                visible=True
-            ),
-        ),
-        showlegend=False
-    )
-    fig.show()
+    dic = radar_type(data)
+    print(dic)
