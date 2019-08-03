@@ -19,7 +19,8 @@ def radar_type(df: dict):
                  'Bond':0,
                  'Stock':0,
                  'QDII':0,
-                 'Money':0
+                 'Money':0,
+                 'Related':0
                   }
     for key in df.keys():
         idx = list(data['code']).index(int(key))
