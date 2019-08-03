@@ -16,16 +16,16 @@ if __name__ == '__main__':
     optimizer = pickle.load(f)
     print('Done.')
 
-    # optimizer = PortfolioOptimizer(data,
-    #                                expected_returns.ema_historical_return(data),
+    # optimizer = PortfolioOptimizer(expected_returns.ema_historical_return(data),
     #                                risk_models.CovarianceShrinkage(data).ledoit_wolf(),
     #                                risk_free_rate=0.02)
     # start=time()
     # print('-'*80)
     # print('Optimizing...')
     # optimizer.optimize(N=100)
-    # #f = open('optimizer', 'wb')
-    # #pickle.dump(optimizer,f)
+    # # f = open('optimizer', 'wb')
+    # # pickle.dump(optimizer,f)
+    # # f.close()
     # end=time()
     # print('Done. Time cost = '+str(end-start))
 
