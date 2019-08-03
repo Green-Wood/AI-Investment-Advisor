@@ -14,10 +14,6 @@ class PortfolioOptimizer:
 
     Parameters
     ----------
-    data : DataFrame
-        Full data without missing values, columns are identifiers
-        for different funds, index is datetime.
-
     expected_returns : Series
         Expected returns of assets, index is identifiers
         for different funds.
@@ -28,8 +24,7 @@ class PortfolioOptimizer:
 
     """
 
-    def __init__(self, data, expected_returns, cov_matrix, risk_free_rate=0.02):
-        self.data = data
+    def __init__(self, expected_returns, cov_matrix, risk_free_rate=0.02):
         self.mu = expected_returns
         self.cov = cov_matrix
         self.num_assets = len(self.mu)
@@ -53,7 +48,7 @@ class PortfolioOptimizer:
         None
 
         """
-        self.returns, self.risks, self.sharpe, self.weights = self.__optimize(self.data.columns, self.mu, self.cov, N, show_progress)
+        self.returns, self.risks, self.sharpe, self.weights = self.__optimize(self.cov.columns, self.mu, self.cov, N, show_progress)
 
     def get_fixed_ans(self, fixed='sharpe', value=0.05):
         """
@@ -72,9 +67,9 @@ class PortfolioOptimizer:
 
         Returns
         -------
-        answer : tuple, (float, float, float)
+        answer : tuple, (float, float, float, dict)
                 The closest answer given fixed constraints.
-                (return, volatility, Sharpe ratio)
+                (return, volatility, Sharpe ratio, weights)
 
         """
 
@@ -138,7 +133,7 @@ class PortfolioOptimizer:
         portfolios = [qp(float(t) * S, -pbar, G, h, A, b)['x'] for t in mus]
         returns = [dot(pbar, x) for x in portfolios]
         risks = [sqrt(dot(x, S * x)) for x in portfolios]
-        sharpe = [(returns[i] - self.risk_free_rate) / risks[i] for i in range(N)]
+        sharpe = [(returns[i] - self.risk_free_rate) / (risks[i]+1e-4) for i in range(N)]
         weights = [dict(zip(names, portfolio)) for portfolio in portfolios]
 
         return returns, risks, sharpe, weights
