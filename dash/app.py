@@ -5,20 +5,16 @@ import dash_table
 from dash.dependencies import Input, Output
 
 import pandas as pd
-import pathlib
+import json
 
 from plots.show_funds import fund_data_layout
-from plots.efficirnt_frontier import efficient_frontier_data_layout, best_sharp_ratio
+from plots.efficirnt_frontier import efficient_frontier_data_layout, get_fixed_ans
 
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
 )
 # Create global chart template
 mapbox_access_token = "pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NWw5ZXF5In0.fk8k06T96Ml9CLGgKmk81w"
-
-PATH = pathlib.Path(__file__).parent
-DATA_PATH = PATH.joinpath("data").resolve()
-instruments = pd.read_csv(DATA_PATH.joinpath('instruments.csv'), usecols=['code', 'symbol', 'fund_type'])
 
 layout = dict(
     autosize=True,
@@ -43,7 +39,7 @@ config = {
 
 # Create app layout
 app.layout = html.Div(
-    [
+    {
         dcc.Store(id="aggregate_data"),
         # empty Div to trigger javascript file for graph resizing
         html.Div(id="output-clientside"),
@@ -128,7 +124,7 @@ app.layout = html.Div(
                             page_current=0,
                             page_size=14,
                             style_cell={
-                                'minWidth': '40px'
+                                'minWidth': '60px'
                             }
                         )
                     ],
@@ -206,7 +202,11 @@ app.layout = html.Div(
             ],
             className="row flex-display",
         ),
-    ],
+        # 储存用户选择的（我们推荐的权重大于0的）基金列表
+        html.Div(id='fund_list', style={'display': 'none'}),
+        # 储存当前状态下的基金权重
+        html.Div(id='fund_weights', style={'display': 'none'})
+    },
     id="mainContainer",
     style={"display": "flex", "flex-direction": "column"},
 )
@@ -227,52 +227,109 @@ def get_efficient_frontier(selected_code, click_code):
     return efficient_frontier_data_layout(ids)
 
 
-def get_best_sharp_ratio():
-    """
-    返回最高的sharp ratio的相关数据
-    :return: Return、Volatility、SharpRatio, weights
-    """
-    ret, vol, sharp, weight = best_sharp_ratio()
-    ret = '%.5f' % ret
-    vol = '%.5f' % vol
-    sharp = '%.5f' % sharp
-    weight_df = pd.DataFrame.from_dict(weight, orient='index', columns=['weight'])
-    weight_df.reset_index(inplace=True)
-    weight_df['index'] = weight_df['index'].astype(int)
-    weight_df['weight'] = weight_df['weight'].apply(lambda x: '%.5f' % x)
-    ins_wei_df = instruments.merge(weight_df, left_on='code', right_on='index')
-    ins_wei_df = ins_wei_df.drop(['index'], axis=1)
-    return ret, vol, sharp, ins_wei_df
-
-
-# @app.callback(
-#     [Output('show-funds', 'figure'),
-#      Output('risk-text', 'children')],
-#     [Input('risk-slider', 'value')]
-# )
-# def update_risk(risk_val):
-#     return fund_data_layout(risk_val), '您选择的风险值为: {}'.format(risk_val)
-#
-#
 @app.callback(
-    [Output('efficient_frontier_graph', 'figure'),
-     Output('fund_text', 'children'),
-     Output('return_text', 'children'),
-     Output('volatility_text', 'children'),
-     Output('sharp_text', 'children'),
-     Output('fund_table', 'data'),
-     ],
-    [Input('fund_graph', 'selectedData'),
-     Input('fund_graph', 'clickData')]
+    Output('fund_weights', 'children'),
+    [Input('fund_list', 'children'),
+     Input('risk_slider', 'value')]
 )
-def update_select(selectedData, clickData):
-    selected_points = set(selectedData['points']) if selectedData is not None else set()
-    click_points = set(clickData['points']) if clickData is not None else set()
-    selected_code = [p['code'] for p in selected_points]
-    click_code = [p['code'] for p in click_points]
-    efficient_frontier_data = get_efficient_frontier(selected_code, click_code)
-    ret, vol, sharp, ins_wei_df = get_best_sharp_ratio()
-    return efficient_frontier_data, len(ins_wei_df), ret, vol, sharp, ins_wei_df.to_dict('records')
+def update_weights(fund_list, risk_val):
+    """
+    基金列表 -> 基金权重   拉动risk滑块 -> 基金的权重
+    :param fund_list:
+    :param risk_val:
+    :return:
+    """
+    pass
+
+
+@app.callback(
+    Output('fund_list', 'children'),
+    [Input('fund_graph', 'selectedData'),
+     Input('fund_graph', 'clickData'),
+     Input('fund_table', '"derived_virtual_selected_rows"')]
+)
+def update_fund_list(selectedData, clickData, selected_rows):
+    """
+    二维图中选取 -> 选中的基金列表
+    基金列表中选取 -> 选中的基金列表
+    :return:
+    """
+    pass
+
+
+@app.callback(
+    Output('profile_graph', 'figure'),
+    [Input('fund_list', 'children')]
+)
+def update_profile(choosed_list):
+    """
+    选中的基金列表 -> 回测、单位净值
+    :return:
+    """
+    pass
+
+
+@app.callback(
+    Output('fund_graph', 'figure'),
+    [Input('fund_list', 'children'),
+     Input('fund_weights', 'children')]
+)
+def update_fund_table(choosed_list, fund_weights):
+    """
+    基金权重，选中的基金列表 -> fund table
+    :return:
+    """
+    pass
+
+
+@app.callback(
+    Output('radar_graph', 'figure'),
+    [Input('fund_list', 'children'),
+     Input('fund_weights', 'children')]
+)
+def update_radar(choosed_list, fund_weights):
+    """
+    基金权重，选中的基金列表 -> 雷达图
+    :return:
+    """
+    pass
+
+
+@app.callback(
+    Output('fund_graph', 'figure'),
+    [Input('fund_list', 'children'),
+     Input('fund_weights', 'children')]
+)
+def update_fund_graph(choosed_list, fund_weights):
+    """
+    基金权重，选中的基金列表 -> 二维图
+    :return:
+    """
+    pass
+
+
+@app.callback(
+    Output('efficient_frontier_graph', 'figure'),
+    [Input('fund_list', 'children')]
+)
+def update_radar():
+    """
+    选中的基金列表 -> 有效边界
+    :return:
+    """
+    pass
+
+
+@app.callback(
+    Output('network_graph', 'figure'),
+    [Input('fund_list', 'children')]
+)
+def update_radar():
+    """
+    选中的基金列表 -> 网络关系图
+    :return:
+    """
+    pass
 
 
 if __name__ == '__main__':
