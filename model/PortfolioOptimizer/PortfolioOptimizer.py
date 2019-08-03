@@ -3,6 +3,7 @@ from cvxopt import matrix
 from cvxopt.blas import dot
 from cvxopt.solvers import qp
 import cvxopt
+import numpy as np
 
 
 class PortfolioOptimizer:
@@ -34,7 +35,7 @@ class PortfolioOptimizer:
         self.num_assets = len(self.mu)
         self.risk_free_rate = risk_free_rate
 
-    def optimize(self, N=100):
+    def optimize(self, N=100, show_progress=False):
         """
         Solve the problem with different parameters and store the answers. This method
         costs about 140 seconds when N = 100.
@@ -44,12 +45,15 @@ class PortfolioOptimizer:
         N : int
             Number of points to calculate, defaults to 100.
 
+        show_progress : bool
+            Whether to show optimization progress.
+
         Returns
         -------
         None
 
         """
-        self.returns, self.risks, self.sharpe, self.weights = self.__optimize(self.data.columns, self.mu, self.cov, N)
+        self.returns, self.risks, self.sharpe, self.weights = self.__optimize(self.data.columns, self.mu, self.cov, N, show_progress)
 
     def get_fixed_ans(self, fixed='sharpe', value=0.05):
         """
@@ -107,7 +111,6 @@ class PortfolioOptimizer:
                 if optimize() has been called. Otherwise use less than
                 40 funds to make time cost acceptable.
 
-
         Returns
         -------
         performance : list of tuples, [(float, float, float),...,(float,float,float)]
@@ -116,7 +119,7 @@ class PortfolioOptimizer:
         if columns != 'all':
             t_mu = self.mu.loc[columns]
             t_cov = self.cov.loc[columns, columns]
-            return self.__optimize(columns, t_mu, t_cov, N=30)
+            return self.__optimize(columns, t_mu, t_cov, N=50)
         else:
             return self.returns, self.risks, self.sharpe, self.weights
 
@@ -131,14 +134,11 @@ class PortfolioOptimizer:
         b = matrix(1.0)
 
         cvxopt.solvers.options['show_progress'] = show_progress
-        mus = [10 ** (5.0 * t / N - 1.0) for t in range(N)]
-        portfolios = [qp(t * S, -pbar, G, h, A, b)['x'] for t in mus]
+        mus = [10 ** (5 * t / N - 1.0) for t in range(N)]
+        portfolios = [qp(float(t) * S, -pbar, G, h, A, b)['x'] for t in mus]
         returns = [dot(pbar, x) for x in portfolios]
         risks = [sqrt(dot(x, S * x)) for x in portfolios]
         sharpe = [(returns[i] - self.risk_free_rate) / risks[i] for i in range(N)]
-        weights = []
-        for portfolio in portfolios:
-            weights.append(dict(zip(names, portfolio)))
+        weights = [dict(zip(names, portfolio)) for portfolio in portfolios]
 
-        # weights = [dict(zip(names, portfolio)) for portfolio in portfolios]
         return returns, risks, sharpe, weights
