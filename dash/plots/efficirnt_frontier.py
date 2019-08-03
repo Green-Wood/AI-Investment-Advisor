@@ -1,29 +1,38 @@
 import plotly.graph_objs as go
+from init_optmizer import optimizer
 
 
-def efficient_frontier_data_layout(data):
-    """
-    list of tuples, [(float, float, float),...,(float,float,float)]
-                        Each tuple is (expected return, volatility, Sharpe ratio).
-    :param data:
-    :return:
-    """
+def efficient_frontier_data_layout(id_list):
+    efficient_data = optimizer.efficient_frontier(id_list)
     return {
         'data': [
             go.Scatter(
-                x=data[1],
-                y=data[0],
+                x=efficient_data[1],
+                y=efficient_data[0],
                 opacity=0.75,
-                x0=-10,
-                text=['Sharpe Ratio: {}'.format(x[2]) for x in data],
-                mode='lines',
-                line={
-                    # 'color': 'rgb(67,67,67)',
-                    'width': 3
+                text=['Sharpe Ratio: {}'.format(x) for x in efficient_data[2]],
+                mode='markers+lines',
+                marker={
+                    'color': efficient_data[2],
+                    'colorbar': {
+                        'title': 'Sharp Ratio'
+                    },
+                    'colorscale': 'Viridis',
                 }
             ),
         ],
-        'layout': go.Layout(
-
-        )
+        'layout': {
+            'title': {
+                'text': 'Efficient Frontier',
+                'font': {
+                    'size': 30
+                }
+            },
+            'xaxis': {
+                'title': 'Annualised Volatility'
+            },
+            'yaxis': {
+                'title': 'Annualised returns'
+            }
+        }
     }
