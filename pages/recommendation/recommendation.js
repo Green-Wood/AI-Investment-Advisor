@@ -76,9 +76,9 @@ function initLineChart(canvas, width, height) {
       text: '基金走势',
       left: 'center'
     },
-    color: ["#37A2DA", "#67E0E3", "#9FE6B8"],
+    color: ["#37A2DA", "#9370DB"],
     legend: {
-      data: ['A', 'B', 'C'],
+      data: ['A', 'C'],
       top: 25,
       left: 'center',
       backgroundColor: 'cyan',
@@ -112,12 +112,7 @@ function initLineChart(canvas, width, height) {
       type: 'line',
       smooth: true,
       data: [18, 36, 65, 30, 78, 40, 33]
-    }, {
-      name: 'B',
-      type: 'line',
-      smooth: true,
-      data: [12, 50, 51, 35, 70, 30, 20]
-    }, {
+    },{
       name: 'C',
       type: 'line',
       smooth: true,
@@ -138,6 +133,10 @@ Page({
     }
   },
   data: {
+    nvabarData: {
+      showCapsule: 1, //是否显示左上角图标   1表示显示    0表示不显示
+      title: '原地起飞', //导航栏 中间的标题
+    },
     ecline: {
       onInit: initLineChart
     },

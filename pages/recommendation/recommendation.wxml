@@ -1,26 +1,39 @@
 <!--index.wxml-->
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<!-- <view class='background'> -->
+  <scroll-view class="scroller" scroll-y="true" style="height: 100%">
+    <text class="overall-text">评级总览</text>
+    <view class="info-container">
+      <text class="info">A指数：{{}}
+        B指数：{{}}
+        C指数：{{}}
+      </text>
+      <button class="more-info-btn"size="mini" loading="{{loading}}"
+              disabled="{{disabled}}" bindtap="none"> 
+              <view class="more-info-text">详细信息→</view>
+      </button>
+    </view>
 
-<!-- <view class="inportant_info">
-  
-</view>
 
+    <!-- 雷达图 -->
+    <view class="radarChart">
+      <ec-canvas 
+        id="mychart-dom-radar"
+        canvas-id="mychart-radar"
+        ec="{{ ecradar }}"
+        bind:init="initRadarChart">
+      </ec-canvas>
+    </view>
 
-<!-- 雷达图 -->
-<view class="radarChart">
-  <ec-canvas 
-    id="mychart-dom-graph" 
-    canvas-id="mychart-graph" 
-    ec="{{ ecradar }}"
-    bind:init="initRadarChart">
-  </ec-canvas>
-</view>
-
-<!-- 走势图 -->
-<view class="lineChart">
-  <ec-canvas 
-    id="mychart-dom-line" 
-    canvas-id="mychart-line" 
-    ec="{{ ecline }}"
-    bind:init="initLineChart">
-  </ec-canvas>
-</view>
+    <!-- 走势图 -->
+    <view class="lineChart">
+      <ec-canvas 
+        id="mychart-dom-line" 
+        canvas-id="mychart-line" 
+        ec="{{ ecline }}"
+        bind:init="initLineChart">
+      </ec-canvas>
+    </view>
+    <view class="extra"></view>
+  </scroll-view>
+<!-- </view> -->

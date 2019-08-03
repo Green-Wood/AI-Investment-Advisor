@@ -10,21 +10,26 @@ Page({
     C: 5,
     D: 8,
     Mark: 0,
-    Kind: 'unknow'
+    Kind: 'unknow',
+    str: 1,
+    nvabarData: {
+      showCapsule: 1, //是否显示左上角图标   1表示显示    0表示不显示
+      title: '原地起飞', //导航栏 中间的标题
+    }
   },
 
   whichKind: function () {
     this.data.Mark = this.data.A * 2 + this.data.B * 3 + this.data.C * 5 + this.data.D * 8
-    if (this.data.Mark >= 0 && this.data.Mark <= 20) {
-      return "谨慎型"
-    } else if (this.data.Mark > 20 && this.data.Mark <= 28) {
-      return "稳健型"
-    } else if (this.data.Mark > 28 && this.data.Mark <= 36) {
-      return "平衡型"
-    } else if (this.data.Mark > 36 && this.data.Mark <= 44) {
-      return "进取型"
-    } else if (this.data.Mark > 44){
-      return "激进型"
+    if (this.data.Mark >= 0 && this.data.Mark <= 18) {
+      return "谨慎型-等级1"
+    } else if (this.data.Mark > 18 && this.data.Mark <= 26) {
+      return "稳健型-等级2"
+    } else if (this.data.Mark > 26 && this.data.Mark <= 34) {
+      return "平衡型-等级3"
+    } else if (this.data.Mark > 34 && this.data.Mark <= 40) {
+      return "进取型-等级4"
+    } else if (this.data.Mark > 40){
+      return "激进型-等级5"
     }
 
   },
@@ -49,53 +54,15 @@ Page({
     console.log(this.data.Mark)
     console.log(this.whichKind())
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
+  jumpToInvestment: function(){
+    wx.navigateTo({
+      url: '../index/index',
+    })
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-
+  jumpToHome_page: function(){
+    wx.navigateTo({
+      url:'../home_page/home_page'
+    })
   }
 })
+

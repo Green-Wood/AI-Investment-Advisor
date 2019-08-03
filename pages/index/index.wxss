@@ -15,7 +15,7 @@ page{
 
 /* 非背景的额外所有元素 */
 .content{
-  margin-top:25%;
+  margin-top:5%;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -42,8 +42,9 @@ page{
 /* "请选择您的风险偏好等级："字符样式 */
 .ask{
   display: block;
-  font-size: 120%;
   color:rgb(85, 83, 83);
+  font-size:30rpx;
+  
 }
 
 /* 数字的字符样式 */
@@ -70,7 +71,7 @@ page{
 
 /* 滑块本身 */
 .tui-slider-box{
-  margin-top: 15%;
+  margin-top: 10%;
   margin-left: 10%;
   margin-right: 10%;
   border-radius: 25rpx;
@@ -103,20 +104,24 @@ page{
   display: block;
   text-align: center;
   margin-top: 2%;
-  font-size: 130%;
+  color:rgb(75, 73, 73);
+  font-size: 30rpx;
 }
 
 /* 风险等级详情的描述部分 */
 .description{
   display: flex;
   margin-left: 6%;
+  margin-right:6%;
   margin-bottom: 3%;
-  font-size: 100%;
+  color:grey;
+  font-size: 26rpx;
+  
 }
 
 /* 按钮样式 */
 .confirm-btn{
-  width: 50%;
+  width: 60%;
   margin-top: 8%;
   border-radius:98rpx;
   background-color:#0082c8;
@@ -126,5 +131,33 @@ page{
 /* "确认"字样 */
 .confirm{
   color: white;
-  font-size: 145%;
+  font-size: 33rpx;
+}
+
+.skip-btn{
+  margin-top:5%;
+  width:60%;
+  border-radius:98rpx;
+  background-color:#ffffff;
+  box-shadow: 3px 3px 5px 1px rgb(196, 196, 196);
+}
+
+.skip-btn::after{
+  border-radius:98rpx;
+  border:0;
+}
+
+.skip{
+  color: #0082c8;
+  font-size: 33rpx;
+}
+
+.extra{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-top: 1200rpx;
+  min-height: 400rpx;
 }

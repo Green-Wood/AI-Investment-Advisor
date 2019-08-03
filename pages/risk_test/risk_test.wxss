@@ -12,13 +12,6 @@ page{
   position:fixed;
 }
 
-/* .content{
-  margin-top:25%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-} */
-
 .frame{
   margin-left:5%;
   width: 90%;
@@ -69,4 +62,13 @@ page{
 .weui-cell_active{
   background-color: #026faa;
   border-style: ridge;
+}
+
+.loading{
+  margin-top: 10%;
+  margin-left:40%;
+  color:antiquewhite;
+  font-size: 50rpx;
+  font-style: Simhei;
+
 }

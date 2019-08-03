@@ -1,0 +1,13 @@
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<scroll-view class="scroller" scroll-y="true" style="height: 100%">
+  <image src="/pictures/background1.png" mode="widthFix" class='background1'></image>
+  <text class='title'>关于我们</text>
+  <view class='blk1'>
+    <text class='description'>
+    
+    </text>
+  </view>
+
+
+  <view class="extra"></view>
+</scroll-view>

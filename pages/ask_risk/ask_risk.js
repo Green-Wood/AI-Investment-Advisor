@@ -23,10 +23,10 @@ Page({
     })
   },
 
-  onTap: function (options) {
+  onTap: function () {
     wx.showModal({
       title: '提示',
-      content: '确定要跳过风险测评吗？',
+      content: '确定要跳过风险测评，直接去投资吗？',
       success: function (res) {
         if (res.confirm) {
           console.log('用户点击确定')

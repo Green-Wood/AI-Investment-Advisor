@@ -1,37 +1,50 @@
 <nav-bar navbar-data='{{nvabarData}}'></nav-bar>
-<view>
-  <image src="/pictures/background.png" mode='widthFix' class='picture'></image>
+<scroll-view class="scroller" scroll-y="true" style="height: 100%">
+    <view>
+      <image src="/pictures/background.png" mode='widthFix' class='picture'></image>
+      <text class='title'>我的功能</text>
+      <view class="blk1">
+          <view class='all_logo'>
+            <view class='container1' loading="{{loading}}" disabled="{{disabled}}" bindtap="logo1" hover-class="hover">
+              <image src='/pictures/questionlogo.png' class='logo1' mode="widthFix"></image>
+              <view class='logotext'>
+              测风险
+              </view>
+            </view>
 
-  <view class="blk1">
-      <view class='all_logo'>
-        <view class='container1' loading="{{loading}}" disabled="{{disabled}}" bindtap="logo1">
-          <image src='/pictures/questionlogo.png' class='logo1'></image>
-          <view class='logotext'>
-          测风险
+            <view class='container2'loading="{{loading}}" disabled="{{disabled}}" bindtap="logo2" hover-class="hover">
+              <image src='/pictures/invest.png' class='logo2'mode="widthFix"></image>
+              <view class='logotext'>
+              去投资
+              </view>
+            </view>
+
+            <view class='container3'loading="{{loading}}" disabled="{{disabled}}" bindtap="logo3" hover-class="hover">
+              <image src='/pictures/cloud.png' class='logo3'mode="widthFix"></image>
+              <view class='logotext'>
+              大数据
+              </view>
+            </view>
+
+            <view class='container4'loading="{{loading}}" disabled="{{disabled}}" bindtap="logo4" hover-class="hover">
+              <image src='/pictures/aboutus.png' class='logo4'mode="widthFix"></image>
+              <view class='logotext'>
+              关于我们
+              </view>
+            </view>
+
           </view>
-        </view>
-
-        <view class='container2'>
-          <image src='/pictures/invest.png' class='logo2'></image>
-          <view class='logotext'>
-          去投资
-          </view>
-        </view>
-
-        <view class='container3'>
-          <image src='/pictures/cloud.png' class='logo3'></image>
-          <view class='logotext'>
-          大数据
-          </view>
-        </view>
-
-        <view class='container4'>
-          <image src='/pictures/aboutus.png' class='logo4'></image>
-          <view class='logotext'>
-          关于我们
-          </view>
-        </view>
-
       </view>
-  </view>
-</view>
+    </view>
+
+    <text class='title'>更多资讯</text>
+    <swiper indicator-dots="{{indicatorDots}}"
+      autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" class='image-container'>
+      <block wx:for="{{imgUrls}}">
+        <swiper-item>
+          <image src="{{item}}" class="slide-image"/>
+        </swiper-item>
+      </block>
+    </swiper>
+    <view class="extra"></view>
+</scroll-view>  

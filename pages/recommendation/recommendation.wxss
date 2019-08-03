@@ -1,22 +1,80 @@
 /* pages/recommendation/recommendation.wxss */
 
+page{
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 ec-canvas {
   width: 100%;
-  height: 30%;
   min-height: 600rpx;
 }
 
+.overall-text{
+  display: block;
+  margin-left: 5%;
+  font-size: 120%;
+  margin-top: 2%;
+  letter-spacing: 1.5rpx;
+}
+
+.info-container{
+  width: 90%;
+  min-height: 8%;
+  display: flex;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top: 2%;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.952);
+  border-radius: 10rpx;
+  border-left-style: outset;
+  border-left-color: #0082c8;
+  box-shadow: 3px 3px 5px 1px rgb(181, 212, 241);
+}
+
+.info{
+  font-size: 100%;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  margin-left: 5%;
+  letter-spacing: 2rpx;
+}
+
+.more-info-btn{
+  margin-left: 30%;
+  border-radius: 98rpx;
+  background-color:#0082c8;
+  box-shadow: 1px 1px 2px 1px rgb(196, 196, 196);
+}
+
+.more-info-text{
+  color: white;
+  letter-spacing: 1.5rpx;
+}
+
+/* 雷达图 */
 .radarChart{
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  margin-top: 10%;
-
+  margin-top: 280rpx;
   display: flex;
+  align-items: center;
+  margin-left: 5%;
+  margin-right: 5%;
   flex-direction: column;
   box-sizing: border-box;
+  width: 90%;
+  max-height: 600rpx;
+  background-color: rgba(255, 255, 255, 0.952);
+  border-radius: 10rpx;
+  border-left-style: outset;
+  border-left-color: #0082c8;
+  box-shadow: 3px 3px 5px 1px rgb(181, 212, 241);
 }
 
 .lineChart{
@@ -25,9 +83,27 @@ ec-canvas {
   bottom: 0;
   left: 0;
   right: 0;
-  margin-top: 700rpx;
-
+  margin-top: 900rpx;
   display: flex;
+  margin-left: 5%;
+  margin-right: 5%;
   flex-direction: column;
   box-sizing: border-box;
+  width: 90%;
+  max-height: 600rpx;
+  background-color: rgba(255, 255, 255, 0.952);
+  border-radius: 10rpx;
+  border-left-style: outset;
+  border-left-color: #0082c8;
+  box-shadow: 3px 3px 5px 1px rgb(181, 212, 241);
+}
+
+.extra{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-top: 1200rpx;
+  min-height: 600rpx;
 }

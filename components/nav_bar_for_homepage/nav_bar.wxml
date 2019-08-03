@@ -3,9 +3,9 @@
   <view bindtap='_navback'>
         <image src='/pictures/back1.png' mode='aspectFill' class='back-pre'></image>
   </view>
-  <text class='nav-title'>
+  <view class='nav-title'>
       {{navbarData.title}}
-  </text>
+  </view>
 </view>
 
 <!-- 下端导航栏 -->

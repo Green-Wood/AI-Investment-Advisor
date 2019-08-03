@@ -1,14 +1,5 @@
 /* components/nav_bar/nav.bar.wxss */
 
-.top-navbar-warp{
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  min-height: 160rpx;
-  background-color: #0082c8;
-  z-index: 9999;
-}
-
 .nav-wrap {
   display: flex;
   align-items: center;
@@ -25,14 +16,22 @@
 
 /* 标题要居中 */
 .nav-title {
-  display: flex;
-  align-items: center;
+  position: absolute;
+  top: 5%;
+  left: 40.5%;
+  right: 39.5%;
   width: 20%;
-  margin-top: 5%;
-  font-size: 35rpx;
+  font-size: 100%;
   font-weight: 600;
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: rgb(255, 255, 255);
+  z-index:9999;
+}
+
+/* 左箭头 */
+.nav-capsule {
+  display: flex;
+  align-items: flex-start;
   z-index:9999;
 }
 

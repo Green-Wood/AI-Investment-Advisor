@@ -61,7 +61,7 @@ page{
 /* 开始按钮 */
 .btn1{
   margin-top:5%;
-  width:50%;
+  width:60%;
   border-radius:98rpx;
   background-color:#0082c8;
   color:white;
@@ -81,8 +81,8 @@ page{
 /* 跳过按钮 */
 .btn2{
   margin-top:5%;
-  width:50%;
-  border-radius:98rpx;
+  width:60%;
+  border-radius: 98rpx;
   background-color:#ffffff;
   box-shadow: 3px 3px 5px 1px rgb(196, 196, 196);
 }
@@ -95,4 +95,14 @@ page{
 .skip{
   font-size:33rpx;
   color: rgb(2, 108, 179);
+}
+
+.extra{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-top: 1200rpx;
+  min-height: 400rpx;
 }
