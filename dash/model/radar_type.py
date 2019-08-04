@@ -14,13 +14,15 @@ def get_w(dic: dict):
     except:
         print('Error!:instruments.csv的路径错误，请核对')
         return ''
-    data_dic = {'Hybrid':0,
-                 'Bond':0,
-                 'Stock':0,
-                 'QDII':0,
-                 'Money':0,
-                 'Related':0
-                  }
+    data_dic = {
+                'Hybrid': 0,
+                'Bond': 0,
+                'Stock': 0,
+                'QDII': 0,
+                'Money': 0,
+                'Related': 0,
+                'Other': 0
+    }
     for key in dic.keys():
         idx = list(data['code']).index(int(key))
         a_type = data['fund_type'][idx]
@@ -28,6 +30,11 @@ def get_w(dic: dict):
             data_dic[a_type] = data_dic[a_type] + dic[key]
         else:
             print("Warning:This type is not in type_list")
+    sum = 0
+    for key in data_dic.keys():
+        sum = sum + data_dic[key]
+    for key in data_dic.keys():
+        data_dic[key] = data_dic[key]/sum
     return data_dic
 
 
@@ -58,6 +65,7 @@ if __name__ == '__main__':
             '000003':0.3,
             '000007':0.2,
             '000028':0.1,
+            '960001':0.3
             }
     dic = radar_type(data)
     print(dic)
