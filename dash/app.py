@@ -22,8 +22,8 @@ mapbox_access_token = "pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NW
 
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
-instruments = pd.read_csv(DATA_PATH.joinpath('sna_portfolio_data.csv'), encoding='gb18030', usecols=['code', 'symbol', 'fund_type'])
-
+instruments = pd.read_csv(DATA_PATH.joinpath('sna_portfolio_data.csv'), encoding='gb18030',
+                          usecols=['code', 'symbol', 'fund_type'])
 
 layout = dict(
     autosize=True,
@@ -275,9 +275,10 @@ def update_weights(risk_val):
 @app.callback(
     Output('fund_list', 'children'),
     [Input('fund_graph', 'selectedData'),
+     Input('fund_table', "derived_virtual_data"),
      Input('fund_table', 'derived_virtual_selected_rows')]
 )
-def update_fund_list(selectedData, selected_row):
+def update_fund_list(selectedData, derived_virtual_data, selected_row):
     """
     二维图中选取 -> 选中的基金列表
     基金列表中选取 -> 选中的基金列表
@@ -286,29 +287,28 @@ def update_fund_list(selectedData, selected_row):
     if selectedData is None and (selected_row == None or len(selected_row) == 0):
         ret, risk, sharpe, weights = get_fixed_ans()
         columns = [key for key, v in weights.items() if v > 1e-9]
-        print(len(columns))
         return json.dumps(columns)
     selected_code = set()
     row_code = set()
     if len(selected_row) != 0:
-        row_code = {selected_row['code']}
+        row_code = {derived_virtual_data[x]['code'] for x in selected_row}
     if selectedData is not None:
         selected_code = {p['code'] for p in selectedData['points']}
     code = row_code | selected_code
-    code = ['0' * (6-len(str(x))) + str(x) for x in code]
-    return code
+    code = ['0' * (6 - len(str(x))) + str(x) for x in code]
+    return json.dumps(code)
 
 
-@app.callback(
-    Output('profile_graph', 'figure'),
-    [Input('fund_list', 'children')]
-)
-def update_profile(choosed_list):
-    """
-    选中的基金列表 -> 回测、单位净值
-    :return:
-    """
-    pass
+# @app.callback(
+#     Output('profile_graph', 'figure'),
+#     [Input('fund_list', 'children')]
+# )
+# def update_profile(choosed_list):
+#     """
+#     选中的基金列表 -> 回测、单位净值
+#     :return:
+#     """
+#     pass
 
 
 @app.callback(
@@ -328,7 +328,6 @@ def update_fund_table(fund_weights):
     else:
         dict_weights = json.loads(fund_weights)
     df = get_fund_table(dict_weights)
-    print(len(df))
     return df.to_dict('records')
 
 
@@ -348,8 +347,6 @@ def update_radar(choosed_list, fund_weights):
         k: v
         for k, v in fund_weights.items() if k in choosed_list
     }
-    print(len(selected_weights))
-    print(selected_weights)
     return radar_type(selected_weights)
 
 

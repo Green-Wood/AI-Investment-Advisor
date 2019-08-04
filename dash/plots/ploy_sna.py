@@ -134,8 +134,8 @@ def ploy_sna_pic(codes_list):
             if node in node_type:
                 color_list.append(3)
 
-    pos = nx.layout.spring_layout(G)  # 布局
-    # pos = nx.layout.kamada_kawai_layout(G)
+    # pos = nx.layout.spring_layout(G)  # 布局
+    pos = nx.layout.kamada_kawai_layout(G)
     edge_x = []
     edge_y = []
     for edge in G.edges():

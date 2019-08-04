@@ -6,3 +6,4 @@ Werkzeug
 pandas
 PyportfolioOpt
 flask-pymongo
+cvxopt
