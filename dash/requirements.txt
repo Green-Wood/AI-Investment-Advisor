@@ -6,3 +6,4 @@ PyPortfolioOpt
 sklearn
 cvxopt
 matplotlib
+networkx

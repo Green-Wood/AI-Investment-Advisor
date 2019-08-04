@@ -49,10 +49,4 @@ def get_fixed_ans(fixed='sharpe', value=0.05):
     ret = '%.5f' % ret
     vol = '%.5f' % vol
     sharp = '%.5f' % sharp
-    weight_df = pd.DataFrame.from_dict(weight, orient='index', columns=['weight'])
-    weight_df.reset_index(inplace=True)
-    weight_df['index'] = weight_df['index'].astype(int)
-    weight_df['weight'] = weight_df['weight'].apply(lambda x: '%.5f' % x)
-    ins_wei_df = instruments.merge(weight_df, left_on='code', right_on='index')
-    ins_wei_df = ins_wei_df.drop(['index'], axis=1)
-    return ret, vol, sharp, ins_wei_df
+    return ret, vol, sharp, weight

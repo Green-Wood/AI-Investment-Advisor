@@ -6,6 +6,7 @@ import pathlib
 
 
 def ploy_sna_pic(codes_list):
+    codes_list = [int(x) for x in codes_list]
 
     PATH = pathlib.Path(__file__).parent.parent
     DATA_PATH = PATH.joinpath("data").resolve()
@@ -70,7 +71,7 @@ def ploy_sna_pic(codes_list):
 
         edge_list = []
         for index, row in portfolio_data.iterrows():
-            edge_list.append((row['symbol'], row['fund_type'])) # 基金和类型
+            edge_list.append((row['symbol'], row['fund_type']))  # 基金和类型
             if not pd.isna(row['manager_0']):
                 edge_list.append((row['fund_type'], row['manager_0']))  # 类型和负责人
                 edge_list.append((row['symbol'], row['manager_0']))  # 基金和负责人
@@ -164,7 +165,7 @@ def ploy_sna_pic(codes_list):
             x=node_x, y=node_y,
             mode='markers',
             hoverinfo='text',
-            text = list(text_list), # 显示的文本信息
+            text=list(text_list),  # 显示的文本信息
             marker=dict(
                 colorscale=[[0, 'rgb(242, 162, 89)'], [0.5, 'rgb(244, 102, 101)'], [1.0, 'rgb(79, 142, 235)']],
                 color=color_list,
@@ -177,7 +178,7 @@ def ploy_sna_pic(codes_list):
                     # title='Node Information',
                     xanchor='left',
                     titleside='right'
-                        ),
+                ),
                 line_width=1))
     else:
         two_title = '<br>基金类别图谱'
@@ -185,7 +186,7 @@ def ploy_sna_pic(codes_list):
             x=node_x, y=node_y,
             mode='markers',
             hoverinfo='text',
-            text = list(G.node()),  # 显示的文本信息
+            text=list(G.node()),  # 显示的文本信息
             marker=dict(
                 colorscale=[[0, 'rgb(242, 162, 89)'], [0.5, 'rgb(244, 102, 101)'], [1.0, 'rgb(79, 142, 235)']],
 
@@ -199,28 +200,26 @@ def ploy_sna_pic(codes_list):
                     # title='Node Information',
                     xanchor='left',
                     titleside='right'
-                        ),
+                ),
                 line_width=1))
 
     return {
         'data': [edge_trace, node_trace],
         'layout': go.Layout(
-                title=two_title,
-                titlefont_size=20,
-                showlegend=False,
-                hovermode='closest',
-                paper_bgcolor='white',
-                plot_bgcolor='white',
-                margin=dict(b=20, l=5, r=5, t=40),
-                annotations=[dict(text="this is text", showarrow=False, xref="paper", yref="paper", x=0.005, y=-0.002 ) ],
-                xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)
-                )
+            title=two_title,
+            titlefont_size=20,
+            showlegend=False,
+            hovermode='closest',
+            paper_bgcolor='white',
+            plot_bgcolor='white',
+            margin=dict(b=20, l=5, r=5, t=40),
+            xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+            yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)
+        )
     }
 
 
 if __name__ == '__main__':
-
     codes_list = [519661, 61, 398061, 519995, 519095,
                   395, 470059, 259, 59, 519692, 192,
                   166, 100066, 66, 519066, 519666, 257050,
@@ -235,4 +234,3 @@ if __name__ == '__main__':
 
     fig = go.Figure(plot_s['data'], plot_s['layout'])
     fig.show()
-
