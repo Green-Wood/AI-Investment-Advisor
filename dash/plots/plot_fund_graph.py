@@ -57,7 +57,7 @@ def plot_fund(node_weight):
             hoverinfo='text',  # 隐藏坐标
 
             text=plot_data[plot_data['fund_type_color'] == node_i]['show_text'],
-
+            customdata=plot_data[plot_data['fund_type_color'] == node_i].index.map(str),
             marker=go.scatter.Marker(
                 size=plot_data[plot_data['fund_type_color'] == node_i]['fund_weight'],
                 color=colors[node_i],
