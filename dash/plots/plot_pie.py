@@ -1,4 +1,9 @@
 import plotly.graph_objects as go
+import pathlib
+
+PATH = pathlib.Path(__file__).parent.parent
+DATA_PATH = PATH.joinpath("data").resolve()
+instruments = DATA_PATH.joinpath('fund_type.csv')
 
 
 def stat(ratios: dict):
@@ -7,7 +12,7 @@ def stat(ratios: dict):
     :return result: dict  基金类型:该类型占比
     """
     table = {}
-    with open('../data/fund_type.csv') as f:
+    with open(instruments) as f:
         for line in f:
             key, val = line.split()
             table[key] = val
@@ -21,7 +26,7 @@ def stat(ratios: dict):
 def get_pie_plot(ratios):
     result = stat(ratios)
     myfig = go.Pie(labels=list(result.keys()), values=list(result.values()), hole=.3)
-    return {'data': myfig}
+    return {'data': [myfig]}
 
 
 if __name__ == '__main__':

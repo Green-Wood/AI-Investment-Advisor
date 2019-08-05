@@ -14,6 +14,7 @@ from plots.efficirnt_frontier import efficient_frontier_data_layout, get_fixed_a
 from plots.radar_type import radar_type
 from plots.ploy_sna import ploy_sna_pic
 from plots.plot_pie import get_pie_plot
+from plots.plot_fund_graph import plot_fund
 
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
@@ -300,14 +301,14 @@ def update_fund_list(selectedData, derived_virtual_data, selected_row):
     """
     if selectedData is None and (selected_row == None or len(selected_row) == 0):
         ret, risk, sharpe, weights = get_fixed_ans()
-        columns = [key for key, v in weights.items() if v > 1e-9]
+        columns = [key for key, v in weights.items() if v > 1e-8]
         return columns
     selected_code = set()
     row_code = set()
     if len(selected_row) != 0:
         row_code = {derived_virtual_data[x]['code'] for x in selected_row}
     if selectedData is not None:
-        selected_code = {p['code'] for p in selectedData['points']}
+        selected_code = {p['customdata'] for p in selectedData['points']}
     code = row_code | selected_code
     code = ['0' * (6 - len(str(x))) + str(x) for x in code]
     return code
@@ -360,17 +361,21 @@ def update_pie(choosed_list, fund_weights):
     return get_pie_plot(selected_weights)
 
 
-# @app.callback(
-#     Output('fund_graph', 'figure'),
-#     [Input('fund_list', 'children'),
-#      Input('fund_weights', 'children')]
-# )
-# def update_fund_graph(choosed_list, fund_weights):
-#     """
-#     基金权重，选中的基金列表 -> 二维图
-#     :return:
-#     """
-#     pass
+@app.callback(
+    Output('fund_graph', 'figure'),
+    [Input('fund_list', 'data'),
+     Input('fund_weights', 'data')]
+)
+def update_fund_graph(choosed_list, fund_weights):
+    """
+    基金权重，选中的基金列表 -> 二维图
+    :return:
+    """
+    selected_weights = {
+        k: v
+        for k, v in fund_weights.items() if k in choosed_list
+    }
+    return plot_fund(selected_weights)
 
 
 @app.callback(
