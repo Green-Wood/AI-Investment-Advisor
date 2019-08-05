@@ -1,69 +1,86 @@
 // pages/recommendation/recommendation.js
 import * as echarts from '../../ec-canvas/echarts';
 
+var barec = null;
+
 const app = getApp();
 
-function initRadarChart(canvas, width, height) {
-  const chart = echarts.init(canvas, null, {
-    width: width,
-    height: height
-  });
-  canvas.setChart(chart);
-  var option = {
-    backgroundColor: "#ffffff",
-    color: ["#37A2DA", "#FF9F7F"],
-    tooltip: {},
-    xAxis: {
-      show: false
+Page({
+  data: {
+    nvabarData: {
+      showCapsule: 1, //是否显示左上角图标   1表示显示    0表示不显示
+      title: '原地起飞', //导航栏 中间的标题
     },
-    yAxis: {
-      show: false
-    },
-    radar: {
-      // shape: 'circle',
-      indicator: [{
-        name: '股票型',
-        max: 500
-      },
-      {
-        name: '联接型',
-        max: 500
-      },
-      {
-        name: 'QDII',
-        max: 500
-      },
-      {
-        name: '混合型',
-        max: 500
-      },
-      {
-        name: '货币型',
-        max: 500
-      },
-      {
-        name: '债券型',
-        max: 500
+    // ecradar: {
+    //   onInit: initRadarChart
+    // },
+    // ecline: {
+    //   onInit: initLineChart
+    // },
+    ec: { 
+      onInit: function (canvas, width, height) { 
+        barec = echarts.init(canvas, null, { 
+          width: width, 
+          height: height 
+        }); 
+        canvas.setChart(barec); 
+        return barec;
       }
-      ]
     },
-    series: [{
-      name: '预算 vs 开销',
-      type: 'radar',
-      data: [{
-        value: [430, 340, 500, 300, 490, 400],
-        name: '预算'
+  },
+  onReady() {
+    setTimeout(this.getData, 500);
+  },
+  onLoad: function (options) {
+    this.setData({
+      Risk_level: options.Risk_level
+    })
+    console.log(this.data.Risk_level)
+    this.echartsComponent = this.selectComponent('#mychart')
+    this.getData();
+  },
+  getData: function () {
+    var that = this
+    wx.request({
+      url: 'https://49.234.212.86/api/info',
+      data: {
+        risk_value: this.data.Risk_level,
       },
-      {
-        value: [300, 430, 150, 300, 420, 250],
-        name: '开销'
-      }
-      ]
-    }]
-  };
-  chart.setOption(option);
-  return chart;
-}
+      method: 'GET',
+      header: { 'Content-Type': 'json' },
+
+      success: (res) => {
+        console.log(res.data.info.ratio)
+        var data = res.data.info.ratio
+        barec.setOption({
+          backgroundColor: "#ffffff",
+          color: ["#37A2DA", "#FF9F7F"],
+          tooltip: {},
+          radar: {
+            indicator: [{ name: '股票型Stock', max: 0.0000001 },
+            { name: '联接型Related', max: 0.01 },
+            { name: 'QDII', max: 0.01 },
+            { name: '混合型Hybrid', max: 0.00000018 },
+            { name: '货币型Money', max: 0.01 },
+            { name: '债券型Bond', max: 1 },
+            { name: '其他Other', max: 0.005 }]
+          },
+          series: [{
+            type: 'radar',
+            data: [{
+              value: [data.Stock, data.Related, data.QDII, data.Hybrid, data.Money, data.Bond, data.Other],
+              }]
+          }],
+        })
+        that.setData({
+          rtrn: res.data.info.ans.Return.toFixed(5),
+          volatility: res.data.info.ans.Volatility.toFixed(5),
+          sharpRatio: res.data.info.ans.SharpRatio.toFixed(4),
+        })
+      },
+    })
+  },
+})
 
 function initLineChart(canvas, width, height) {
   const chart = echarts.init(canvas, null, {
@@ -112,7 +129,7 @@ function initLineChart(canvas, width, height) {
       type: 'line',
       smooth: true,
       data: [18, 36, 65, 30, 78, 40, 33]
-    },{
+    }, {
       name: 'C',
       type: 'line',
       smooth: true,
@@ -122,28 +139,3 @@ function initLineChart(canvas, width, height) {
   chart.setOption(option);
   return chart;
 }
-
-Page({
-  onShareAppMessage: function (res) {
-    return {
-      title: 'ECharts 可以在微信小程序中使用啦！',
-      path: '/pages/recommendation/recommendation',
-      success: function () { },
-      fail: function () { }
-    }
-  },
-  data: {
-    nvabarData: {
-      showCapsule: 1, //是否显示左上角图标   1表示显示    0表示不显示
-      title: '原地起飞', //导航栏 中间的标题
-    },
-    ecline: {
-      onInit: initLineChart
-    },
-    ecradar: {
-      onInit: initRadarChart
-    }
-  },
-  onReady() {
-  }
-});

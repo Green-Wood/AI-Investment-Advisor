@@ -5,7 +5,8 @@ page{
 }
 /* 知道按钮 */
 .btn3{
-  margin-top: 10%;
+  margin-top: 15%;
+  margin-bottom: 10%;
   width: 50%;
   border-radius:98rpx;
   background-color:#0082c8;
@@ -23,20 +24,6 @@ page{
   color: white;
 }
 
-/* 返回按钮 */
-.btn4{
-  margin-top: 5%;
-  width: 50%;
-  border-radius:98rpx;
-  background-color:#ffffff;
-  box-shadow: 3px 3px 5px 1px rgb(196, 196, 196);
-}
-
-.btn4::after{
-  border-radius:98rpx;
-  border:0;
-}
-
 .skip{
   font-size:33rpx;
   color: rgb(2, 108, 179);
@@ -44,13 +31,13 @@ page{
 
 .riskrank{
   display: flex;
-  margin-left: 15%;
+  margin-left: 10%;
   font-size: 160%;
   color:rgb(0, 0, 0);
   font-style: SimHei;
 }
 .riskrank2{
-  margin-left: 15%;
+  margin-left: 10%;
   margin-block-end:90%;
   font-size: 320%;
   color: rgb(2, 108, 179);

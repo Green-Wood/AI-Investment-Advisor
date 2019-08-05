@@ -14,9 +14,6 @@ Page({
     // 此页面 页面内容距最顶部的距离
     height: app.globalData.height * 2 + 20,
   },
-  onLoad() {
-    console.log(this.data.height)
-  },
   jumpToRiskTest:function(){
     wx.redirectTo({
       url: '../risk_test/risk_test',

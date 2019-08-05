@@ -72,5 +72,5 @@ page{
   left: 0;
   right: 0;
   margin-top: 1200rpx;
-  min-height: 600rpx;
+  min-height: 800rpx;
 }

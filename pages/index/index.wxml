@@ -8,7 +8,7 @@
 
       <view class="ask-risk-text">
         <text class='ask'>投资前请先选择您的风险偏好等级：</text>
-        <text class="risk-level">{{str}}</text>
+        <text class="risk-level">{{Risk_level}}</text>
       </view>
 
       <!-- 滑块 -->
@@ -52,10 +52,6 @@
     <button class="confirm-btn"size="mini" loading="{{loading}}"
             disabled="{{disabled}}" bindtap="jumpToRecommendation"> 
       <view class='confirm'>开始投资</view>
-    </button>
-    <button class="skip-btn"size="mini" loading="{{loading}}"
-            disabled="{{disabled}}" bindtap="jumpToRisktest"> 
-      <view class='skip'>还不清楚，去测风险</view>
     </button>
   </view>
   <view class="extra"></view>

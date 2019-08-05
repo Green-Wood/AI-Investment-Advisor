@@ -38,12 +38,12 @@ ec-canvas {
   font-size: 100%;
   margin-top: 2%;
   margin-bottom: 2%;
-  margin-left: 5%;
-  letter-spacing: 2rpx;
+  margin-left: 3%;
+  letter-spacing: 1rpx;
 }
 
 .more-info-btn{
-  margin-left: 30%;
+  margin-left: 15%;
   border-radius: 98rpx;
   background-color:#0082c8;
   box-shadow: 1px 1px 2px 1px rgb(196, 196, 196);

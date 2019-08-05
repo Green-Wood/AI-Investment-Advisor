@@ -4,9 +4,9 @@
   <scroll-view class="scroller" scroll-y="true" style="height: 100%">
     <text class="overall-text">评级总览</text>
     <view class="info-container">
-      <text class="info">A指数：{{}}
-        B指数：{{}}
-        C指数：{{}}
+      <text class="info">Return：{{rtrn*100}}%
+        Volatility：{{volatility*100}}%
+        Sharp Ratio：{{sharpRatio*100}}%
       </text>
       <button class="more-info-btn"size="mini" loading="{{loading}}"
               disabled="{{disabled}}" bindtap="none"> 
@@ -20,8 +20,7 @@
       <ec-canvas 
         id="mychart-dom-radar"
         canvas-id="mychart-radar"
-        ec="{{ ecradar }}"
-        bind:init="initRadarChart">
+        ec="{{ ec }}">
       </ec-canvas>
     </view>
 
