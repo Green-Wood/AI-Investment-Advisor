@@ -1,6 +1,5 @@
 // pages/ask_risk/ask_risl.js
 Page({
-<<<<<<< HEAD:frontend/YDQF/pages/ask_risk/ask_risk.js
 
   /**
    * Page initial data
@@ -63,12 +62,10 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
-=======
+  },
   enter: function (options){
     wx.redirectTo({
       url: '../home_page/home_page'
     })
   },
->>>>>>> 51a852ed176dbbe803e76c5cf5f7572359625183:pages/welcome/welcome.js
 })

@@ -9,6 +9,8 @@ instruments = pd.read_csv(DATA_PATH.joinpath('instruments.csv'), usecols=['code'
 
 
 def efficient_frontier_data_layout(id_list):
+    if len(id_list) == 1:
+        id_list = 'all'
     efficient_data = optimizer.efficient_frontier(id_list)
     return {
         'data': [
@@ -50,3 +52,9 @@ def get_fixed_ans(fixed='sharpe', value=0.05):
     vol = '%.5f' % vol
     sharp = '%.5f' % sharp
     return ret, vol, sharp, weight
+
+
+if __name__ == '__main__':
+    data = efficient_frontier_data_layout('all')
+    fig = go.Figure(data)
+    fig.show()

@@ -9,11 +9,9 @@ import pandas as pd
 import json
 import pathlib
 
-from plots.show_funds import fund_data_layout
 from plots.efficirnt_frontier import efficient_frontier_data_layout, get_fixed_ans
-from plots.radar_type import radar_type
 from plots.ploy_sna import ploy_sna_pic
-from plots.plot_pie import get_pie_plot
+from plots.show_barpolar import show_barpolar
 from plots.plot_fund_graph import plot_fund
 
 app = dash.Dash(
@@ -358,7 +356,7 @@ def update_pie(choosed_list, fund_weights):
         k: v
         for k, v in fund_weights.items() if k in choosed_list
     }
-    return get_pie_plot(selected_weights)
+    return show_barpolar(selected_weights)
 
 
 @app.callback(
