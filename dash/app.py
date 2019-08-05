@@ -17,6 +17,9 @@ from plots.plot_fund_graph import plot_fund
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
 )
+
+server = app.server
+
 # Create global chart template
 mapbox_access_token = "pk.eyJ1IjoiamFja2x1byIsImEiOiJjajNlcnh3MzEwMHZtMzNueGw3NWw5ZXF5In0.fk8k06T96Ml9CLGgKmk81w"
 
@@ -289,7 +292,7 @@ def update_weights(risk_val):
     :param risk_val:
     :return:
     """
-    risk_val = risk_val / 10
+    risk_val = risk_val / 100
     ret, vol, sharp, dict_weights = get_fixed_ans(fixed='volatility', value=risk_val)
     return dict_weights, len(dict_weights), ret, vol, sharp
 
