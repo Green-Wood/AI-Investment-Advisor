@@ -1,0 +1,77 @@
+page{
+  width: 100%;
+  height:100%;
+  overflow: hidden;
+}
+
+.background{
+  width: 100%;
+  height: 5%;
+  background: #0082c8;
+  position:fixed;
+  text-align: center;
+}
+
+.frame{
+  margin-left:5%;
+  width: 90%;
+  background-color: rgba(255, 255, 255, 0.952);
+  border-radius: 8rpx;
+  border-left-style: outset;
+  border-left-color: #0082c8;
+  box-shadow: 0px 0px 5px 1px rgb(196, 196, 196);
+  margin-top: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+}
+
+
+.weui-cell_access{
+  display: flex;
+  align-items: center;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-top:5%;
+  margin-bottom: 5%;
+  width: 90%;
+  height: 90rpx;
+  border-radius: 98rpx;
+  background-color:#0082c8;
+  box-shadow: 3px 3px 5px 1px rgb(196, 196, 196);
+}
+
+.page__hd{
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.page__title{
+  color:grey;
+  font-size: 30rpx;
+  margin-top:10%;
+  margin-left: 10%;
+}
+.weui-cell__bd{
+  color:rgb(255, 255, 255);
+  font-size: 100%;
+  margin-left: 8%;
+  margin-right: 5%;
+
+}
+
+.weui-cell_access::after{
+  border-radius:98rpx;
+  border:0;
+}
+
+.weui-cell_active{
+  background-color: #026faa;
+  border-style: ridge;
+}
+
+.loading{
+  color:antiquewhite;
+  font-size: 50rpx;
+  font-style: Simhei;
+}

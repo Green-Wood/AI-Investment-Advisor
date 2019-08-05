@@ -1,0 +1,58 @@
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<view class='background'></view>
+<scroll-view class="scroller" scroll-y="true" style="height: 100%">
+  <!--index.wxml-->
+  <view class='content'>
+    <!-- 滑块板块的所有元素 -->
+    <view class='bar-background'>
+
+      <view class="ask-risk-text">
+        <text class='ask'>投资前请先选择您的风险偏好等级：</text>
+        <text class="risk-level">{{Risk_level}}</text>
+      </view>
+
+      <!-- 滑块 -->
+      <view class="tui-content">
+        <!-- 滑块属性 -->
+        <view class='low'>低</view>
+        <view class='high'>高</view>
+        <view class="tui-slider-box">
+          <slider 
+          color="transparent" 
+          activeColor="transparent"
+          min="1"
+          max="5"
+          step="1"
+          bindchanging="changeSlider1" 
+          value="{{str}}"/>
+        </view>
+        
+        <!-- 滑块描述 -->
+        <text class="tui-slider-head">( 数值越大风险越高 )</text>
+      </view>
+    </view>
+
+    <!-- 风险等级信息 -->
+    <view class="description-background">
+      <text class="description_title">风险偏好等级由低到高依次为：</text>
+      <text class="description">
+      1：谨慎型-风险承受能力弱，多选择小风险基金，如货币型基金，债券型基金
+      
+      2：稳健型-风险承受能力较弱，多选择小风险基金，如保本型基金，混合偏债型基金
+      
+      3：平衡型-风险承受能力一般，多选择中风险基金，如混合平衡型基金，混合偏债型基金
+      
+      4：进取型-风险承受能力较强，多选择偏激进型基金，如混合偏股型基金
+      
+      5：激进型-风险承受能力强，多选择激进型基金，如股票型基金，指数型基金
+      </text>
+    </view>
+
+    <!-- 确认按钮样式 -->
+    <button class="confirm-btn"size="mini" loading="{{loading}}"
+            disabled="{{disabled}}" bindtap="jumpToRecommendation"> 
+      <view class='confirm'>开始投资</view>
+    </button>
+  </view>
+  <view class="extra"></view>
+</scroll-view>

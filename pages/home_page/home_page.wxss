@@ -1,0 +1,129 @@
+page{
+  width: 100%;
+  height:100%;
+  overflow: hidden;
+}
+
+/* 顶部背景 */
+.picture{
+  width:100%;
+  display: block;
+  z-index:-1;
+
+}
+
+/* logo文字 */
+.logotext{
+  color:rgb(97, 97, 97);
+  font-size:25rpx;
+}
+
+/* 风险测评 */
+.container1{
+  text-align: center;
+  min-width: 170rpx;
+  margin-top: 0%;
+  display: table-column;
+}
+
+.logo1{
+  width: 60rpx;
+  height: 80rpx;
+  
+}
+
+/* 去投资 */
+.container2{
+  text-align: center;
+  min-width: 170rpx;
+  display: table-column;
+}
+
+.logo2{
+  max-width: 70rpx;
+  max-height: 70rpx;
+  margin-bottom: 4rpx;
+}
+
+/* 大数据 */
+.container3{
+  text-align: center;
+  min-width: 170rpx;
+  margin-top: 0%;
+  display: table-column;
+}
+
+.logo3{
+  margin-top:15rpx;
+  margin-bottom: 13rpx;
+  max-width: 80rpx;
+  max-height: 70rpx;
+}
+
+/* 关于我们 */
+.container4{
+  text-align: center;
+  min-width: 170rpx;
+  margin-top: 0%;
+  display: table-column;
+}
+
+.logo4{
+  margin-bottom: 3%;
+  max-width: 70rpx;
+  max-height: 70rpx;
+}
+
+/* 全部logo container */
+.all_logo{
+  display:flex;
+  margin-top:7%;
+  z-index:100;
+  margin-bottom:7%;
+}
+
+.blk1{
+  display: flex;
+  justify-content: center;
+  margin-top:2.5%;
+  margin-left:2.5%;
+  border-top-style:outset;
+  border-top-color:rgb(133, 193, 228);
+  width:95%;
+  height:20%;
+  border-radius:10rpx;
+  /* box-shadow: 3px 3px 5px 1px rgb(196, 196, 196); */
+  background-color: rgba(243, 243, 243, 0.952);
+  margin-bottom:5%;
+}
+
+.title{
+  margin-left:5%;
+  color:rgb(80, 80, 80);
+  font-weight:5rpx;
+}
+
+.hover{
+  background:rgb(197, 218, 241);
+}
+
+.image-container{
+  width:100%;
+  height:30%;
+  margin-top:4%;
+}
+
+.slide-image{
+  width:100%;
+  height:100%;
+}
+
+.extra{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin-top: 1200rpx;
+  min-height: 400rpx;
+}

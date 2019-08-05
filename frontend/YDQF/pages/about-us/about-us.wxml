@@ -1,0 +1,29 @@
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+<scroll-view class="scroller" scroll-y="true" style="height: 100%">
+  <image src="/pictures/background1.png" mode="widthFix" class='background1'></image>
+  <text class='title'>项目背景</text>
+  <view class='blk1'>
+    <text class='description'>
+    创新工场由李开复博士创办于2009年9月，作为国内的创业投资机构，创新工场致力于通过 AI 赋能助力企业客户及合作伙伴提升商业效率和价值，实现数字化转型。“基金拼图”项目由创新工场（创新奇智）发起，旨在为广大投资者提供智能化、可视化、简约化的资产组合优化方案。
+
+    </text>
+  </view>
+
+  <text class='title'>产品介绍</text>
+  <view class='blk2'>
+    <text class='description'>
+    “基金拼图”依托AI智能科技、大数据、云计算等高新技术手段，致力于为千万级客户配置大额资产，同时满足小微企业和个人投资者的投资需求。“基金拼图”以网页展示强大的可视化数据联动表，以微信小程序为窗口便捷您获取基于基金组合的推荐。团队采用时间序列模型LSTM、SVD、凸优化算法、高斯混合聚类、词向量嵌入embedding、社会网络分析SNA等最前沿的AI科技为您精准推荐。
+
+    </text>
+  </view>
+
+  <text class='title'>专业团队</text>
+  <view class='blk3'>
+    <text class='description'>
+    本团队由冯霁带领，由来自国内外各大高校的本硕博共同组成，他们分别是：朱士鹏，刘正阳，赵文祺，侯成坤，陈韵菲，谭鼎，秦天，杨哲语，鲁浩，黄山云，高昌预，范家宽，孟可欣，柏欣雨。
+    </text>
+  </view>
+
+
+  <view class="extra"></view>
+</scroll-view>

@@ -1,0 +1,21 @@
+<!-- 上端返回键，标题 -->
+<view class="top-navbar-warp">
+  <view bindtap='_navback'>
+        <image src='/pictures/back1.png' mode='aspectFill' class='back-pre'></image>
+  </view>
+  <text class='nav-title'>
+      {{navbarData.title}}
+  </text>
+</view>
+
+<!-- 下端导航栏 -->
+<view class='nav-wrap'>
+   
+  <view class='nav-capsule'>    
+    <!-- <view class='navbar-v-line' wx:if='{{!share}}'></view> -->
+
+    <view bindtap='_backhome'>
+      <image src='/pictures/back_home.png' mode='aspectFill' class='back-home'></image>
+    </view>
+  </view>
+</view>

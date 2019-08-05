@@ -1,0 +1,35 @@
+<!--pages/risk_test/result.wxml-->
+ 
+<!--pages/result/result.wxml-->
+<nav-bar navbar-data='{{nvabarData}}'></nav-bar>
+  
+<scroll-view class="scroller" scroll-y="true" style="height: 100%">
+   
+    <view class="top-background">
+    </view>
+    <!-- <view class="result-text"> -->
+    <image src="/pictures/congrats.png" class='resultpic'></image>
+      
+    <view>
+      <text class="riskrank">你的推荐风险承受类型是：</text>
+    </view>
+
+    <view>
+      <text class="riskrank2">{{Kind}}</text>
+    </view>
+
+    <view>
+      <text class="riskrank3" decode="{{true}}">- 等级数字越大表明在投资中您能承受的风险等级越高。
+
+      - 本次测评分将风险承受等级分为五档，由低到高分别为：谨慎型、稳健型、平衡型、进取型与激进型。
+
+      - 建议投资时选择适合您的资产组合。</text>
+    </view>
+
+    <button
+      class="btn3" 
+      bindtap="jumpToRecommendation">
+      <text class="start"> 知道啦，去投资 </text>
+    </button>
+  <view class="extra"></view>
+</scroll-view>

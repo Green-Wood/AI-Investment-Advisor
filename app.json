@@ -1,0 +1,21 @@
+{
+  "pages": [
+    "pages/welcome/welcome",
+    "pages/home_page/home_page",
+    "pages/ask_risk/ask_risk",
+    "pages/index/index",
+    "pages/logs/logs",
+    "pages/risk_test/risk_test",
+    "pages/risk_test/result",
+    "pages/recommendation/recommendation",
+    "pages/about-us/about-us"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "custom"
+  },
+  "sitemapLocation": "sitemap.json"
+}

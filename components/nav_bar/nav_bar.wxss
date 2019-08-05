@@ -1,0 +1,58 @@
+/* components/nav_bar/nav.bar.wxss */
+
+.top-navbar-warp{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 160rpx;
+  background-color: #0082c8;
+  z-index: 9999;
+}
+
+.nav-wrap {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 120rpx;
+  max-height: 120rpx;
+  background: rgb(241, 241, 241);
+  position:fixed;
+  bottom:0;
+  border-top-style: outset;
+  border-top-color:#73b6da;
+  z-index:9999;
+}
+
+/* 标题要居中 */
+.nav-title {
+  display: flex;
+  align-items: center;
+  margin-top: 5%;
+  font-size: 35rpx;
+  font-weight: 600;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: rgb(255, 255, 255);
+  z-index:9999;
+}
+
+/* 返回键 */
+.back-pre{
+  position: absolute;
+  left: 6%;
+  top: 5%;
+  bottom: 2%;
+  width: 50rpx;
+  height: 35rpx;
+  z-index:9999;
+}
+
+/* Home键 */
+.back-home{
+  position: absolute;
+  left:45%;
+  top: 15%;
+  bottom: 2%;
+  width: 80rpx;
+  height: 70rpx;
+  z-index:9999;
+}
