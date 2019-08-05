@@ -11,10 +11,12 @@ def ploy_sna_pic(codes_list):
     DATA_PATH = PATH.joinpath("data").resolve()
 
     G = nx.Graph()
+    dict_data = pd.read_csv(DATA_PATH.joinpath('fund_type_manger.csv'), index_col=5, encoding='gb18030')
+
     # add edge
     if len(codes_list) == 1:
-        dict_data = pd.read_csv(DATA_PATH.joinpath('sna_fund_type_manger.csv'), index_col=5, encoding='gb18030')
-        edge_data = pd.read_csv(DATA_PATH.joinpath('sna_edge_list.csv'), index_col=0, encoding='gb18030')
+
+        edge_data = pd.read_csv(DATA_PATH.joinpath('edge_list.csv'), index_col=0, encoding='gb18030')
         need_data = dict_data.loc[codes_list]
         # node needed
         need_node = []
@@ -26,26 +28,13 @@ def ploy_sna_pic(codes_list):
         for i in range(len(edge_df)):
             G.add_edge(edge_df.index[i], edge_df.iloc[i][0])
 
-        # node speace
-        node_name = []
-        node_fund = []
-        node_type = []
-        for node in dict_data['姓名']:
-            if not pd.isna(node):
-                node_name.append(node)
-        for node in dict_data['基金名称']:
-            if not pd.isna(node):
-                node_fund.append(node)
-        for node in dict_data['基金类型']:
-            if not pd.isna(node):
-                node_type.append(node)
+    #     pos = nx.layout.spring_layout(G)  # 布局
+        pos = nx.layout.kamada_kawai_layout(G)
 
-        color_list = []
-        text_list = []
-        for node in G.node():
-            if node in node_name:
-                color_list.append(1)
-                text_name = str(dict_data[dict_data['姓名'] == node].iloc[0]['简介'])
+        node_to_df = []
+        for n_i in G.node():
+            if n_i in list(dict_data['姓名']):
+                text_name = str(dict_data[dict_data['姓名'] == n_i].iloc[0]['简介'])
                 text_name = text_name.replace('：', '<br>')
                 text_name = text_name.replace(':', '<br>')
                 text_name = text_name.replace('。', '<br>')
@@ -54,18 +43,18 @@ def ploy_sna_pic(codes_list):
                 text_name = text_name.replace('；', '<br>')
                 text_name = text_name.replace('，', '<br>')
                 text_name = text_name.replace(',', '<br>')
-                text_list.append(text_name)
-            if node in node_fund:
-                color_list.append(2)
-                text_fund = str(dict_data[dict_data['基金名称'] == node].iloc[0][['任职回报', '同类平均', '同类排名']]).split('N')[0]
-                text_fund = text_fund.replace('    ', ':')
-                text_fund = text_fund.replace('\n', '<br>')
-                text_list.append(node + '<br>' + text_fund)
-            if node in node_type:
-                color_list.append(3)
-                text_list.append(node)
+                node_to_df.append([n_i, '姓名', text_name, pos[n_i][0], pos[n_i][1]])
+            if n_i in list(dict_data['基金名称']):
+                text_fund = str(dict_data[dict_data['基金名称'] == n_i].iloc[0][['任职回报', '同类平均', '同类排名']]).split('N')[0]
+                text_fund = text_fund.replace('    ',':')
+                text_fund = text_fund.replace('\n','<br>')
+                node_to_df.append([n_i, '基金名称', n_i + '<br>' + text_fund, pos[n_i][0], pos[n_i][1]])
+            if n_i in list(dict_data['基金类型']):
+                node_to_df.append([n_i, '基金类型', n_i, pos[n_i][0], pos[n_i][1]])
+
     else:
-        portfolio_data = pd.read_csv(DATA_PATH.joinpath('sna_portfolio_data.csv'), index_col=0, encoding='gb18030')
+
+        portfolio_data = pd.read_csv(DATA_PATH.joinpath('portfolio_data.csv'), index_col=0, encoding = 'gb18030')
         portfolio_data = portfolio_data.loc[codes_list]
 
         edge_list = []
@@ -98,43 +87,31 @@ def ploy_sna_pic(codes_list):
                                 edge_list.append((row['manager_4'], row['manager_3']))
         edge_set = set(edge_list)
         G.add_edges_from(edge_set)
-        # node speace
-        node_name = []
-        node_fund = []
-        node_type = []
-        for node in portfolio_data['manager_0']:
-            if not pd.isna(node):
-                node_name.append(node)
-        for node in portfolio_data['manager_1']:
-            if not pd.isna(node):
-                node_name.append(node)
-        for node in portfolio_data['manager_2']:
-            if not pd.isna(node):
-                node_name.append(node)
-        for node in portfolio_data['manager_3']:
-            if not pd.isna(node):
-                node_name.append(node)
-        for node in portfolio_data['manager_4']:
-            if not pd.isna(node):
-                node_name.append(node)
-        for node in portfolio_data['symbol']:
-            if not pd.isna(node):
-                node_fund.append(node)
-        for node in portfolio_data['fund_type']:
-            if not pd.isna(node):
-                node_type.append(node)
 
-        color_list = []
-        for node in G.node():
-            if node in node_name:
-                color_list.append(1)
-            if node in node_fund:
-                color_list.append(2)
-            if node in node_type:
-                color_list.append(3)
+    #     pos = nx.layout.spring_layout(G)  # 布局
+        pos = nx.layout.kamada_kawai_layout(G)
 
-    pos = nx.layout.spring_layout(G)  # 布局
-    # pos = nx.layout.kamada_kawai_layout(G)
+        node_to_df = []
+        for n_i in G.node():
+            if n_i in portfolio_data[['manager_0', 'manager_1', 'manager_2', 'manager_3', 'manager_4']].values:
+                node_to_df.append([n_i, '姓名',n_i,  pos[n_i][0], pos[n_i][1]])
+            if n_i in list(portfolio_data['symbol']):
+                fund_inform = dict_data[['任职回报', '同类平均', '同类排名']].loc[4404]
+                text_fund = fund_inform[fund_inform['同类平均'] == fund_inform['同类平均'].max()]
+                text_fund = str(text_fund.T)
+                text_fund = text_fund.replace('\n','<br>')
+                node_to_df.append([list(portfolio_data[portfolio_data['symbol'] == n_i].index)[0],'基金名称', n_i + '<br>' + text_fund,  pos[n_i][0], pos[n_i][1]])
+            if n_i in list(portfolio_data['fund_type']):
+                node_to_df.append([n_i, '基金类型',n_i,  pos[n_i][0], pos[n_i][1]])
+
+    node_df = pd.DataFrame(node_to_df)
+    node_df.columns = ['nodes', 'type', 'show_text', 'X', 'Y']
+
+    fig = go.Figure()
+    colors = {'姓名':'#e77f67',
+                '基金名称':'#778beb',
+                '基金类型':'#c23616',
+              }
     edge_x = []
     edge_y = []
     for edge in G.edges():
@@ -146,80 +123,50 @@ def ploy_sna_pic(codes_list):
         edge_y.append(y0)
         edge_y.append(y1)
         edge_y.append(None)
-    edge_trace = go.Scatter(
+    fig.add_trace(go.Scatter(
         x=edge_x, y=edge_y,
         line=dict(width=1, color='#888'),
+        opacity=0.8,
+        showlegend=False,
         hoverinfo='none',
-        mode='lines')
-    node_x = []
-    node_y = []
-    for node in G.nodes():
-        x, y = pos[node]
-        node_x.append(x)
-        node_y.append(y)
+        mode='lines'))
 
     if len(codes_list) == 1:
-        two_title = '<br>基金经理技能树'
-        node_trace = go.Scatter(
-            x=node_x, y=node_y,
-            mode='markers',
-            hoverinfo='text',
-            text = list(text_list), # 显示的文本信息
-            marker=dict(
-                colorscale=[[0, 'rgb(242, 162, 89)'], [0.5, 'rgb(244, 102, 101)'], [1.0, 'rgb(79, 142, 235)']],
-                color=color_list,
-                line_color='rgba(156, 165, 196, 1.0)',
-                size=25,  # node大小
-                colorbar=dict(
-                    tickvals=[1, 2, 3],
-                    ticktext=['基金管理人', '基金名称', '基金类型'],
-                    thickness=3,
-                    # title='Node Information',
-                    xanchor='left',
-                    titleside='right'
-                        ),
-                line_width=1))
+        titles = '<br>基金经理技能树'
+        sizes = 25
     else:
-        two_title = '<br>基金类别图谱'
-        node_trace = go.Scatter(
-            x=node_x, y=node_y,
-            mode='markers',
-            hoverinfo='text',
-            text = list(G.node()),  # 显示的文本信息
-            marker=dict(
-                colorscale=[[0, 'rgb(242, 162, 89)'], [0.5, 'rgb(244, 102, 101)'], [1.0, 'rgb(79, 142, 235)']],
+        titles = '<br>基金类别图谱'
+        sizes = 18
 
-                color=color_list,
-                line_color='rgba(156, 165, 196, 0.3)',
-                size=15,  # node大小
-                colorbar=dict(
-                    tickvals=[1, 2, 3],
-                    ticktext=['基金管理人', '基金名称', '基金类型'],
-                    thickness=3,
-                    # title='Node Information',
-                    xanchor='left',
-                    titleside='right'
-                        ),
-                line_width=1))
+    for node_i in set(node_df['type'].values):
 
-    return {
-        'data': [edge_trace, node_trace],
-        'layout': go.Layout(
-                title=two_title,
-                titlefont_size=20,
-                showlegend=False,
-                hovermode='closest',
-                paper_bgcolor='white',
-                plot_bgcolor='white',
-                margin=dict(b=20, l=5, r=5, t=40),
-                annotations=[dict(text="this is text", showarrow=False, xref="paper", yref="paper", x=0.005, y=-0.002 ) ],
-                xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)
+        fig.add_trace(go.Scatter(
+                x = node_df[node_df['type'] == node_i]['X'],
+                y = node_df[node_df['type'] == node_i]['Y'],
+                name=node_i,
+                mode="markers",
+                hoverinfo='text',  # 隐藏坐标
+                opacity=0.9,
+                text = node_df[node_df['type'] == node_i]['show_text'],
+                marker=go.scatter.Marker(
+                    size=sizes,
+                    color=colors[node_i]
                 )
-    }
+            ))
+
+    fig.update_layout(go.Layout(
+                    title=titles,
+                    titlefont_size=20,
+                    plot_bgcolor='white',
+                    xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                    yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)
+                 ))
+
+    return fig
 
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
 
     codes_list = [519661, 61, 398061, 519995, 519095,
                   395, 470059, 259, 59, 519692, 192,
@@ -231,8 +178,5 @@ if __name__ == '__main__':
                   110003, 630003, 3, 620003, 610103, 161603,
                   519003, 90003, 540003, 630103, 700003]
 
-    plot_s = ploy_sna_pic(codes_list)
-
-    fig = go.Figure(plot_s['data'], plot_s['layout'])
+    fig = ploy_sna_pic(codes_list)
     fig.show()
-
