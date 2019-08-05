@@ -13,6 +13,7 @@ from plots.show_funds import fund_data_layout
 from plots.efficirnt_frontier import efficient_frontier_data_layout, get_fixed_ans
 from plots.radar_type import radar_type
 from plots.ploy_sna import ploy_sna_pic
+from plots.plot_pie import get_pie_plot
 
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
@@ -124,7 +125,7 @@ app.layout = html.Div(
                             id='fund_table',
                             filter_action="native",
                             columns=[{"name": i, "id": i} for i in ['code', 'symbol', 'fund_type', 'weight']],
-                            row_selectable="single",
+                            row_selectable="multi",
                             selected_rows=[],
                             sort_action="native",
                             sort_mode="multi",
@@ -185,7 +186,20 @@ app.layout = html.Div(
             [
                 html.Div(
                     # 基金的二维嵌入
-                    [dcc.Graph(id="fund_graph")],
+                    [
+                        dcc.Checklist(
+                            options=[
+                                {'label': 'New York City', 'value': 'NYC'},
+                                {'label': 'Montréal', 'value': 'MTL'},
+                                {'label': 'San Francisco', 'value': 'SF'}
+                            ],
+                            value=['MTL', 'SF'],
+                            labelStyle={
+                                'display': 'inline-block',
+                            }
+                        ),
+                        dcc.Graph(id="fund_graph")
+                    ],
                     className="pretty_container seven columns",
                 ),
                 html.Div(
@@ -212,9 +226,9 @@ app.layout = html.Div(
             className="row flex-display",
         ),
         # 储存用户选择的基金列表
-        html.Div(id='fund_list', style={'display': 'none'}),
+        dcc.Store(id='fund_list'),
         # 储存当前状态下的基金权重
-        html.Div(id='fund_weights', style={'display': 'none'})
+        dcc.Store(id='fund_weights')
     ],
     id="mainContainer",
     style={"display": "flex", "flex-direction": "column"},
@@ -251,7 +265,7 @@ def get_fund_table(dict_weight):
 
 
 @app.callback(
-    [Output('fund_weights', 'children'),
+    [Output('fund_weights', 'data'),
      Output('fund_text', 'children'),
      Output('return_text', 'children'),
      Output('volatility_text', 'children'),
@@ -267,13 +281,13 @@ def update_weights(risk_val):
     :param risk_val:
     :return:
     """
-    risk_val = risk_val / 100
+    risk_val = risk_val / 10
     ret, vol, sharp, dict_weights = get_fixed_ans(fixed='volatility', value=risk_val)
-    return json.dumps(dict_weights), len(dict_weights), ret, vol, sharp
+    return dict_weights, len(dict_weights), ret, vol, sharp
 
 
 @app.callback(
-    Output('fund_list', 'children'),
+    Output('fund_list', 'data'),
     [Input('fund_graph', 'selectedData'),
      Input('fund_table', "derived_virtual_data"),
      Input('fund_table', 'derived_virtual_selected_rows')]
@@ -287,7 +301,7 @@ def update_fund_list(selectedData, derived_virtual_data, selected_row):
     if selectedData is None and (selected_row == None or len(selected_row) == 0):
         ret, risk, sharpe, weights = get_fixed_ans()
         columns = [key for key, v in weights.items() if v > 1e-9]
-        return json.dumps(columns)
+        return columns
     selected_code = set()
     row_code = set()
     if len(selected_row) != 0:
@@ -296,7 +310,7 @@ def update_fund_list(selectedData, derived_virtual_data, selected_row):
         selected_code = {p['code'] for p in selectedData['points']}
     code = row_code | selected_code
     code = ['0' * (6 - len(str(x))) + str(x) for x in code]
-    return json.dumps(code)
+    return code
 
 
 # @app.callback(
@@ -315,7 +329,7 @@ def update_fund_list(selectedData, derived_virtual_data, selected_row):
     Output('fund_table', 'data'),
     [
         # Input('fund_list', 'children'),
-        Input('fund_weights', 'children')]
+        Input('fund_weights', 'data')]
 )
 def update_fund_table(fund_weights):
     """
@@ -324,30 +338,26 @@ def update_fund_table(fund_weights):
     """
     if fund_weights is None:
         ret, risk, sharpe, weights = get_fixed_ans(fixed='volatility', value=0)
-        dict_weights = weights
-    else:
-        dict_weights = json.loads(fund_weights)
-    df = get_fund_table(dict_weights)
+        fund_weights = weights
+    df = get_fund_table(fund_weights)
     return df.to_dict('records')
 
 
 @app.callback(
     Output('radar_graph', 'figure'),
-    [Input('fund_list', 'children'),
-     Input('fund_weights', 'children')]
+    [Input('fund_list', 'data'),
+     Input('fund_weights', 'data')]
 )
-def update_radar(choosed_list, fund_weights):
+def update_pie(choosed_list, fund_weights):
     """
-    基金权重，选中的基金列表 -> 雷达图
+    基金权重，选中的基金列表 -> 饼图
     :return:
     """
-    fund_weights = json.loads(fund_weights)
-    choosed_list = json.loads(choosed_list)
     selected_weights = {
         k: v
         for k, v in fund_weights.items() if k in choosed_list
     }
-    return radar_type(selected_weights)
+    return get_pie_plot(selected_weights)
 
 
 # @app.callback(
@@ -365,28 +375,26 @@ def update_radar(choosed_list, fund_weights):
 
 @app.callback(
     Output('efficient_frontier_graph', 'figure'),
-    [Input('fund_list', 'children')]
+    [Input('fund_list', 'data')]
 )
 def update_efficient_frontier(choosed_list):
     """
     选中的基金列表 -> 有效边界
     :return:
     """
-    choosed_list = json.loads(choosed_list)
     data_layout = efficient_frontier_data_layout(choosed_list)
     return data_layout
 
 
 @app.callback(
     Output('network_graph', 'figure'),
-    [Input('fund_list', 'children')]
+    [Input('fund_list', 'data')]
 )
 def update_network(choosed_list):
     """
     选中的基金列表 -> 网络关系图
     :return:
     """
-    choosed_list = json.loads(choosed_list)
     return ploy_sna_pic(choosed_list)
 
 
