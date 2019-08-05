@@ -5,12 +5,22 @@ import numpy as np
 import pathlib
 
 
-def plot_fund(node_weight):
+def plot_fund(factors_status_dict, node_weight):
 
     PATH = pathlib.Path(__file__).parent.parent
     DATA_PATH = PATH.joinpath("data").resolve()
 
-    fund_pos = pd.read_csv(DATA_PATH.joinpath('fund_graph_coordinate.csv'), index_col=0, encoding = 'gb18030')
+    suffix = ''
+    sort_list = sorted(
+        ['fund_type_factors', 'issuer_count_factors', 'fund_manager_factors', 'fund_manager_numbers_factors',
+         'manager_past_factors', 'benchmark_embedding_factors'])
+    for index, factors in enumerate(sort_list):
+        if factors_status_dict[factors]:
+            suffix += str(index)
+
+    fund_pos = pd.read_csv(DATA_PATH.joinpath('fund_graph_coordinate.csv'), index_col=0, encoding='gb18030')
+    fund_pos['X'] = fund_pos['X_' + suffix]
+    fund_pos['Y'] = fund_pos['Y_' + suffix]
 
     node_weight_df = pd.DataFrame.from_dict(node_weight, orient='index')
     node_weight_df.columns = ['fund_weight_true']
@@ -29,11 +39,12 @@ def plot_fund(node_weight):
     plot_data = pd.concat([plot_fund_dot, plot_not_fund_dot])
 
     plot_data["fund_weight"] = np.log10(plot_data["fund_weight"])
-    plot_data["fund_weight"] = plot_data["fund_weight"] - plot_data["fund_weight"].min() + 10
+    plot_data["fund_weight"] = (plot_data["fund_weight"] - plot_data["fund_weight"].min()) * 2 + 10
 
     plot_data['fund_weight_true'] = plot_data['fund_weight_true'].apply(lambda x: format(x, '.5%'))
 
-    plot_data['show_text'] = '基金代码：' + plot_data.index.map(str) + '<br>' + '基金名称：' + plot_data['symbol'] + '<br>' + '基金占比：' + plot_data['fund_weight_true'] + '<br>' + '基金类型：' + plot_data['fund_type']
+    plot_data['show_text'] = '基金代码：' + plot_data.index.map(str) + '<br>' + '基金名称：' + plot_data[
+        'symbol'] + '<br>' + '基金占比：' + plot_data['fund_weight_true'] + '<br>' + '基金类型：' + plot_data['fund_type']
 
     fig = go.Figure()
     colors = {'Stock': '#5f27cd',
@@ -55,28 +66,27 @@ def plot_fund(node_weight):
             name=node_i,
             mode="markers",
             hoverinfo='text',  # 隐藏坐标
-
+            customdata=plot_data[plot_data['fund_type_color'] == node_i].index.map(str),
             text=plot_data[plot_data['fund_type_color'] == node_i]['show_text'],
 
             marker=go.scatter.Marker(
                 size=plot_data[plot_data['fund_type_color'] == node_i]['fund_weight'],
                 color=colors[node_i],
                 opacity=0.6
-            ),
+            )
         ))
 
     fig.update_layout(go.Layout(
-                    title='<br>Fund Embedding',
-                    titlefont_size=20,
-                    plot_bgcolor='white',
-                    xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
-                    yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)
-                 ))
-
+        title='<br>Fund Embedding',
+        titlefont_size=20,
+        plot_bgcolor='white',
+        xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False)
+    ))
     return fig
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     node_weight = {'100066': 0.016735720134814773, '100068': 0.015433163091007545,
                    '161603': 1.355455236331784e-11, '166903': 1.6658634581675288e-10,
                    '166904': 0.003912742925666486, '519669': 1.8326092766475134e-10,
@@ -107,5 +117,6 @@ if __name__ == '__main__':
                    '000085': 0.05052074217786705, '040040': 0.02226569442059756,
                    '000347': 0.04107629056161011, '161614': 2.258008455907503e-11,
                    '519725': 1.4108251481358556e-08}
-    fig = plot_fund(node_weight)
-    fig.show()
+    factors_status_dict = {'fund_type_factors': True, 'issuer_count_factors': True,
+                           'fund_manager_factors': True, 'fund_manager_numbers_factors': False,
+                           'manager_past_factors': False, 'benchmark_embedding_factors': True}
