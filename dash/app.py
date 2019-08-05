@@ -25,6 +25,10 @@ DATA_PATH = PATH.joinpath("data").resolve()
 instruments = pd.read_csv(DATA_PATH.joinpath('sna_portfolio_data.csv'), encoding='gb18030',
                           usecols=['code', 'symbol', 'fund_type'])
 
+factors_list = ['fund_type_factors', 'issuer_count_factors', 'fund_manager_factors', 'fund_manager_numbers_factors',
+                'manager_past_factors', 'benchmark_embedding_factors']
+chinese_factor_list = ['基金类型', '公司规模', '基金经理', '经理基金数', '经理历史收益', 'Benchmark']
+
 layout = dict(
     autosize=True,
     automargin=True,
@@ -187,14 +191,19 @@ app.layout = html.Div(
                     # 基金的二维嵌入
                     [
                         dcc.Checklist(
+                            id='factors_check_list',
                             options=[
-                                {'label': 'New York City', 'value': 'NYC'},
-                                {'label': 'Montréal', 'value': 'MTL'},
-                                {'label': 'San Francisco', 'value': 'SF'}
+                                {
+                                    'value': factor,
+                                    'label': chinese_factor
+                                } for factor, chinese_factor in zip(factors_list, chinese_factor_list)
                             ],
-                            value=['MTL', 'SF'],
+                            value=factors_list,
                             labelStyle={
                                 'display': 'inline-block',
+                            },
+                            style={
+                                'align': 'center'
                             }
                         ),
                         dcc.Graph(id="fund_graph")
@@ -362,18 +371,23 @@ def update_pie(choosed_list, fund_weights):
 @app.callback(
     Output('fund_graph', 'figure'),
     [Input('fund_list', 'data'),
-     Input('fund_weights', 'data')]
+     Input('fund_weights', 'data'),
+     Input('factors_check_list', 'value')]
 )
-def update_fund_graph(choosed_list, fund_weights):
+def update_fund_graph(choosed_list, fund_weights, factors):
     """
     基金权重，选中的基金列表 -> 二维图
     :return:
     """
+    fac_dic = {
+        i: True if i in factors else False
+        for i in factors_list
+    }
     selected_weights = {
         k: v
         for k, v in fund_weights.items() if k in choosed_list
     }
-    return plot_fund(selected_weights)
+    return plot_fund(fac_dic, selected_weights)
 
 
 @app.callback(

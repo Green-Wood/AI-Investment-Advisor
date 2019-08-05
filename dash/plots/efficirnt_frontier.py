@@ -37,10 +37,12 @@ def efficient_frontier_data_layout(id_list):
                 }
             },
             'xaxis': {
-                'title': 'Annualised Volatility'
+                'title': 'Annualised Volatility',
+                'tickformat': '%'
             },
             'yaxis': {
-                'title': 'Annualised returns'
+                'title': 'Annualised returns',
+                'tickformat': '%'
             }
         }
     }

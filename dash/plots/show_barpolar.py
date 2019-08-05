@@ -3,6 +3,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
 import pathlib
+import copy
 
 PATH = pathlib.Path(__file__).parent.parent
 DATA_PATH = PATH.joinpath("data").resolve()
@@ -38,21 +39,23 @@ def get_w(dic: dict):
             print("Warning:This type is not in type_list {}".format(a_type))
 
     # log
+    original_dic = copy.deepcopy(data_dic)
     for key in data_dic.keys():
-        data_dic[key] = np.log10(data_dic[key])
+        data_dic[key] = np.log(data_dic[key])
     val_max = np.max(list(data_dic.values()))
     val_min = np.min(list(data_dic.values()))
     for key in data_dic.keys():
-        data_dic[key] = (data_dic[key] - val_min) / (val_max - val_min)
-    return data_dic
+        # data_dic[key] = (data_dic[key] - val_min) / (val_max - val_min)
+        data_dic[key] = ((data_dic[key] - val_min) / 40) ** 8
+    return data_dic, original_dic
 
 
 def show_barpolar(dic: dict):
-    w_dic = get_w(dic)
-    weight_sum = sum(w_dic.values())
+    w_dic, original_dic = get_w(dic)
+    weight_sum = sum(original_dic.values())
     fig = go.Figure(
         data=go.Barpolar(
-            hovertext=['{:.3f}%'.format(x / weight_sum * 100) for x in list(w_dic.values())],
+            hovertext=['{:.3f}%'.format(x / weight_sum * 100) for x in list(original_dic.values())],
             hoverinfo="text",
             theta=list(w_dic.keys()),
             r=list(w_dic.values()),

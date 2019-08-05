@@ -36,7 +36,7 @@ def plot_fund(factors_status_dict, node_weight):
     plot_not_fund_dot['fund_weight_true'] = 0
     plot_not_fund_dot['fund_weight'] = 1e-15
 
-    plot_data = pd.concat([plot_fund_dot, plot_not_fund_dot])
+    plot_data = pd.concat([plot_fund_dot, plot_not_fund_dot], sort=True)
 
     plot_data["fund_weight"] = np.log10(plot_data["fund_weight"])
     plot_data["fund_weight"] = (plot_data["fund_weight"] - plot_data["fund_weight"].min()) * 2 + 10
@@ -77,7 +77,7 @@ def plot_fund(factors_status_dict, node_weight):
         ))
 
     fig.update_layout(go.Layout(
-        title='<br>Fund Embedding',
+        title='Fund Embedding',
         titlefont_size=20,
         plot_bgcolor='white',
         xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
