@@ -14,9 +14,9 @@ Page({
     // ecradar: {
     //   onInit: initRadarChart
     // },
-    // ecline: {
-    //   onInit: initLineChart
-    // },
+    ecline: {
+      onInit: initLineChart
+    },
     ec: { 
       onInit: function (canvas, width, height) { 
         barec = echarts.init(canvas, null, { 

@@ -49,7 +49,8 @@ Page({
       Kind: this.whichKind()
     })
   },
-  jumpToRecommendation: function(){
+  jumpToRecommendation: function(options){
+    console.log("ok")
     wx.redirectTo({
       url: '/pages/recommendation/recommendation?&Risk_level=' + this.data.Risk_level,
     })

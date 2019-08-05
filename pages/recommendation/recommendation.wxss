@@ -90,7 +90,7 @@ ec-canvas {
   flex-direction: column;
   box-sizing: border-box;
   width: 90%;
-  max-height: 600rpx;
+  min-height: 600rpx;
   background-color: rgba(255, 255, 255, 0.952);
   border-radius: 10rpx;
   border-left-style: outset;

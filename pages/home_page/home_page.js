@@ -6,7 +6,7 @@ Page({
   },
 
 
-  logo2: function () {
+  logo2: function (options) {
     wx.showModal({
       title: '提示',
       content: '建议您投资前先进行风险测评。您确定要直接去投资吗？',

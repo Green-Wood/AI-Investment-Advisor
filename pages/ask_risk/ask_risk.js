@@ -1,6 +1,5 @@
 // pages/ask_risk/ask_risl.js
 
-// 导航栏设置
 const app = getApp()
 
 Page({
@@ -14,7 +13,7 @@ Page({
     // 此页面 页面内容距最顶部的距离
     height: app.globalData.height * 2 + 20,
   },
-  jumpToRiskTest:function(){
+  jumpToRiskTest: function(options){
     wx.redirectTo({
       url: '../risk_test/risk_test',
     })
