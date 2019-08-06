@@ -3,6 +3,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import dash_table
 from dash.dependencies import Input, Output
+from dash.exceptions import PreventUpdate
 import plotly.graph_objs as go
 
 import pandas as pd
@@ -13,6 +14,7 @@ from plots.efficirnt_frontier import efficient_frontier_data_layout, get_fixed_a
 from plots.ploy_sna import ploy_sna_pic
 from plots.show_barpolar import show_barpolar
 from plots.plot_fund_graph import plot_fund
+from plots.plot_profile import get_portfolio_figdata, get_stock_figdata, parse_relaydata
 
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
@@ -58,6 +60,8 @@ config = {
 app.layout = html.Div(
     [
         dcc.Store(id="aggregate_data"),
+        dcc.Store(id="single"),
+        dcc.Store(id="portfolio_data"),
         # empty Div to trigger javascript file for graph resizing
         html.Div(id="output-clientside"),
         html.Div(
@@ -364,6 +368,43 @@ def update_fund_list(selectedData, derived_virtual_data, selected_row):
 #     :return:
 #     """
 #     pass
+
+@app.callback(
+    [Output('profile_graph', 'figure'),
+     Output('single', 'data'), Output('portfolio_data', 'data')],
+    [Input('fund_list', 'children')]
+)
+def update_profile(value):
+    print("Updating profile...")
+    if value is None:
+        print("None")
+        raise PreventUpdate("Empty")
+    codes = value.split()
+    if len(codes) == 1:
+        print("Single", codes[0])
+        return get_stock_figdata(codes[0]), True, None
+    fig_data, index = get_portfolio_figdata(codes)
+    return fig_data, False, index
+
+
+@app.callback(
+    [Output('info', 'children')],
+    [Input('profile_graph', 'relayoutData'), Input('single', 'data')]
+)
+def update_info(data, single):
+    print("Updating info...")
+    if single:
+        print("Single")
+        raise PreventUpdate("Single!")
+    if data and 'xaxis.range[0]' in data:
+        start_date = data['xaxis.range[0]']
+        end_date = data['xaxis.range[1]']
+        if end_date != '2018-12-28':
+            print("Don't update!", data['xaxis.range[1]'])
+            raise PreventUpdate("Nothing changed")
+        delta = parse_relaydata(start_date, end_date)
+        return [delta]
+    raise PreventUpdate("None")
 
 
 @app.callback(
