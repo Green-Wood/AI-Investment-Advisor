@@ -13,16 +13,5 @@ addons:
 services:
   - docker
 
-before_install:
-  - sudo apt-get install -y sshpass
-
 script:
-  - docker-compose -f docker-compose.yml up --build -d
-
-after_success:
-  - echo "$DOCKER_PASSWORD" | docker login --username=$DOCKER_ID --password-stdin
-  - docker-compose push
-
-after_script:
-  - docker-compose -f docker-compose.yml down
   - sshpass -e ssh $SERVER_USER@$SERVER_IP -o stricthostkeychecking=no 'cd ~/AI-Investment-Advisor && git pull origin dash && sh deploy.sh'

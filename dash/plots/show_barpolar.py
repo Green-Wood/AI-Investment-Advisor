@@ -61,11 +61,17 @@ def show_barpolar(dic: dict):
             r=list(w_dic.values()),
         ),
     )
-    fig.update_layout(title='Fund type')
 
     return {
         'data': fig.data,
-        'layout': fig.layout
+        'layout': {
+            'title': {
+                'text': 'Fund Type',
+                'font': {
+                    'size': 20
+                }
+            }
+        }
     }
 
 

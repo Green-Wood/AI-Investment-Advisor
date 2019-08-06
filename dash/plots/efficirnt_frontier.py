@@ -33,7 +33,7 @@ def efficient_frontier_data_layout(id_list):
             'title': {
                 'text': 'Efficient Frontier',
                 'font': {
-                    'size': 30
+                    'size': 20
                 }
             },
             'xaxis': {
