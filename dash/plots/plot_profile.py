@@ -9,10 +9,10 @@ parse_date = lambda d: datetime.strptime(d, "%Y-%m-%d")
 
 
 def construct_traces(code):
-    df0 = pd.read_csv("../data/adjusted_net_value.csv", parse_dates=["datetime"], index_col=0)
-    upper = pd.read_csv("../data/yhat_upper_total.csv")
-    lower = pd.read_csv("../data/yhat_lower_total.csv")
-    df1 = pd.read_csv("../data/yhat_total.csv", parse_dates=["datetime"])
+    df0 = pd.read_csv("data/adjusted_net_value.csv", parse_dates=["datetime"], index_col=0)
+    upper = pd.read_csv("data/yhat_upper_total.csv")
+    lower = pd.read_csv("data/yhat_lower_total.csv")
+    df1 = pd.read_csv("data/yhat_total.csv", parse_dates=["datetime"])
     forecast_time = df1['datetime']
     df0 = df0.loc['2017-01-01':'2018-12-11']
     history = df0[code]
@@ -184,9 +184,9 @@ def get_portfolio_figdata_helper(data):
 
 
 def get_portfolio_figdata(codes):
-    with open('../data/date.csv') as f:
+    with open('data/date.csv') as f:
         start_end = pd.read_csv(f, index_col=0)
-    with open('../data/adjusted_net_value.csv') as f:
+    with open('data/adjusted_net_value.csv') as f:
         nav = pd.read_csv(f, index_col=0)
     print("Getting portfolio backtest results...")
 

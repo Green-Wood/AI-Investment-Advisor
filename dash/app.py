@@ -271,7 +271,8 @@ app.layout = html.Div(
         # 储存用户选择的基金列表
         dcc.Store(id='fund_list'),
         # 储存当前状态下的基金权重
-        dcc.Store(id='fund_weights')
+        dcc.Store(id='fund_weights'),
+        dcc.Store(id='lala')
     ],
     id="mainContainer",
     style={"display": "flex", "flex-direction": "column"},
@@ -372,14 +373,14 @@ def update_fund_list(selectedData, derived_virtual_data, selected_row):
 @app.callback(
     [Output('profile_graph', 'figure'),
      Output('single', 'data'), Output('portfolio_data', 'data')],
-    [Input('fund_list', 'children')]
+    [Input('fund_list', 'data')]
 )
-def update_profile(value):
+def update_profile(codes):
     print("Updating profile...")
-    if value is None:
+    if codes is None:
         print("None")
         raise PreventUpdate("Empty")
-    codes = value.split()
+    # codes = value.split()
     if len(codes) == 1:
         print("Single", codes[0])
         return get_stock_figdata(codes[0]), True, None
@@ -388,7 +389,7 @@ def update_profile(value):
 
 
 @app.callback(
-    [Output('info', 'children')],
+    [Output('lala', 'data')],
     [Input('profile_graph', 'relayoutData'), Input('single', 'data')]
 )
 def update_info(data, single):
