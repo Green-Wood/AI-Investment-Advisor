@@ -113,7 +113,7 @@ app.layout = html.Div(
                 html.Div(
                     [
                         html.P(
-                            "Choose your risk:",
+                            "Choose your risk",
                             className="control_label",
                             style={
                                 'text-align': 'center'
@@ -159,7 +159,7 @@ app.layout = html.Div(
                                     className="mini_container",
                                 ),
                                 html.Div(
-                                    [html.H6(id="return_text", children='23M'), html.P("Return")],
+                                    [html.H6(id="return_text", children='23M'), html.P("Annualized Return")],
                                     id="gas",
                                     className="mini_container",
                                 ),
@@ -180,22 +180,22 @@ app.layout = html.Div(
                         html.Div(
                             [
                                 html.Div(
-                                    [html.H6(id="alpha_text", children='1234'), html.P("Alpha")],
+                                    [html.H6(id="alpha_text", children='示例'), html.P("Alpha")],
                                     id="alpha",
                                     className="mini_container",
                                 ),
                                 html.Div(
-                                    [html.H6(id="win_rate_text", children='23M'), html.P("Win Rate")],
+                                    [html.H6(id="win_rate_text", children='示例'), html.P("Win Rate")],
                                     id='win_rate',
                                     className="mini_container",
                                 ),
                                 html.Div(
-                                    [html.H6(id="max_drawdown_text", children='23M'), html.P("Max Drawdown")],
+                                    [html.H6(id="max_drawdown_text", children='示例'), html.P("Max Drawdown")],
                                     id="max_drawdown",
                                     className="mini_container",
                                 ),
                                 html.Div(
-                                    [html.H6(id="sortino_ratio_text", children='23M'), html.P("Sortino Ratio")],
+                                    [html.H6(id="sortino_ratio_text", children='示例'), html.P("Sortino Ratio")],
                                     id="sortino_ratio",
                                     className="mini_container",
                                 )

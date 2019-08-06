@@ -112,7 +112,15 @@ body {
   flex: 1;
 }
 
+#alpha {
+  flex: 1;
+}
+
 #gas {
+  flex: 1;
+}
+
+#win_rate {
   flex: 1;
 }
 
@@ -124,7 +132,15 @@ body {
   flex: 1;
 }
 
+#max_drawdown {
+  flex: 1;
+}
+
 #water {
+  flex: 1;
+}
+
+#sortino_ratio {
   flex: 1;
 }
 
