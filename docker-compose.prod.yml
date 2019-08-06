@@ -27,7 +27,9 @@ services:
     environment:
       - MONGO_USERNAME=greenwood
       - MONGO_PASSWORD=123
-
+  dash:
+    restart: always
+    image: greenw00d/investment-advisor-dash
 #  ml:
 #    restart: always
 #    image: greenw00d/flask-demo-model:latest

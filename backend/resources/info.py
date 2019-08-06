@@ -81,15 +81,12 @@ class Allocator(Resource):
         for key in weight.keys():
             idx = list(data['code']).index(int(key))
             a_type = data['fund_type'][idx]
-            if a_type in data_dic.keys():
-                data_dic[a_type] = data_dic[a_type] + weight[key]
-            else:
-                print("Warning:This type is not in type_list")
-        sum = 0
-        for key in data_dic.keys():
-            sum = sum + data_dic[key]
-        for key in data_dic.keys():
-            data_dic[key] = data_dic[key] / sum
+            data_dic[a_type] = data_dic[a_type] + weight[key]
+        # sum = 0
+        # for key in data_dic.keys():
+        #     sum = sum + data_dic[key]
+        # for key in data_dic.keys():
+        #     data_dic[key] = data_dic[key] / sum
 
         return {
             'ans': {

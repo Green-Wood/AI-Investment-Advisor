@@ -31,6 +31,7 @@ instruments = pd.read_csv(DATA_PATH.joinpath('sna_portfolio_data.csv'), encoding
 factors_list = ['fund_type_factors', 'issuer_count_factors', 'fund_manager_factors', 'fund_manager_numbers_factors',
                 'manager_past_factors', 'benchmark_embedding_factors']
 chinese_factor_list = ['基金类型', '公司规模', '基金经理', '经理基金数', '经理历史收益', 'Benchmark']
+english_factor_list = ['fund type', 'company size', 'fund manager', 'manage No.', 'history return', 'benchmark']
 
 layout = dict(
     autosize=True,
@@ -114,6 +115,9 @@ app.layout = html.Div(
                         html.P(
                             "Choose your risk:",
                             className="control_label",
+                            style={
+                                'text-align': 'center'
+                            }
                         ),
                         dcc.Slider(
                             id="risk_slider",
@@ -199,14 +203,14 @@ app.layout = html.Div(
                                 {
                                     'value': factor,
                                     'label': chinese_factor
-                                } for factor, chinese_factor in zip(factors_list, chinese_factor_list)
+                                } for factor, chinese_factor in zip(factors_list, english_factor_list)
                             ],
                             value=factors_list,
                             labelStyle={
                                 'display': 'inline-block',
                             },
                             style={
-                                'align': 'center'
+                                'text-align': 'center'
                             }
                         ),
                         dcc.Graph(id="fund_graph")

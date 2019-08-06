@@ -134,17 +134,21 @@ def ploy_sna_pic(codes_list):
         mode='lines'))
 
     if len(codes_list) == 1:
-        titles = '基金经理技能树'
+        titles = 'Fund Manager Skills'
         sizes = 25
     else:
-        titles = '基金类别图谱'
+        titles = 'Fund Type Graph'
         sizes = 18
-
+    chinese_dic = {
+        '姓名': 'manager',
+        '基金名称': 'fund name',
+        '基金类型': 'fund type'
+    }
     for node_i in set(node_df['type'].values):
         fig.add_trace(go.Scatter(
             x=node_df[node_df['type'] == node_i]['X'],
             y=node_df[node_df['type'] == node_i]['Y'],
-            name=node_i,
+            name=chinese_dic[node_i],
             mode="markers",
             hoverinfo='text',  # 隐藏坐标
             opacity=0.8,
