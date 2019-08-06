@@ -39,9 +39,9 @@ def plot_fund(factors_status_dict, node_weight):
     plot_data = pd.concat([plot_fund_dot, plot_not_fund_dot], sort=True)
 
     plot_data["fund_weight"] = np.log10(plot_data["fund_weight"])
-    plot_data["fund_weight"] = (plot_data["fund_weight"] - plot_data["fund_weight"].min()) * 2 + 10
+    plot_data["fund_weight"] = (plot_data["fund_weight"] - plot_data["fund_weight"].min()) ** 1.5 + 10
 
-    plot_data['fund_weight_true'] = plot_data['fund_weight_true'].apply(lambda x: format(x, '.5%'))
+    plot_data['fund_weight_true'] = plot_data['fund_weight_true'].apply(lambda x: '{:.7f}‱'.format(x * 10000))
 
     plot_data['show_text'] = '基金代码：' + plot_data.index.map(str) + '<br>' + '基金名称：' + plot_data[
         'symbol'] + '<br>' + '基金占比：' + plot_data['fund_weight_true'] + '<br>' + '基金类型：' + plot_data['fund_type']
@@ -53,7 +53,7 @@ def plot_fund(factors_status_dict, node_weight):
               'QDII': '#f368e0',
               'Other': '#ff9f43',
               'Hybrid': '#01a3a4',
-              'Unselected': '#8395a7'
+              'Unselected': '#dfe6e9'
               }
 
     add_order = list(set(plot_data['fund_type_color'].values))

@@ -137,8 +137,6 @@ app.layout = html.Div(
                             columns=[{"name": i, "id": i} for i in ['code', 'symbol', 'fund_type', 'weight']],
                             row_selectable="multi",
                             selected_rows=[],
-                            sort_action="native",
-                            sort_mode="multi",
                             fixed_rows={'headers': True, 'data': 0},
                             page_action="native",
                             page_current=0,
@@ -177,6 +175,32 @@ app.layout = html.Div(
                                 ),
                             ],
                             id="info-container",
+                            className="row container-display",
+                        ),
+                        html.Div(
+                            [
+                                html.Div(
+                                    [html.H6(id="alpha_text", children='1234'), html.P("Alpha")],
+                                    id="alpha",
+                                    className="mini_container",
+                                ),
+                                html.Div(
+                                    [html.H6(id="win_rate_text", children='23M'), html.P("Win Rate")],
+                                    id='win_rate',
+                                    className="mini_container",
+                                ),
+                                html.Div(
+                                    [html.H6(id="max_drawdown_text", children='23M'), html.P("Max Drawdown")],
+                                    id="max_drawdown",
+                                    className="mini_container",
+                                ),
+                                html.Div(
+                                    [html.H6(id="sortino_ratio_text", children='23M'), html.P("Sortino Ratio")],
+                                    id="sortino_ratio",
+                                    className="mini_container",
+                                )
+                            ],
+                            id="profit_container",
                             className="row container-display",
                         ),
                         html.Div(
@@ -273,10 +297,12 @@ def get_fund_table(dict_weight):
     weight_df = pd.DataFrame.from_dict(dict_weight, orient='index', columns=['weight'])
     weight_df.reset_index(inplace=True)
     weight_df['index'] = weight_df['index'].astype(int)
-    weight_df['weight'] = weight_df['weight'].apply(lambda x: '%.5f' % x)
     ins_wei_df = instruments.merge(weight_df, left_on='code', right_on='index')
     ins_wei_df = ins_wei_df.drop(['index'], axis=1)
+    ins_wei_df = ins_wei_df.sort_values('weight', ascending=False)
+    ins_wei_df['weight'] = ins_wei_df['weight'].apply(lambda x: '{:.5f}%'.format(x * 100))
     return ins_wei_df
+
 
 
 @app.callback(
@@ -368,7 +394,7 @@ def update_pie(choosed_list, fund_weights):
     基金权重，选中的基金列表 -> 饼图
     :return:
     """
-    if choosed_list is None:
+    if choosed_list is None or fund_weights is None:
         return None
     selected_weights = {
         k: v
@@ -388,6 +414,10 @@ def update_fund_graph(choosed_list, fund_weights, factors):
     基金权重，选中的基金列表 -> 二维图
     :return:
     """
+    if fund_weights is None:
+        return None
+    if len(factors) == 0:
+        factors = factors_list
     fac_dic = {
         i: True if i in factors else False
         for i in factors_list

@@ -55,7 +55,7 @@ def show_barpolar(dic: dict):
     weight_sum = sum(original_dic.values())
     fig = go.Figure(
         data=go.Barpolar(
-            hovertext=['{:.5f}%'.format(x / weight_sum * 100) for x in list(original_dic.values())],
+            hovertext=['{:.6f}%'.format(x / weight_sum * 100) for x in list(original_dic.values())],
             hoverinfo="text",
             theta=list(w_dic.keys()),
             r=list(w_dic.values()),
