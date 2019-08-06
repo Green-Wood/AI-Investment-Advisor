@@ -368,6 +368,8 @@ def update_pie(choosed_list, fund_weights):
     基金权重，选中的基金列表 -> 饼图
     :return:
     """
+    if choosed_list is None:
+        return None
     selected_weights = {
         k: v
         for k, v in fund_weights.items() if k in choosed_list
