@@ -20,8 +20,8 @@ body {
 .pretty_container {
   border-radius: 5px;
   background-color: #f9f9f9;
-  margin: 5px;
-  padding: 10px;
+  margin: 3px;
+  /*padding: 5px;*/
   position: relative;
   box-shadow: 2px 2px 2px lightgrey;
 }

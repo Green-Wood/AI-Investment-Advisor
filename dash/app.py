@@ -168,7 +168,7 @@ app.layout = html.Div(
                 html.Div(
                     # 相关系数
                     [dcc.Graph(id="corr_graph")],
-                    className="pretty_container four columns",
+                    className="pretty_container five columns",
                 ),
                 html.Div(
                     # 效用边界
@@ -228,10 +228,11 @@ app.layout = html.Div(
             className="row flex-display",
         ),
         # 储存用户选择的基金列表
-        dcc.Store(id='fund_list'),
-        # 储存当前状态下的基金权重
-        dcc.Store(id='fund_weights'),
-        dcc.Store(id='lala')
+        dcc.Store(id='user_list'),
+        # 储存一定risk下的最佳策略
+        dcc.Store(id='best_weights'),
+        # 储存用户所选择的基金的最佳策略
+        dcc.Store(id='user_weights'),
     ],
     id="mainContainer",
     # style={"display": "flex", "flex-direction": "column"},
@@ -427,19 +428,21 @@ def get_fund_table(dict_weight):
 #         for k, v in fund_weights.items() if k in choosed_list
 #     }
 #     return plot_fund(fac_dic, selected_weights)
-#
-#
-# @app.callback(
-#     Output('efficient_frontier_graph', 'figure'),
-#     [Input('fund_list', 'data')]
-# )
-# def update_efficient_frontier(choosed_list):
-#     """
-#     选中的基金列表 -> 有效边界
-#     :return:
-#     """
-#     data_layout = efficient_frontier_data_layout(choosed_list)
-#     return data_layout
+
+
+@app.callback(
+    Output('efficient_frontier_graph', 'figure'),
+    [Input('user_list', 'data')]
+)
+def update_efficient_frontier(choosed_list):
+    """
+    选中的基金列表 -> 有效边界
+    :return:
+    """
+    data_layout = efficient_frontier_data_layout(choosed_list)
+    return data_layout
+
+
 #
 #
 # @app.callback(
