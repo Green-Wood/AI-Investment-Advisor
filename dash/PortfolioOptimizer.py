@@ -147,10 +147,10 @@ class PortfolioOptimizer:
         n=len(columns)
         results = np.zeros((3, num_portfolios))
         for i in range(num_portfolios):
-            weights = np.random.random(n)
-            weights /= np.sum(weights)
-            portfolio_std_dev=sqrt(np.dot(weights.T,np.dot(t_cov,weights)))
-            portfolio_return = np.dot(weights.T, t_mu)
+            w = np.random.random(n)
+            w /= np.sum(w)
+            portfolio_std_dev=sqrt(np.dot(w.T,np.dot(t_cov,w)))
+            portfolio_return = np.dot(w.T, t_mu)
             results[0, i] = portfolio_std_dev
             results[1, i] = portfolio_return
             results[2, i] = (portfolio_return - self.risk_free_rate) / portfolio_std_dev
