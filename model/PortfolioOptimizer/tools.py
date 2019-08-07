@@ -6,7 +6,7 @@ import pypfopt.risk_models as risk_models
 import datetime
 
 
-def get_weights(data,start_date,end_date,columns,fixed='sharpe',value=0.05):
+def get_weights(data,start_date,end_date,columns,n_threads=1,fixed='sharpe',value=0.05):
     """
 
     :param data: DataFrame,
@@ -18,6 +18,8 @@ def get_weights(data,start_date,end_date,columns,fixed='sharpe',value=0.05):
         End date to estimate mu and sigma.
     :param columns: list, ['id1', 'id2',..., 'idn']
         Identifiers of funds to use to optimize.
+    :param n_threads: int
+        Number of threads.
     :param fixed: str, 'sharpe' or 'volatility' or 'return'
         Optimization constraints, defaults to 'sharpe'.
     :param value: float
@@ -42,7 +44,7 @@ def get_weights(data,start_date,end_date,columns,fixed='sharpe',value=0.05):
     subdata=data.loc[start_date:end_date,columns]
     optimizer=PortfolioOptimizer(expected_returns.ema_historical_return(subdata),
                                  risk_models.CovarianceShrinkage(subdata).ledoit_wolf())
-    optimizer.optimize()
+    optimizer.optimize(n_threads=n_threads)
     return optimizer.get_fixed_ans(fixed,value)
 
 
@@ -50,17 +52,20 @@ if __name__ == '__main__':
     data = pd.read_csv('C:/Users/qin_t/Desktop/PortfolioOptimization/funds/funds/adjusted_net_value.csv',
                        index_col=0)
 
-    print(get_weights(data, '2014-01-04', '2014-01-12',
+    print(get_weights(data, '2014-01-04', '2016-01-12',
                      columns=['590002', '610002', '620002', '630002'],
+                     n_threads=2,
                      fixed='sharpe'))
 
     print(get_weights(data, '2014-01-04', '2014-01-12',
                      columns=['590002', '610002', '620002', '630002'],
+                     n_threads=2,
                      fixed='volatility',
                      value=0.05))
 
     print(get_weights(data,'2014-01-04','2014-01-12',
                 columns=['590002','610002','620002','630002'],
+                n_threads=2,
                 fixed='return',
                 value=0.05))
 
