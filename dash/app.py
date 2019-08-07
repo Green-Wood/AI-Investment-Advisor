@@ -38,7 +38,7 @@ english_factor_list = ['fund type', 'company size', 'fund manager', 'manage No.'
 layout = dict(
     autosize=True,
     automargin=True,
-    margin=dict(l=30, r=30, b=20, t=40),
+    margin=dict(l=30, r=30, b=20, t=10),
     hovermode="closest",
     plot_bgcolor="#F9F9F9",
     paper_bgcolor="#F9F9F9",
@@ -64,6 +64,125 @@ app.layout = html.Div(
         dcc.Store(id="portfolio_data"),
         # empty Div to trigger javascript file for graph resizing
         html.Div(id="output-clientside"),
+        # html.Div(
+        #     [
+        #         html.Div(
+        #             [
+        #                 html.Div(
+        #                     [
+        #                         html.Div(
+        #                             [html.H6(id="fund_text", children='1234'), html.P("No. of Funds")],
+        #                             id="wells",
+        #                             className="mini_container",
+        #                         ),
+        #                         html.Div(
+        #                             [html.H6(id="return_text", children='23M'), html.P("Annualized Return")],
+        #                             id="gas",
+        #                             className="mini_container",
+        #                         ),
+        #                         html.Div(
+        #                             [html.H6(id="volatility_text", children='23M'), html.P("Volatility")],
+        #                             id="oil",
+        #                             className="mini_container",
+        #                         ),
+        #                         html.Div(
+        #                             [html.H6(id="sharp_text", children='23M'), html.P("Sharp Ratio")],
+        #                             id="water",
+        #                             className="mini_container",
+        #                         ),
+        #                     ],
+        #                     id="info-container",
+        #                     className="row container-display",
+        #                 ),
+        #                 html.Div(
+        #                     [
+        #                         html.Div(
+        #                             [html.H6(id="alpha_text", children='示例'), html.P("Alpha")],
+        #                             id="alpha",
+        #                             className="mini_container",
+        #                         ),
+        #                         html.Div(
+        #                             [html.H6(id="win_rate_text", children='示例'), html.P("Win Rate")],
+        #                             id='win_rate',
+        #                             className="mini_container",
+        #                         ),
+        #                         html.Div(
+        #                             [html.H6(id="max_drawdown_text", children='示例'), html.P("Max Drawdown")],
+        #                             id="max_drawdown",
+        #                             className="mini_container",
+        #                         ),
+        #                         html.Div(
+        #                             [html.H6(id="sortino_ratio_text", children='示例'), html.P("Sortino Ratio")],
+        #                             id="sortino_ratio",
+        #                             className="mini_container",
+        #                         )
+        #                     ],
+        #                     id="profit_container",
+        #                     className="row container-display",
+        #                 ),
+        #
+        #             ],
+        #             id="right-column",
+        #             className="eight columns",
+        #         ),
+        #     ],
+        #     className="row flex-display",
+        # ),
+        html.Div(
+            [
+                html.Div(
+                    # 用户选择区
+                    [
+                        html.P(
+                            "Choose your risk",
+                            className="control_label",
+                            style={
+                                'text-align': 'center'
+                            }
+                        ),
+                        dcc.Slider(
+                            id="risk_slider",
+                            min=min(config['risk_range']),
+                            max=max(config['risk_range']),
+                            value=min(config['risk_range']),
+                            marks={i: '{}'.format(i) for i in config['risk_range']},
+                            className="dcc_control",
+                        ),
+                        dcc.Graph()
+                    ],
+                    id='user_choose_playground',
+                    className='pretty_container six columns',
+                ),
+                html.Div(
+                    # 基金收益图
+                    [
+                        dcc.Graph(id="profile_graph")
+                    ],
+                    className='pretty_container six columns'
+                )
+            ],
+            className="row flex-display",
+        ),
+        html.Div(
+            [
+                html.Div(
+                    # 相关系数
+                    [dcc.Graph(id="corr_graph")],
+                    className="pretty_container four columns",
+                ),
+                html.Div(
+                    # 效用边界
+                    [dcc.Graph(id="efficient_frontier_graph")],
+                    className="pretty_container four columns",
+                ),
+                html.Div(
+                    # 2048
+                    [dcc.Graph(id="network_graph")],
+                    className="pretty_container four columns",
+                ),
+            ],
+            className="row flex-display",
+        ),
         html.Div(
             [
                 html.Div(
@@ -74,7 +193,8 @@ app.layout = html.Div(
                             style={
                                 "height": "80px",
                                 "width": "auto",
-                                "margin-bottom": "25px",
+                                "margin-left": "25px",
+                                'textAlign': 'center'
                             },
                         )
                     ],
@@ -82,17 +202,13 @@ app.layout = html.Div(
                 ),
                 html.Div(
                     [
-                        html.Div(
-                            [
-                                html.H3(
-                                    "AI-Investment Advisor",
-                                    style={"margin-bottom": "0px"},
-                                ),
-                                html.H5(
-                                    "Deecamp 36", style={"margin-top": "0px"}
-                                ),
-                            ]
-                        )
+                        html.H3(
+                            "AI-Investment Advisor",
+                            style={"margin-bottom": "0px"},
+                        ),
+                        html.H5(
+                            "Deecamp 36", style={"margin-top": "0px"}
+                        ),
                     ],
                     className="one-half column",
                     id="title",
@@ -110,163 +226,6 @@ app.layout = html.Div(
             ],
             id="header",
             className="row flex-display",
-            style={"margin-bottom": "25px"},
-        ),
-        html.Div(
-            [
-                html.Div(
-                    [
-                        html.P(
-                            "Choose your risk",
-                            className="control_label",
-                            style={
-                                'text-align': 'center'
-                            }
-                        ),
-                        dcc.Slider(
-                            id="risk_slider",
-                            min=min(config['risk_range']),
-                            max=max(config['risk_range']),
-                            value=min(config['risk_range']),
-                            marks={i: '{}'.format(i) for i in config['risk_range']},
-                            className="dcc_control",
-                        ),
-                        html.H5("Fund list", style={
-                            'margin-top': '25px',
-                            'text-align': 'center'
-                        }),
-                        dash_table.DataTable(
-                            id='fund_table',
-                            filter_action="native",
-                            columns=[{"name": i, "id": i} for i in ['code', 'symbol', 'fund_type', 'weight']],
-                            row_selectable="multi",
-                            selected_rows=[],
-                            fixed_rows={'headers': True, 'data': 0},
-                            page_action="native",
-                            page_current=0,
-                            page_size=14,
-                            style_cell={
-                                'minWidth': '60px'
-                            }
-                        )
-                    ],
-                    className="pretty_container four columns",
-                    id="cross-filter-options",
-                ),
-                html.Div(
-                    [
-                        html.Div(
-                            [
-                                html.Div(
-                                    [html.H6(id="fund_text", children='1234'), html.P("No. of Funds")],
-                                    id="wells",
-                                    className="mini_container",
-                                ),
-                                html.Div(
-                                    [html.H6(id="return_text", children='23M'), html.P("Annualized Return")],
-                                    id="gas",
-                                    className="mini_container",
-                                ),
-                                html.Div(
-                                    [html.H6(id="volatility_text", children='23M'), html.P("Volatility")],
-                                    id="oil",
-                                    className="mini_container",
-                                ),
-                                html.Div(
-                                    [html.H6(id="sharp_text", children='23M'), html.P("Sharp Ratio")],
-                                    id="water",
-                                    className="mini_container",
-                                ),
-                            ],
-                            id="info-container",
-                            className="row container-display",
-                        ),
-                        html.Div(
-                            [
-                                html.Div(
-                                    [html.H6(id="alpha_text", children='示例'), html.P("Alpha")],
-                                    id="alpha",
-                                    className="mini_container",
-                                ),
-                                html.Div(
-                                    [html.H6(id="win_rate_text", children='示例'), html.P("Win Rate")],
-                                    id='win_rate',
-                                    className="mini_container",
-                                ),
-                                html.Div(
-                                    [html.H6(id="max_drawdown_text", children='示例'), html.P("Max Drawdown")],
-                                    id="max_drawdown",
-                                    className="mini_container",
-                                ),
-                                html.Div(
-                                    [html.H6(id="sortino_ratio_text", children='示例'), html.P("Sortino Ratio")],
-                                    id="sortino_ratio",
-                                    className="mini_container",
-                                )
-                            ],
-                            id="profit_container",
-                            className="row container-display",
-                        ),
-                        html.Div(
-                            # 基金收益图
-                            [dcc.Graph(id="profile_graph")],
-                            id="countGraphContainer",
-                            className="pretty_container",
-                        ),
-                    ],
-                    id="right-column",
-                    className="eight columns",
-                ),
-            ],
-            className="row flex-display",
-        ),
-        html.Div(
-            [
-                html.Div(
-                    # 基金的二维嵌入
-                    [
-                        dcc.Checklist(
-                            id='factors_check_list',
-                            options=[
-                                {
-                                    'value': factor,
-                                    'label': chinese_factor
-                                } for factor, chinese_factor in zip(factors_list, english_factor_list)
-                            ],
-                            value=factors_list,
-                            labelStyle={
-                                'display': 'inline-block',
-                            },
-                            style={
-                                'text-align': 'center'
-                            }
-                        ),
-                        dcc.Graph(id="fund_graph")
-                    ],
-                    className="pretty_container seven columns",
-                ),
-                html.Div(
-                    # 雷达图
-                    [dcc.Graph(id="radar_graph")],
-                    className="pretty_container five columns",
-                ),
-            ],
-            className="row flex-display",
-        ),
-        html.Div(
-            [
-                html.Div(
-                    # 效用边界
-                    [dcc.Graph(id="efficient_frontier_graph")],
-                    className="pretty_container seven columns",
-                ),
-                html.Div(
-                    # 关系网络
-                    [dcc.Graph(id="network_graph")],
-                    className="pretty_container five columns",
-                ),
-            ],
-            className="row flex-display",
         ),
         # 储存用户选择的基金列表
         dcc.Store(id='fund_list'),
@@ -275,7 +234,7 @@ app.layout = html.Div(
         dcc.Store(id='lala')
     ],
     id="mainContainer",
-    style={"display": "flex", "flex-direction": "column"},
+    # style={"display": "flex", "flex-direction": "column"},
 )
 
 
@@ -309,191 +268,190 @@ def get_fund_table(dict_weight):
     return ins_wei_df
 
 
-
-@app.callback(
-    [Output('fund_weights', 'data'),
-     Output('fund_text', 'children'),
-     Output('return_text', 'children'),
-     Output('volatility_text', 'children'),
-     Output('sharp_text', 'children')],
-    [
-        # Input('fund_list', 'children'),
-        Input('risk_slider', 'value')]
-)
-def update_weights(risk_val):
-    """
-    拉动risk滑块 -> 基金的权重
-    :param fund_list:
-    :param risk_val:
-    :return:
-    """
-    risk_val = risk_val / 100
-    ret, vol, sharp, dict_weights = get_fixed_ans(fixed='volatility', value=risk_val)
-    return dict_weights, len(dict_weights), ret, vol, sharp
-
-
-@app.callback(
-    Output('fund_list', 'data'),
-    [Input('fund_graph', 'selectedData'),
-     Input('fund_table', "derived_virtual_data"),
-     Input('fund_table', 'derived_virtual_selected_rows')]
-)
-def update_fund_list(selectedData, derived_virtual_data, selected_row):
-    """
-    二维图中选取 -> 选中的基金列表
-    基金列表中选取 -> 选中的基金列表
-    :return:
-    """
-    if selectedData is None and (selected_row == None or len(selected_row) == 0):
-        ret, risk, sharpe, weights = get_fixed_ans()
-        columns = [key for key, v in weights.items() if v > 1e-8]
-        return columns
-    selected_code = set()
-    row_code = set()
-    if len(selected_row) != 0:
-        row_code = {derived_virtual_data[x]['code'] for x in selected_row}
-    if selectedData is not None:
-        selected_code = {p['customdata'] for p in selectedData['points']}
-    code = row_code | selected_code
-    code = ['0' * (6 - len(str(x))) + str(x) for x in code]
-    return code
-
-
 # @app.callback(
-#     Output('profile_graph', 'figure'),
-#     [Input('fund_list', 'children')]
+#     [Output('fund_weights', 'data'),
+#      Output('fund_text', 'children'),
+#      Output('return_text', 'children'),
+#      Output('volatility_text', 'children'),
+#      Output('sharp_text', 'children')],
+#     [
+#         # Input('fund_list', 'children'),
+#         Input('risk_slider', 'value')]
 # )
-# def update_profile(choosed_list):
+# def update_weights(risk_val):
 #     """
-#     选中的基金列表 -> 回测、单位净值
+#     拉动risk滑块 -> 基金的权重
+#     :param fund_list:
+#     :param risk_val:
 #     :return:
 #     """
-#     pass
-
-@app.callback(
-    [Output('profile_graph', 'figure'),
-     Output('single', 'data'), Output('portfolio_data', 'data')],
-    [Input('fund_list', 'data')]
-)
-def update_profile(codes):
-    print("Updating profile...")
-    if codes is None:
-        print("None")
-        raise PreventUpdate("Empty")
-    # codes = value.split()
-    if len(codes) == 1:
-        print("Single", codes[0])
-        return get_stock_figdata(codes[0]), True, None
-    fig_data, index = get_portfolio_figdata(codes)
-    return fig_data, False, index
-
-
-@app.callback(
-    [Output('lala', 'data')],
-    [Input('profile_graph', 'relayoutData'), Input('single', 'data')]
-)
-def update_info(data, single):
-    print("Updating info...")
-    if single:
-        print("Single")
-        raise PreventUpdate("Single!")
-    if data and 'xaxis.range[0]' in data:
-        start_date = data['xaxis.range[0]']
-        end_date = data['xaxis.range[1]']
-        if end_date != '2018-12-28':
-            print("Don't update!", data['xaxis.range[1]'])
-            raise PreventUpdate("Nothing changed")
-        delta = parse_relaydata(start_date, end_date)
-        return [delta]
-    raise PreventUpdate("None")
-
-
-@app.callback(
-    Output('fund_table', 'data'),
-    [
-        # Input('fund_list', 'children'),
-        Input('fund_weights', 'data')]
-)
-def update_fund_table(fund_weights):
-    """
-    基金权重，选中的基金列表 -> fund table
-    :return:
-    """
-    if fund_weights is None:
-        ret, risk, sharpe, weights = get_fixed_ans(fixed='volatility', value=0)
-        fund_weights = weights
-    df = get_fund_table(fund_weights)
-    return df.to_dict('records')
-
-
-@app.callback(
-    Output('radar_graph', 'figure'),
-    [Input('fund_list', 'data'),
-     Input('fund_weights', 'data')]
-)
-def update_pie(choosed_list, fund_weights):
-    """
-    基金权重，选中的基金列表 -> 饼图
-    :return:
-    """
-    if choosed_list is None or fund_weights is None:
-        return None
-    selected_weights = {
-        k: v
-        for k, v in fund_weights.items() if k in choosed_list
-    }
-    return show_barpolar(selected_weights)
-
-
-@app.callback(
-    Output('fund_graph', 'figure'),
-    [Input('fund_list', 'data'),
-     Input('fund_weights', 'data'),
-     Input('factors_check_list', 'value')]
-)
-def update_fund_graph(choosed_list, fund_weights, factors):
-    """
-    基金权重，选中的基金列表 -> 二维图
-    :return:
-    """
-    if fund_weights is None:
-        return None
-    if len(factors) == 0:
-        factors = factors_list
-    fac_dic = {
-        i: True if i in factors else False
-        for i in factors_list
-    }
-    selected_weights = {
-        k: v
-        for k, v in fund_weights.items() if k in choosed_list
-    }
-    return plot_fund(fac_dic, selected_weights)
-
-
-@app.callback(
-    Output('efficient_frontier_graph', 'figure'),
-    [Input('fund_list', 'data')]
-)
-def update_efficient_frontier(choosed_list):
-    """
-    选中的基金列表 -> 有效边界
-    :return:
-    """
-    data_layout = efficient_frontier_data_layout(choosed_list)
-    return data_layout
-
-
-@app.callback(
-    Output('network_graph', 'figure'),
-    [Input('fund_list', 'data')]
-)
-def update_network(choosed_list):
-    """
-    选中的基金列表 -> 网络关系图
-    :return:
-    """
-    return ploy_sna_pic(choosed_list)
+#     risk_val = risk_val / 100
+#     ret, vol, sharp, dict_weights = get_fixed_ans(fixed='volatility', value=risk_val)
+#     return dict_weights, len(dict_weights), ret, vol, sharp
+#
+#
+# @app.callback(
+#     Output('fund_list', 'data'),
+#     [Input('fund_graph', 'selectedData'),
+#      Input('fund_table', "derived_virtual_data"),
+#      Input('fund_table', 'derived_virtual_selected_rows')]
+# )
+# def update_fund_list(selectedData, derived_virtual_data, selected_row):
+#     """
+#     二维图中选取 -> 选中的基金列表
+#     基金列表中选取 -> 选中的基金列表
+#     :return:
+#     """
+#     if selectedData is None and (selected_row == None or len(selected_row) == 0):
+#         ret, risk, sharpe, weights = get_fixed_ans()
+#         columns = [key for key, v in weights.items() if v > 1e-8]
+#         return columns
+#     selected_code = set()
+#     row_code = set()
+#     if len(selected_row) != 0:
+#         row_code = {derived_virtual_data[x]['code'] for x in selected_row}
+#     if selectedData is not None:
+#         selected_code = {p['customdata'] for p in selectedData['points']}
+#     code = row_code | selected_code
+#     code = ['0' * (6 - len(str(x))) + str(x) for x in code]
+#     return code
+#
+#
+# # @app.callback(
+# #     Output('profile_graph', 'figure'),
+# #     [Input('fund_list', 'children')]
+# # )
+# # def update_profile(choosed_list):
+# #     """
+# #     选中的基金列表 -> 回测、单位净值
+# #     :return:
+# #     """
+# #     pass
+#
+# @app.callback(
+#     [Output('profile_graph', 'figure'),
+#      Output('single', 'data'), Output('portfolio_data', 'data')],
+#     [Input('fund_list', 'data')]
+# )
+# def update_profile(codes):
+#     print("Updating profile...")
+#     if codes is None:
+#         print("None")
+#         raise PreventUpdate("Empty")
+#     # codes = value.split()
+#     if len(codes) == 1:
+#         print("Single", codes[0])
+#         return get_stock_figdata(codes[0]), True, None
+#     fig_data, index = get_portfolio_figdata(codes)
+#     return fig_data, False, index
+#
+#
+# @app.callback(
+#     [Output('lala', 'data')],
+#     [Input('profile_graph', 'relayoutData'), Input('single', 'data')]
+# )
+# def update_info(data, single):
+#     print("Updating info...")
+#     if single:
+#         print("Single")
+#         raise PreventUpdate("Single!")
+#     if data and 'xaxis.range[0]' in data:
+#         start_date = data['xaxis.range[0]']
+#         end_date = data['xaxis.range[1]']
+#         if end_date != '2018-12-28':
+#             print("Don't update!", data['xaxis.range[1]'])
+#             raise PreventUpdate("Nothing changed")
+#         delta = parse_relaydata(start_date, end_date)
+#         return [delta]
+#     raise PreventUpdate("None")
+#
+#
+# @app.callback(
+#     Output('fund_table', 'data'),
+#     [
+#         # Input('fund_list', 'children'),
+#         Input('fund_weights', 'data')]
+# )
+# def update_fund_table(fund_weights):
+#     """
+#     基金权重，选中的基金列表 -> fund table
+#     :return:
+#     """
+#     if fund_weights is None:
+#         ret, risk, sharpe, weights = get_fixed_ans(fixed='volatility', value=0)
+#         fund_weights = weights
+#     df = get_fund_table(fund_weights)
+#     return df.to_dict('records')
+#
+#
+# @app.callback(
+#     Output('radar_graph', 'figure'),
+#     [Input('fund_list', 'data'),
+#      Input('fund_weights', 'data')]
+# )
+# def update_pie(choosed_list, fund_weights):
+#     """
+#     基金权重，选中的基金列表 -> 饼图
+#     :return:
+#     """
+#     if choosed_list is None or fund_weights is None:
+#         return None
+#     selected_weights = {
+#         k: v
+#         for k, v in fund_weights.items() if k in choosed_list
+#     }
+#     return show_barpolar(selected_weights)
+#
+#
+# @app.callback(
+#     Output('fund_graph', 'figure'),
+#     [Input('fund_list', 'data'),
+#      Input('fund_weights', 'data'),
+#      Input('factors_check_list', 'value')]
+# )
+# def update_fund_graph(choosed_list, fund_weights, factors):
+#     """
+#     基金权重，选中的基金列表 -> 二维图
+#     :return:
+#     """
+#     if fund_weights is None:
+#         return None
+#     if len(factors) == 0:
+#         factors = factors_list
+#     fac_dic = {
+#         i: True if i in factors else False
+#         for i in factors_list
+#     }
+#     selected_weights = {
+#         k: v
+#         for k, v in fund_weights.items() if k in choosed_list
+#     }
+#     return plot_fund(fac_dic, selected_weights)
+#
+#
+# @app.callback(
+#     Output('efficient_frontier_graph', 'figure'),
+#     [Input('fund_list', 'data')]
+# )
+# def update_efficient_frontier(choosed_list):
+#     """
+#     选中的基金列表 -> 有效边界
+#     :return:
+#     """
+#     data_layout = efficient_frontier_data_layout(choosed_list)
+#     return data_layout
+#
+#
+# @app.callback(
+#     Output('network_graph', 'figure'),
+#     [Input('fund_list', 'data')]
+# )
+# def update_network(choosed_list):
+#     """
+#     选中的基金列表 -> 网络关系图
+#     :return:
+#     """
+#     return ploy_sna_pic(choosed_list)
 
 
 if __name__ == '__main__':

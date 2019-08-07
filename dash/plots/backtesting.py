@@ -8,8 +8,11 @@ from plots import performance_pybt
 from plots.tools import get_weights
 
 import matplotlib
+import pathlib
 
 matplotlib.rcParams['figure.figsize'] = (15.0, 8.0)
+PATH = pathlib.Path(__file__).parent.parent
+DATA_PATH = PATH.joinpath("data").resolve()
 
 
 # 计算每个时间点的基金权重
@@ -113,7 +116,7 @@ def get_performance(nav, start_end, fund_cols, fixed='sharpe'):
 
 
 if __name__ == '__main__':
-    with open('plots/date.csv') as f:
+    with open(DATA_PATH.joinpath('date.csv')) as f:
         start_end = pd.read_csv(f, index_col=0)
 
         # h = lambda x: datetime.strftime(datetime.strptime(x, "%Y/%d/%m"), "%Y-%d-%m")
@@ -122,7 +125,7 @@ if __name__ == '__main__':
         # end = traday['end'].map(h)
         # start_end = pd.concat([start, end], axis=1)
 
-    with open('data/adjusted_net_value.csv') as f:
+    with open(DATA_PATH.joinpath('adjusted_net_value.csv')) as f:
         nav = pd.read_csv(f, index_col=0)
 
     # 选定基金池
@@ -132,10 +135,8 @@ if __name__ == '__main__':
     baseline = p['return_b']
     print(baseline[-6:])
     fig_data = go.Scatter(x=baseline.index,
-                        y=baseline,
-                        line_color="rgba(255,127,14,1)", fill="tonexty",
-                        mode='lines', name="baseline")
+                          y=baseline,
+                          line_color="rgba(255,127,14,1)", fill="tonexty",
+                          mode='lines', name="baseline")
     fig = go.Figure(fig_data)
     fig.show()
-
-

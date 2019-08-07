@@ -560,7 +560,7 @@ there.
   }
   .pretty_container {
     margin: 0 !important;
-    margin-bottom: 25px !important;
+    margin-bottom: 0 !important;
   }
   #individual_graph,
   #count_graph,
