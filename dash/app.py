@@ -60,8 +60,6 @@ config = {
 app.layout = html.Div(
     [
         dcc.Store(id="aggregate_data"),
-        dcc.Store(id="single"),
-        dcc.Store(id="portfolio_data"),
         # empty Div to trigger javascript file for graph resizing
         html.Div(id="output-clientside"),
         # html.Div(
@@ -128,6 +126,7 @@ app.layout = html.Div(
         #     ],
         #     className="row flex-display",
         # ),
+        dcc.Store(id="info_data"),
         html.Div(
             [
                 html.Div(
@@ -151,14 +150,17 @@ app.layout = html.Div(
                         dcc.Graph()
                     ],
                     id='user_choose_playground',
-                    className='pretty_container six columns',
+                    className='pretty_container four columns',
                 ),
-                html.Div(
+                html.Div([
                     # 基金收益图
-                    [
-                        dcc.Graph(id="profile_graph")
-                    ],
-                    className='pretty_container six columns'
+                    html.Div([dcc.Graph(id='portfolio_graph',
+                                        className="six columns"),
+                              html.Div(id="info", className="two columns")
+                              ],
+                             className='eight columns'),
+                    dcc.Graph(id='price_graph'),
+                ], className="pretty_container eight columns"
                 )
             ],
             className="row flex-display",
@@ -329,42 +331,56 @@ def get_fund_table(dict_weight):
 # #     """
 # #     pass
 #
-# @app.callback(
-#     [Output('profile_graph', 'figure'),
-#      Output('single', 'data'), Output('portfolio_data', 'data')],
-#     [Input('fund_list', 'data')]
-# )
-# def update_profile(codes):
-#     print("Updating profile...")
-#     if codes is None:
-#         print("None")
-#         raise PreventUpdate("Empty")
-#     # codes = value.split()
-#     if len(codes) == 1:
-#         print("Single", codes[0])
-#         return get_stock_figdata(codes[0]), True, None
-#     fig_data, index = get_portfolio_figdata(codes)
-#     return fig_data, False, index
+@app.callback(
+    [Output('portfolio_graph', 'figure'),
+     Output("info_data", "data")],
+    [Input('portfolio', 'value')]
+)
+def update_profile(codes):
+    if codes is None:
+        print("None")
+        raise PreventUpdate("Empty")
+    print("Updating portfolio graph...", codes)
+    fig_data, index = get_portfolio_figdata(codes)
+    return fig_data, index.to_json()
+    # raise PreventUpdate("Nothing")
+
+
+@app.callback(
+    [Output("price_graph", "figure")],
+    [Input("code", "value")]
+)
+def update_price_graph(code):
+    if code is None:
+        raise PreventUpdate()
+    print("Updating price graph...")
+    return get_stock_figdata(code)
+
+
 #
 #
-# @app.callback(
-#     [Output('lala', 'data')],
-#     [Input('profile_graph', 'relayoutData'), Input('single', 'data')]
-# )
-# def update_info(data, single):
-#     print("Updating info...")
-#     if single:
-#         print("Single")
-#         raise PreventUpdate("Single!")
-#     if data and 'xaxis.range[0]' in data:
-#         start_date = data['xaxis.range[0]']
-#         end_date = data['xaxis.range[1]']
-#         if end_date != '2018-12-28':
-#             print("Don't update!", data['xaxis.range[1]'])
-#             raise PreventUpdate("Nothing changed")
-#         delta = parse_relaydata(start_date, end_date)
-#         return [delta]
-#     raise PreventUpdate("None")
+@app.callback(
+    [Output('info', 'children')],
+    [Input("portfolio_graph", "relayoutData"),
+     Input("info_data", "data")]
+)
+def update_info(data, info):
+    print("Updating info...")
+    if data and 'xaxis.range[0]' in data:
+        start_date = data['xaxis.range[0]']
+        end_date = data['xaxis.range[1]']
+        if end_date != '2018-12-28':
+            print("Don't update!", data['xaxis.range[1]'])
+            raise PreventUpdate("Nothing changed")
+        delta = parse_relaydata(start_date, end_date)
+        info_tbl = pd.read_json(info)
+        tbl = pd.concat((info_tbl[delta], info_tbl["all"]), axis=1)
+        return [generate_table(tbl)]
+    if info:
+        info_tbl = pd.read_json(info)
+        tbl = pd.concat((info_tbl["3"], info_tbl["all"]), axis=1)
+        return [generate_table(tbl)]
+    raise PreventUpdate("None")
 #
 #
 # @app.callback(

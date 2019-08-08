@@ -106,10 +106,10 @@ def get_performance(nav, start_end, fund_cols, fixed='sharpe'):
 
     d = {'return_p': eqd_t, 'return_b': eqd_t_bl, 'index': {}}
     d['index'].update({'all': perf_all})
-    d['index'].update({1: perf_1m})
-    d['index'].update({3: perf_3m})
-    d['index'].update({6: perf_6m})
-    d['index'].update({12: perf_1y})
+    d['index'].update({"1": perf_1m})
+    d['index'].update({"3": perf_3m})
+    d['index'].update({"6": perf_6m})
+    d['index'].update({"12": perf_1y})
     d['index'].update({'ytd': perf_ys})
 
     return d

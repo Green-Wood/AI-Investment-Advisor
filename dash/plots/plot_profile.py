@@ -10,6 +10,36 @@ parse_date = lambda d: datetime.strptime(d, "%Y-%m-%d")
 PATH = pathlib.Path(__file__).parent.parent
 DATA_PATH = PATH.joinpath("data").resolve()
 
+# tbl = pd.DataFrame({"Sharpe ratio": [1, 2],
+#                     "Ann. return": ["5%", "4.1%"],
+#                     "payoff": [1.2, 2.4],
+#                     "Calmar ratio": [1, 2],
+#                     "Sortino ratio": [1, 2],
+#                     "Maxdd": [1, 2]}, index=["Optimal", "selected"])
+# tbl = tbl.T
+
+parse_info = lambda info: [info['performance'][k] for k in ['p_y_r', 'alpha', 'winrate']] + \
+                          [info['risk/return profile'][k] for k in ['maxdd', 'sharpe', 'sortino']]
+
+
+def generate_td(e):
+    if isinstance(e, float):
+        e = "{:.4f}".format(e)
+    return html.Td(e)
+
+
+def generate_table(dataframe, max_rows=10):
+    return html.Table(
+        # Header
+        [html.Tr([html.Th()] + [html.Th(col) for col in dataframe.columns])] +
+
+        # Body
+        [html.Tr(
+            [generate_td(dataframe.index[i])] +
+            [generate_td(dataframe.iloc[i][col]) for col in dataframe.columns
+             ]) for i in range(min(len(dataframe), max_rows))]
+    )
+
 
 def construct_traces(code):
     df0 = pd.read_csv(DATA_PATH.joinpath("adjusted_net_value.csv"), parse_dates=["datetime"], index_col=0)
@@ -38,8 +68,29 @@ def construct_traces(code):
 def get_stock_figdata(code):
     traces = construct_traces(code)
     fig_data = {
+
         'data': traces,
         "layout": {
+            # "annotations": [
+            #     go.layout.Annotation(
+            #         x=1.2,
+            #         y=-0.1,
+            #         showarrow=False,
+            #         text="Custom x-axis title",
+            #         xref="paper",
+            #         yref="paper"
+            #     ),
+            #     go.layout.Annotation(
+            #         x=1.2,
+            #         y=0.3,
+            #         showarrow=False,
+            #         text="Custom y-axis title",
+            #         xref="paper",
+            #         yref="paper"
+            #     )
+            # ],
+            "legend": {'x': 0.9, 'y': 0.9},
+
             "title": {
                 'text': "Stock Prices",
                 'xanchor': 'center',
@@ -97,13 +148,13 @@ def get_stock_figdata(code):
                     0,
                     1
                 ]
+            },
+            "margin": {
+                "b": 40,
+                "l": 60,
+                "r": 0,
+                "t": 25
             }
-            # "margin": {
-            #     "b": 40,
-            #     "l": 60,
-            #     "r": 10,
-            #     "t": 25
-            # }
         }
     }
     return fig_data
@@ -112,11 +163,12 @@ def get_stock_figdata(code):
 def get_portfolio_figdata_helper(data):
     price = data['return_p']
     baseline = data['return_b']
-    trace_p = go.Scatter(x=price.index, y=price, name="net value")
+    trace_p = go.Scatter(x=price.index, y=price, name="returns")
     trace_b = go.Scatter(x=baseline.index, y=baseline, name="baseline")
     fig_data = {
         'data': [trace_p, trace_b],
         "layout": {
+            "legend": {'x': 0.8, 'y': 0.8},
             "title": {
                 'text': "Portfolio backtest results",
                 'xanchor': 'center',
@@ -174,13 +226,13 @@ def get_portfolio_figdata_helper(data):
                     0,
                     1
                 ]
+            },
+            "margin": {
+                "b": 40,
+                "l": 60,
+                "r": 0,
+                "t": 25
             }
-            # "margin": {
-            #     "b": 40,
-            #     "l": 60,
-            #     "r": 10,
-            #     "t": 25
-            # }
         }
     }
     return fig_data
@@ -197,7 +249,13 @@ def get_portfolio_figdata(codes):
     data = get_performance(nav, start_end, codes, fixed='sharpe')
     print("Done: %.2fs elapsed" % (time() - start))
     fig_data = get_portfolio_figdata_helper(data)
-    return fig_data, data['index']
+    results = data['index']
+
+    index_df = pd.DataFrame(index=["Annu. return", "Alpha", "Win Rate",
+                                   "Max drawdown", "Sharpe Ratio", "Sortino Ratio"])
+    for k, v in results.items():
+        index_df[k] = parse_info(v)
+    return fig_data, index_df
 
 
 def parse_relaydata(start_date_str, end_date_str):
@@ -207,7 +265,7 @@ def parse_relaydata(start_date_str, end_date_str):
     :param end_date_str:
     :return:
         one of the following:
-            1, 3, 6, 12: number of months
+            "1", "3", "6", "12": number of months
             "ytd": year to date
             "all"
     """
@@ -219,7 +277,7 @@ def parse_relaydata(start_date_str, end_date_str):
         delta = 'all'
     print("Start: {}, end: {}".format(start, end))
     print("OK", delta)
-    return delta
+    return str(delta)
 
 
 if __name__ == '__main__':
@@ -235,58 +293,69 @@ if __name__ == '__main__':
     app = dash.Dash(__name__)
     app.layout = html.Div(children=[
         html.H1(children='Hello Dash'),
-
-        dcc.Input(id='input', type='text'),
-
-        dcc.Graph(
-            id='profile_graph', figure=fig_data),
-
+        dcc.Store(id="info_data"),
+        dcc.Input(id='code', type='text', placeholder='code'),
+        dcc.Input(id='portfolio', type='text', placeholder='portfolio'),
+        html.Div([
+            html.H2("Blank space", className="four columns"),
+            dcc.Graph(
+                id='portfolio_graph', figure=fig_data,
+                className="six columns"),
+            html.Div(id="info", className="two columns")
+        ], id="box", className="row"),
+        dcc.Graph(id='price_graph', figure=fig_data),
         html.H2(children='Graph relayout data'),
-        html.H3(id='info'),
-        dcc.Store(id='single'),
-        dcc.Store(id="portfolio_data")
     ])
 
 
     @app.callback(
-        [Output('profile_graph', 'figure'),
-         Output('single', 'data'), Output('portfolio_data', 'data')],
-        [Input('input', 'value')]
+        [Output('portfolio_graph', 'figure'),
+         Output("info_data", "data")],
+        [Input('portfolio', 'value')]
     )
     def update_profile(value):
-        print("OK")
         if value is None:
             print("None")
             raise PreventUpdate("Empty")
         codes = value.split()
-        if len(codes) == 1:
-            print("Single", codes[0])
-            return get_stock_figdata(codes[0]), True, None
-        print(codes)
+        print("Updating portfolio graph...", codes)
         fig_data, index = get_portfolio_figdata(codes)
-        return fig_data, False, index
+        return fig_data, index.to_json()
         # raise PreventUpdate("Nothing")
 
 
     @app.callback(
-        [Output('info', 'children')],
-        [Input('profile_graph', 'relayoutData'), Input('single', 'data')]
+        [Output("price_graph", "figure")],
+        [Input("code", "value")]
     )
-    def update_info(data, single):
-        if single is None:
-            PreventUpdate()
+    def update_price_graph(code):
+        if code is None:
+            raise PreventUpdate()
+        print("Updating price graph...")
+        return get_stock_figdata(code)
+
+
+    @app.callback(
+        [Output('info', 'children')],
+        [Input("portfolio_graph", "relayoutData"),
+         Input("info_data", "data")]
+    )
+    def update_info(data, info):
         print("Updating info...")
-        if single:
-            print("Single, no updates!")
-            raise PreventUpdate("Single!")
         if data and 'xaxis.range[0]' in data:
             start_date = data['xaxis.range[0]']
             end_date = data['xaxis.range[1]']
-            if end_date != '2018-12-20':
+            if end_date != '2018-12-28':
                 print("Don't update!", data['xaxis.range[1]'])
                 raise PreventUpdate("Nothing changed")
             delta = parse_relaydata(start_date, end_date)
-            return [str(delta)]
+            info_tbl = pd.read_json(info)
+            tbl = pd.concat((info_tbl[delta], info_tbl["all"]), axis=1)
+            return [generate_table(tbl)]
+        if info:
+            info_tbl = pd.read_json(info)
+            tbl = pd.concat((info_tbl["3"], info_tbl["all"]), axis=1)
+            return [generate_table(tbl)]
         raise PreventUpdate("None")
 
 
