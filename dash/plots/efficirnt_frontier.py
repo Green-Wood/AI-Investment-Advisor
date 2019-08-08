@@ -15,10 +15,25 @@ _, _, _, fix_weights = optimizer.get_fixed_ans(fixed='volatility')
 fix_random_data = optimizer.get_random_samples(fix_weights)
 
 
+def get_text_info(data):
+    weights = data[3]
+    top3_list = [sorted(w.items(), key=lambda x: x[1], reverse=True)[:3] for w in weights]
+    basic_info_list = [
+        'Returns: {:.3f}%<br>Volatility: {:.3f}%<br>Sharp Ratio: {:.3f}'.format(ret * 100, vol * 100, sr)
+        for ret, vol, sr in zip(data[0], data[1], data[2])
+    ]
+    for i in range(len(basic_info_list)):
+        weights = top3_list[i]
+        for code, w in weights:
+            fund_name = instruments[instruments['code'] == int(code)].iloc[0, 1]
+            basic_info_list[i] += '<br>{}: {:.5f}%'.format(fund_name, w * 100)
+    return basic_info_list
+
+
 def efficient_frontier_data_layout(id_list):
     # 模拟用户选择基金
-    # id_list = list(adjusted_net_value.columns)
-    # id_list = random.sample(id_list, 8)
+    id_list = list(adjusted_net_value.columns)
+    id_list = random.sample(id_list, 20)
 
     best_frontier = optimizer.efficient_frontier('all')
     vol_list = best_frontier[1] + fix_random_data[1]
@@ -31,8 +46,8 @@ def efficient_frontier_data_layout(id_list):
                 x=best_frontier[1],
                 y=best_frontier[0],
                 opacity=0.75,
-                text=['Sharpe Ratio: {:.5f}'.format(x) for x in best_frontier[2]],
-                customdata=best_frontier[3],
+                hoverinfo='text',
+                text=get_text_info(best_frontier),
                 mode='lines',
                 line={
                     'color': 'red'
@@ -45,13 +60,9 @@ def efficient_frontier_data_layout(id_list):
             y=ret_list,
             opacity=0.75,
             hoverinfo='skip',
-            # text=['Sharpe Ratio: {}'.format(x) for x in sharp_ratio_list],
             mode='markers',
             marker={
                 'color': sharp_ratio_list,
-                # 'colorbar': {
-                #     'title': 'Sharp Ratio'
-                # },
                 'colorscale': 'Viridis',
             },
             showlegend=False
@@ -66,7 +77,7 @@ def efficient_frontier_data_layout(id_list):
         _, _, _, choose_weights = op.get_fixed_ans(fixed='volatility', value=mid_risk)
 
         choose_data = op.get_random_samples(choose_weights)
-        choose_frontier = optimizer.efficient_frontier(id_list)
+        choose_frontier = op.efficient_frontier(id_list)
 
         best_start = 30 if len(id_list) < 40 else 0
         best_frontier = [x[best_start:] for x in best_frontier]
@@ -75,8 +86,8 @@ def efficient_frontier_data_layout(id_list):
                 x=best_frontier[1],
                 y=best_frontier[0],
                 opacity=0.75,
-                text=['Sharpe Ratio: {:.5f}'.format(x) for x in best_frontier[2]],
-                customdata=best_frontier[3],
+                hoverinfo='text',
+                text=get_text_info(best_frontier),
                 mode='lines',
                 line={
                     'color': 'red'
@@ -89,7 +100,8 @@ def efficient_frontier_data_layout(id_list):
             x=choose_frontier[1],
             y=choose_frontier[0],
             opacity=0.75,
-            text=['Sharpe Ratio: {:5f}'.format(x) for x in choose_frontier[2]],
+            hoverinfo='text',
+            text=get_text_info(choose_frontier),
             mode='lines',
             line={
                 'color': 'green'
@@ -102,13 +114,9 @@ def efficient_frontier_data_layout(id_list):
             y=choose_data[0],
             opacity=0.75,
             hoverinfo='skip',
-            # text=['Sharpe Ratio: {}'.format(x) for x in sharp_ratio_list],
             mode='markers',
             marker={
                 'color': choose_data[2],
-                # 'colorbar': {
-                #     'title': 'Sharp Ratio'
-                # },
                 'colorscale': 'Viridis',
             },
             showlegend=False
@@ -130,7 +138,8 @@ def efficient_frontier_data_layout(id_list):
             'yaxis': {
                 'title': 'Annualised returns',
                 'tickformat': '%'
-            }
+            },
+            'hovermode': 'closest'
         }
     }
 

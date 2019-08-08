@@ -3,12 +3,14 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.figure_factory as ff
 from pypfopt import risk_models
+import pathlib
 from scipy.spatial.distance import pdist, squareform
-import statsmodels.tsa.stattools as ts
 import matplotlib.pyplot as plt
 
 
-path_adjusted_net_value = '../data/adjusted_net_value.csv'
+PATH = pathlib.Path(__file__).parent.parent
+DATA_PATH = PATH.joinpath("data").resolve()
+path_adjusted_net_value = DATA_PATH.joinpath('adjusted_net_value.csv')
 # 步长和窗口大小
 window = 30
 step = 3

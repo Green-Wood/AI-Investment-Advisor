@@ -64,70 +64,6 @@ app.layout = html.Div(
         dcc.Store(id="portfolio_data"),
         # empty Div to trigger javascript file for graph resizing
         html.Div(id="output-clientside"),
-        # html.Div(
-        #     [
-        #         html.Div(
-        #             [
-        #                 html.Div(
-        #                     [
-        #                         html.Div(
-        #                             [html.H6(id="fund_text", children='1234'), html.P("No. of Funds")],
-        #                             id="wells",
-        #                             className="mini_container",
-        #                         ),
-        #                         html.Div(
-        #                             [html.H6(id="return_text", children='23M'), html.P("Annualized Return")],
-        #                             id="gas",
-        #                             className="mini_container",
-        #                         ),
-        #                         html.Div(
-        #                             [html.H6(id="volatility_text", children='23M'), html.P("Volatility")],
-        #                             id="oil",
-        #                             className="mini_container",
-        #                         ),
-        #                         html.Div(
-        #                             [html.H6(id="sharp_text", children='23M'), html.P("Sharp Ratio")],
-        #                             id="water",
-        #                             className="mini_container",
-        #                         ),
-        #                     ],
-        #                     id="info-container",
-        #                     className="row container-display",
-        #                 ),
-        #                 html.Div(
-        #                     [
-        #                         html.Div(
-        #                             [html.H6(id="alpha_text", children='示例'), html.P("Alpha")],
-        #                             id="alpha",
-        #                             className="mini_container",
-        #                         ),
-        #                         html.Div(
-        #                             [html.H6(id="win_rate_text", children='示例'), html.P("Win Rate")],
-        #                             id='win_rate',
-        #                             className="mini_container",
-        #                         ),
-        #                         html.Div(
-        #                             [html.H6(id="max_drawdown_text", children='示例'), html.P("Max Drawdown")],
-        #                             id="max_drawdown",
-        #                             className="mini_container",
-        #                         ),
-        #                         html.Div(
-        #                             [html.H6(id="sortino_ratio_text", children='示例'), html.P("Sortino Ratio")],
-        #                             id="sortino_ratio",
-        #                             className="mini_container",
-        #                         )
-        #                     ],
-        #                     id="profit_container",
-        #                     className="row container-display",
-        #                 ),
-        #
-        #             ],
-        #             id="right-column",
-        #             className="eight columns",
-        #         ),
-        #     ],
-        #     className="row flex-display",
-        # ),
         html.Div(
             [
                 html.Div(
@@ -385,76 +321,37 @@ def get_fund_table(dict_weight):
 #     return df.to_dict('records')
 #
 #
-# @app.callback(
-#     Output('radar_graph', 'figure'),
-#     [Input('fund_list', 'data'),
-#      Input('fund_weights', 'data')]
-# )
-# def update_pie(choosed_list, fund_weights):
-#     """
-#     基金权重，选中的基金列表 -> 饼图
-#     :return:
-#     """
-#     if choosed_list is None or fund_weights is None:
-#         return None
-#     selected_weights = {
-#         k: v
-#         for k, v in fund_weights.items() if k in choosed_list
-#     }
-#     return show_barpolar(selected_weights)
+@app.callback(
+    Output('corr_graph', 'figure'),
+    [Input('user_list', 'data')]
+)
+def update_corr(choose_list):
+    """
+    选中的基金列表 -> 饼图
+    :return:
+    """
+    if choosed_list is None or fund_weights is None:
+        return None
+    selected_weights = {
+        k: v
+        for k, v in fund_weights.items() if k in choosed_list
+    }
+    return show_barpolar(selected_weights)
 #
 #
-# @app.callback(
-#     Output('fund_graph', 'figure'),
-#     [Input('fund_list', 'data'),
-#      Input('fund_weights', 'data'),
-#      Input('factors_check_list', 'value')]
-# )
-# def update_fund_graph(choosed_list, fund_weights, factors):
-#     """
-#     基金权重，选中的基金列表 -> 二维图
-#     :return:
-#     """
-#     if fund_weights is None:
-#         return None
-#     if len(factors) == 0:
-#         factors = factors_list
-#     fac_dic = {
-#         i: True if i in factors else False
-#         for i in factors_list
-#     }
-#     selected_weights = {
-#         k: v
-#         for k, v in fund_weights.items() if k in choosed_list
-#     }
-#     return plot_fund(fac_dic, selected_weights)
 
 
 @app.callback(
     Output('efficient_frontier_graph', 'figure'),
     [Input('user_list', 'data')]
 )
-def update_efficient_frontier(choosed_list):
+def update_efficient_frontier(choose_list):
     """
     选中的基金列表 -> 有效边界
     :return:
     """
-    data_layout = efficient_frontier_data_layout(choosed_list)
+    data_layout = efficient_frontier_data_layout(choose_list)
     return data_layout
-
-
-#
-#
-# @app.callback(
-#     Output('network_graph', 'figure'),
-#     [Input('fund_list', 'data')]
-# )
-# def update_network(choosed_list):
-#     """
-#     选中的基金列表 -> 网络关系图
-#     :return:
-#     """
-#     return ploy_sna_pic(choosed_list)
 
 
 if __name__ == '__main__':
