@@ -10,12 +10,13 @@ import pandas as pd
 import json
 import pathlib
 
-from plots.plot_efficirnt_frontier import efficient_frontier_data_layout, get_fixed_ans
+from plots.plot_efficient_frontier import efficient_frontier_data_layout, get_fixed_ans
+
 from plots.plot_heatmap import plot_heatmap_dendrogram
 from plots.ploy_sna import ploy_sna_pic
 from plots.show_barpolar import show_barpolar
 from plots.plot_fund_graph import plot_fund
-from plots.plot_profile import get_portfolio_figdata, get_stock_figdata, parse_relaydata
+from plots.plot_profile import get_portfolio_figdata, get_stock_figdata, parse_relaydata, generate_table
 
 app = dash.Dash(
     __name__, meta_tags=[{"name": "viewport", "content": "width=device-width"}]
@@ -61,10 +62,73 @@ config = {
 app.layout = html.Div(
     [
         dcc.Store(id="aggregate_data"),
-        dcc.Store(id="single"),
-        dcc.Store(id="portfolio_data"),
         # empty Div to trigger javascript file for graph resizing
         html.Div(id="output-clientside"),
+        # html.Div(
+        #     [
+        #         html.Div(
+        #             [
+        #                 html.Div(
+        #                     [
+        #                         html.Div(
+        #                             [html.H6(id="fund_text", children='1234'), html.P("No. of Funds")],
+        #                             id="wells",
+        #                             className="mini_container",
+        #                         ),
+        #                         html.Div(
+        #                             [html.H6(id="return_text", children='23M'), html.P("Annualized Return")],
+        #                             id="gas",
+        #                             className="mini_container",
+        #                         ),
+        #                         html.Div(
+        #                             [html.H6(id="volatility_text", children='23M'), html.P("Volatility")],
+        #                             id="oil",
+        #                             className="mini_container",
+        #                         ),
+        #                         html.Div(
+        #                             [html.H6(id="sharp_text", children='23M'), html.P("Sharp Ratio")],
+        #                             id="water",
+        #                             className="mini_container",
+        #                         ),
+        #                     ],
+        #                     id="info-container",
+        #                     className="row container-display",
+        #                 ),
+        #                 html.Div(
+        #                     [
+        #                         html.Div(
+        #                             [html.H6(id="alpha_text", children='示例'), html.P("Alpha")],
+        #                             id="alpha",
+        #                             className="mini_container",
+        #                         ),
+        #                         html.Div(
+        #                             [html.H6(id="win_rate_text", children='示例'), html.P("Win Rate")],
+        #                             id='win_rate',
+        #                             className="mini_container",
+        #                         ),
+        #                         html.Div(
+        #                             [html.H6(id="max_drawdown_text", children='示例'), html.P("Max Drawdown")],
+        #                             id="max_drawdown",
+        #                             className="mini_container",
+        #                         ),
+        #                         html.Div(
+        #                             [html.H6(id="sortino_ratio_text", children='示例'), html.P("Sortino Ratio")],
+        #                             id="sortino_ratio",
+        #                             className="mini_container",
+        #                         )
+        #                     ],
+        #                     id="profit_container",
+        #                     className="row container-display",
+        #                 ),
+        #
+        #             ],
+        #             id="right-column",
+        #             className="eight columns",
+        #         ),
+        #     ],
+        #     className="row flex-display",
+        # ),
+        dcc.Store(id="info_data"),
         html.Div(
             [
                 html.Div(
@@ -88,15 +152,17 @@ app.layout = html.Div(
                         dcc.Graph()
                     ],
                     id='user_choose_playground',
-                    className='pretty_container six columns',
+                    className='pretty_container four columns',
                 ),
-                html.Div(
+                html.Div([
                     # 基金收益图
-                    [
-                        dcc.Graph(id="profile_graph"),
-                        
-                    ],
-                    className='pretty_container six columns'
+                    html.Div([dcc.Graph(id='portfolio_graph',
+                                        className="six columns"),
+                              html.Div(id="info", className="two columns")
+                              ],
+                             className='eight columns'),
+                    dcc.Graph(id='price_graph'),
+                ], className="pretty_container eight columns"
                 )
             ],
             className="row flex-display",
@@ -168,6 +234,8 @@ app.layout = html.Div(
         # 储存用户选择的基金列表
         dcc.Store(id='user_list'),
         # 储存一定risk下的最佳策略
+        dcc.Store(id='best_weights'),
+        # 储存用户所选择的基金的最佳策略
         dcc.Store(id='user_weights'),
     ],
     id="mainContainer",
@@ -208,122 +276,58 @@ def get_fund_table(dict_weight):
 best_weight = dict()
 
 
-# @app.callback(
-#     [Output('fund_weights', 'data'),
-#      Output('fund_text', 'children'),
-#      Output('return_text', 'children'),
-#      Output('volatility_text', 'children'),
-#      Output('sharp_text', 'children')],
-#     [
-#         # Input('fund_list', 'children'),
-#         Input('risk_slider', 'value')]
-# )
-# def update_weights(risk_val):
-#     """
-#     拉动risk滑块 -> 基金的权重
-#     :param fund_list:
-#     :param risk_val:
-#     :return:
-#     """
-#     risk_val = risk_val / 100
-#     ret, vol, sharp, dict_weights = get_fixed_ans(fixed='volatility', value=risk_val)
-#     return dict_weights, len(dict_weights), ret, vol, sharp
+@app.callback(
+    [Output('portfolio_graph', 'figure'),
+     Output("info_data", "data")],
+    [Input('portfolio', 'value')]
+)
+def update_profile(codes):
+    if codes is None:
+        print("None")
+        raise PreventUpdate("Empty")
+    print("Updating portfolio graph...", codes)
+    fig_data, index = get_portfolio_figdata(codes)
+    return fig_data, index.to_json()
+    # raise PreventUpdate("Nothing")
+
+
+@app.callback(
+    [Output("price_graph", "figure")],
+    [Input("code", "value")]
+)
+def update_price_graph(code):
+    if code is None:
+        raise PreventUpdate()
+    print("Updating price graph...")
+    return get_stock_figdata(code)
+
+
 #
 #
-# @app.callback(
-#     Output('fund_list', 'data'),
-#     [Input('fund_graph', 'selectedData'),
-#      Input('fund_table', "derived_virtual_data"),
-#      Input('fund_table', 'derived_virtual_selected_rows')]
-# )
-# def update_fund_list(selectedData, derived_virtual_data, selected_row):
-#     """
-#     二维图中选取 -> 选中的基金列表
-#     基金列表中选取 -> 选中的基金列表
-#     :return:
-#     """
-#     if selectedData is None and (selected_row == None or len(selected_row) == 0):
-#         ret, risk, sharpe, weights = get_fixed_ans()
-#         columns = [key for key, v in weights.items() if v > 1e-8]
-#         return columns
-#     selected_code = set()
-#     row_code = set()
-#     if len(selected_row) != 0:
-#         row_code = {derived_virtual_data[x]['code'] for x in selected_row}
-#     if selectedData is not None:
-#         selected_code = {p['customdata'] for p in selectedData['points']}
-#     code = row_code | selected_code
-#     code = ['0' * (6 - len(str(x))) + str(x) for x in code]
-#     return code
-#
-#
-# # @app.callback(
-# #     Output('profile_graph', 'figure'),
-# #     [Input('fund_list', 'children')]
-# # )
-# # def update_profile(choosed_list):
-# #     """
-# #     选中的基金列表 -> 回测、单位净值
-# #     :return:
-# #     """
-# #     pass
-#
-# @app.callback(
-#     [Output('profile_graph', 'figure'),
-#      Output('single', 'data'), Output('portfolio_data', 'data')],
-#     [Input('fund_list', 'data')]
-# )
-# def update_profile(codes):
-#     print("Updating profile...")
-#     if codes is None:
-#         print("None")
-#         raise PreventUpdate("Empty")
-#     # codes = value.split()
-#     if len(codes) == 1:
-#         print("Single", codes[0])
-#         return get_stock_figdata(codes[0]), True, None
-#     fig_data, index = get_portfolio_figdata(codes)
-#     return fig_data, False, index
-#
-#
-# @app.callback(
-#     [Output('lala', 'data')],
-#     [Input('profile_graph', 'relayoutData'), Input('single', 'data')]
-# )
-# def update_info(data, single):
-#     print("Updating info...")
-#     if single:
-#         print("Single")
-#         raise PreventUpdate("Single!")
-#     if data and 'xaxis.range[0]' in data:
-#         start_date = data['xaxis.range[0]']
-#         end_date = data['xaxis.range[1]']
-#         if end_date != '2018-12-28':
-#             print("Don't update!", data['xaxis.range[1]'])
-#             raise PreventUpdate("Nothing changed")
-#         delta = parse_relaydata(start_date, end_date)
-#         return [delta]
-#     raise PreventUpdate("None")
-#
-#
-# @app.callback(
-#     Output('fund_table', 'data'),
-#     [
-#         # Input('fund_list', 'children'),
-#         Input('fund_weights', 'data')]
-# )
-# def update_fund_table(fund_weights):
-#     """
-#     基金权重，选中的基金列表 -> fund table
-#     :return:
-#     """
-#     if fund_weights is None:
-#         ret, risk, sharpe, weights = get_fixed_ans(fixed='volatility', value=0)
-#         fund_weights = weights
-#     df = get_fund_table(fund_weights)
-#     return df.to_dict('records')
-#
-#
+@app.callback(
+    [Output('info', 'children')],
+    [Input("portfolio_graph", "relayoutData"),
+     Input("info_data", "data")]
+)
+def update_info(data, info):
+    print("Updating info...")
+    if data and 'xaxis.range[0]' in data:
+        start_date = data['xaxis.range[0]']
+        end_date = data['xaxis.range[1]']
+        if end_date != '2018-12-28':
+            print("Don't update!", data['xaxis.range[1]'])
+            raise PreventUpdate("Nothing changed")
+        delta = parse_relaydata(start_date, end_date)
+        info_tbl = pd.read_json(info)
+        tbl = pd.concat((info_tbl[delta], info_tbl["all"]), axis=1)
+        return [generate_table(tbl)]
+    if info:
+        info_tbl = pd.read_json(info)
+        tbl = pd.concat((info_tbl["3"], info_tbl["all"]), axis=1)
+        return [generate_table(tbl)]
+    raise PreventUpdate("None")
+
+
 @app.callback(
     Output('corr_graph', 'figure'),
     [Input('user_list', 'data')]
@@ -343,12 +347,12 @@ def update_corr(choose_list):
     Output('efficient_frontier_graph', 'figure'),
     [Input('user_list', 'data')]
 )
-def update_efficient_frontier(choose_list):
+def update_efficient_frontier(choosed_list):
     """
     选中的基金列表 -> 有效边界
     :return:
     """
-    data_layout = efficient_frontier_data_layout(choose_list)
+    data_layout = efficient_frontier_data_layout(choosed_list)
     return data_layout
 
 
