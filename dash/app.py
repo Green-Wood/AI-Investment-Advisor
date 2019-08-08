@@ -94,7 +94,7 @@ app.layout = html.Div(
                     # 基金收益图
                     [
                         dcc.Graph(id="profile_graph"),
-
+                        
                     ],
                     className='pretty_container six columns'
                 )
@@ -333,7 +333,7 @@ def update_corr(choose_list):
     选中的基金列表 -> 热力图
     :return:
     """
-    choose_list = ['519661', '000061', '398061', '519995', '470059', '686868','519668','000068','100068','519068','470068']
+    choose_list = ['519661', '000061', '398061', '519995', '470059']
     if choose_list is None:
         choose_list = best_weight.keys()
     return plot_heatmap_dendrogram(choose_list)
