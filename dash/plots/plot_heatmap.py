@@ -167,7 +167,7 @@ def plot_heatmap_dendrogram(code_list: list):
         for j in range(len(texts[i])):
             tmp1 = fund_data[fund_data['code'].isin([code_list[i]])]['issuer'].values[0]
             tmp2 = fund_data[fund_data['code'].isin([code_list[j]])]['issuer'].values[0]
-            texts[i, j] = '基金公司1:' + tmp1 + '<br>' + '基金公司2:' + tmp2 + '<br>' + '样本距离' + str(heat_data_2[i, j])
+            texts[i, j] = code_list[i]+':' + tmp1 + '<br>' + code_list[j] + ':' + tmp2 + '<br>' + '样本距离' + str(heat_data_2[i, j])
     heatmap = ff.create_annotated_heatmap(heat_data,
                                           annotation_text=heat_data_2,
                                           colorscale='blues',
