@@ -10,7 +10,8 @@ import pandas as pd
 import json
 import pathlib
 
-from plots.efficirnt_frontier import efficient_frontier_data_layout, get_fixed_ans
+from plots.plot_efficirnt_frontier import efficient_frontier_data_layout, get_fixed_ans
+from plots.plot_heatmap import plot_heatmap, plot_time_corr
 from plots.ploy_sna import ploy_sna_pic
 from plots.show_barpolar import show_barpolar
 from plots.plot_fund_graph import plot_fund
@@ -103,7 +104,10 @@ app.layout = html.Div(
             [
                 html.Div(
                     # 相关系数
-                    [dcc.Graph(id="corr_graph")],
+                    [dcc.Graph(id="corr_graph", style={
+                        'height': '275px'
+                    }),
+                     dcc.Graph(id='corr_time_line')],
                     className="pretty_container five columns",
                 ),
                 html.Div(
@@ -166,8 +170,6 @@ app.layout = html.Div(
         # 储存用户选择的基金列表
         dcc.Store(id='user_list'),
         # 储存一定risk下的最佳策略
-        dcc.Store(id='best_weights'),
-        # 储存用户所选择的基金的最佳策略
         dcc.Store(id='user_weights'),
     ],
     id="mainContainer",
@@ -203,6 +205,9 @@ def get_fund_table(dict_weight):
     ins_wei_df = ins_wei_df.sort_values('weight', ascending=False)
     ins_wei_df['weight'] = ins_wei_df['weight'].apply(lambda x: '{:.5f}%'.format(x * 100))
     return ins_wei_df
+
+
+best_weight = dict()
 
 
 # @app.callback(
@@ -327,18 +332,29 @@ def get_fund_table(dict_weight):
 )
 def update_corr(choose_list):
     """
-    选中的基金列表 -> 饼图
+    选中的基金列表 -> 热力图
     :return:
     """
-    if choosed_list is None or fund_weights is None:
-        return None
-    selected_weights = {
-        k: v
-        for k, v in fund_weights.items() if k in choosed_list
-    }
-    return show_barpolar(selected_weights)
-#
-#
+    choose_list = ['519661', '000061', '398061', '519995', '470059']
+    if choose_list is None:
+        choose_list = best_weight.keys()
+    return plot_heatmap(choose_list)
+
+
+@app.callback(
+    Output('corr_time_line', 'figure'),
+    [Input('corr_graph', 'hoverData')]
+)
+def hover_on_corr(hover_data):
+    if hover_data is None:
+        print('None')
+        return plot_time_corr('519661 519661')
+    print(hover_data['points'])
+    x = hover_data['points'][0]['x'][:6]
+    y = hover_data['points'][0]['y'][:6]
+    d = x + ' ' + y
+    print(d)
+    return plot_time_corr(d)
 
 
 @app.callback(

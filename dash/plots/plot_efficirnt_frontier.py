@@ -32,8 +32,8 @@ def get_text_info(data):
 
 def efficient_frontier_data_layout(id_list):
     # 模拟用户选择基金
-    id_list = list(adjusted_net_value.columns)
-    id_list = random.sample(id_list, 20)
+    # id_list = list(adjusted_net_value.columns)
+    # id_list = random.sample(id_list, 20)
 
     best_frontier = optimizer.efficient_frontier('all')
     vol_list = best_frontier[1] + fix_random_data[1]

@@ -72,9 +72,10 @@ def plot_heatmap(codelist: list):
         customdatas[i] = [(str(codes[i]) + ' ' + str(codes[j])) for j in range(len(z[i]))]
     fig = ff.create_annotated_heatmap(z,
                                       annotation_text=z_text,
-                                      colorscale='Greys',
+                                      colorscale='Viridis',
                                       showscale=True,
-                                      hoverinfo='all',
+                                      hoverinfo='text',
+                                      text=z_text,
                                       customdata=customdatas,
                                       x=strs,
                                       y=strs
