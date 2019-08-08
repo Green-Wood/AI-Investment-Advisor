@@ -82,7 +82,7 @@ def plot_heatmap(codelist: list):
     # 变换字体大小
     for i in range(len(fig.layout.annotations)):
         fig.layout.annotations[i].font.size = font_size
-    fig.show()
+    # fig.show()
     return {
         'data': fig.data,
         'layout': fig.layout
@@ -112,7 +112,7 @@ def plot_time_corr(codes: str):
         dates.append(org_dates[i])
         corrs.append(get_corr(tmp)[1,0])
     fig = go.Figure(data=go.Scatter(x=dates, y=corrs))
-    fig.show()
+    # fig.show()
     return {
         'data':fig.data,
         'layout':fig.layout
