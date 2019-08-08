@@ -64,70 +64,6 @@ app.layout = html.Div(
         dcc.Store(id="aggregate_data"),
         # empty Div to trigger javascript file for graph resizing
         html.Div(id="output-clientside"),
-        # html.Div(
-        #     [
-        #         html.Div(
-        #             [
-        #                 html.Div(
-        #                     [
-        #                         html.Div(
-        #                             [html.H6(id="fund_text", children='1234'), html.P("No. of Funds")],
-        #                             id="wells",
-        #                             className="mini_container",
-        #                         ),
-        #                         html.Div(
-        #                             [html.H6(id="return_text", children='23M'), html.P("Annualized Return")],
-        #                             id="gas",
-        #                             className="mini_container",
-        #                         ),
-        #                         html.Div(
-        #                             [html.H6(id="volatility_text", children='23M'), html.P("Volatility")],
-        #                             id="oil",
-        #                             className="mini_container",
-        #                         ),
-        #                         html.Div(
-        #                             [html.H6(id="sharp_text", children='23M'), html.P("Sharp Ratio")],
-        #                             id="water",
-        #                             className="mini_container",
-        #                         ),
-        #                     ],
-        #                     id="info-container",
-        #                     className="row container-display",
-        #                 ),
-        #                 html.Div(
-        #                     [
-        #                         html.Div(
-        #                             [html.H6(id="alpha_text", children='示例'), html.P("Alpha")],
-        #                             id="alpha",
-        #                             className="mini_container",
-        #                         ),
-        #                         html.Div(
-        #                             [html.H6(id="win_rate_text", children='示例'), html.P("Win Rate")],
-        #                             id='win_rate',
-        #                             className="mini_container",
-        #                         ),
-        #                         html.Div(
-        #                             [html.H6(id="max_drawdown_text", children='示例'), html.P("Max Drawdown")],
-        #                             id="max_drawdown",
-        #                             className="mini_container",
-        #                         ),
-        #                         html.Div(
-        #                             [html.H6(id="sortino_ratio_text", children='示例'), html.P("Sortino Ratio")],
-        #                             id="sortino_ratio",
-        #                             className="mini_container",
-        #                         )
-        #                     ],
-        #                     id="profit_container",
-        #                     className="row container-display",
-        #                 ),
-        #
-        #             ],
-        #             id="right-column",
-        #             className="eight columns",
-        #         ),
-        #     ],
-        #     className="row flex-display",
-        # ),
         dcc.Store(id="info_data"),
         html.Div(
             [
@@ -181,7 +117,7 @@ app.layout = html.Div(
                 ),
                 html.Div(
                     # 2048
-                    [dcc.Graph(id="network_graph")],
+                    [dcc.Graph(id="treemap_graph")],
                     className="pretty_container four columns",
                 ),
             ],
@@ -233,10 +169,12 @@ app.layout = html.Div(
         ),
         # 储存用户选择的基金列表
         dcc.Store(id='user_list'),
-        # 储存一定risk下的最佳策略
-        dcc.Store(id='best_weights'),
+        # 储存用户点选的单只基金
+        dcc.Store(id='user_choose'),
         # 储存用户所选择的基金的最佳策略
-        dcc.Store(id='user_weights'),
+        dcc.Store(id='user_weight'),
+        # 储存用户的最佳权重字典
+        dcc.Store(id='best_weight')
     ],
     id="mainContainer",
     # style={"display": "flex", "flex-direction": "column"},
@@ -277,9 +215,98 @@ best_weight = dict()
 
 
 @app.callback(
+    Output('user_choose', 'data'),
+    [Input('user_list', 'data')]  # 添加input
+)
+def update_user_choose():
+    """
+    在基金推荐中点选（高亮）,在基金详情块上点选（高亮）,在二环上点选（高亮）, 更新用户所点选的单个基金
+    :param risk_val:
+    :return:
+    """
+    pass
+
+
+@app.callback(
+    Output('best_weight', 'data'),
+    [Input('risk_slider', 'value')]
+)
+def update_best_weight(risk_val):
+    """
+    根据risk值来更新最佳的分配，记得更新全局变量
+    :param risk_val:
+    :return:
+    """
+    pass
+
+
+@app.callback(
+    Output('user_list', 'data'),
+    [Input('risk_slider', 'value')]
+)
+def update_user_list():
+    """
+    risk值、在基金详情块上删除、在基金推荐中新增 来更新用户选择的基金列表
+    :param:
+    :return:
+    """
+    pass
+
+
+@app.callback(
+    Output('user_weight', 'data'),
+    [Input('risk_slider', 'value'),
+     Input('user_list', 'data')]
+)
+def update_user_weight():
+    """
+    risk值，用户所选择的基金列表 来更新 用户所选基金的权重字典
+    :param:
+    :return:
+    """
+    pass
+
+
+@app.callback(
+    Output(),
+    [Input()]
+)
+def update_detail():
+    """
+    在一环上点选。来显示属于该风险的四个基金、显示推荐的相关基金
+    :return:
+    """
+    pass
+
+
+@app.callback(
+    Output(),
+    [Input('user_list', 'data')]
+)
+def update_ring_two():
+    """
+    用户所选择的列表 更新  二环图
+    :return:
+    """
+    pass
+
+
+@app.callback(
+    Output('treemap_graph', 'figure'),
+    [Input('best_weight', 'data')]
+)
+def update_treemap():
+    """
+    最佳基金权重字典 更新 2048
+    :return:
+    """
+    pass
+
+
+@app.callback(
     [Output('portfolio_graph', 'figure'),
      Output("info_data", "data")],
-    [Input('portfolio', 'value')]
+    [Input('user_list', 'data')]
 )
 def update_profile(codes):
     if codes is None:
@@ -293,7 +320,7 @@ def update_profile(codes):
 
 @app.callback(
     [Output("price_graph", "figure")],
-    [Input("code", "value")]
+    [Input("user_choose", "data")]
 )
 def update_price_graph(code):
     if code is None:
