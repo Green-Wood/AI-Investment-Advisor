@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 PATH = pathlib.Path(__file__).parent.parent
 DATA_PATH = PATH.joinpath("data").resolve()
 path_adjusted_net_value = DATA_PATH.joinpath('adjusted_net_value.csv')
+font_size = 8
 # 步长和窗口大小
 window = 30
 step = 3
@@ -38,19 +39,22 @@ def get_corr(org_data):
     return corr
 
 
-def plot_heatmap(df: pd.DataFrame):
+def plot_heatmap(codelist: list):
     """
-    :param (DataFrame) df:协方差矩阵
+    :param (list) codelist:基金代码列表
     :return: (dict) fig{
                     'data':
                     'layout':
             }
     """
+    df = pd.read_csv(path_adjusted_net_value)
+    df = df[codelist]
     codes = df.columns.values
-    z = df.as_matrix()
+    z = get_corr(df)
     zmin = np.min(z)
     # 保留两位数作为文本显示
     z2 = np.around(z, decimals=2)
+    strs = [code+'' for code in codelist]
     z_text=[]
     # 变为下三角矩阵
     for i in range(len(z)):
@@ -71,12 +75,14 @@ def plot_heatmap(df: pd.DataFrame):
                                       colorscale='Greys',
                                       showscale=True,
                                       hoverinfo='all',
-                                      customdata=customdatas
+                                      customdata=customdatas,
+                                      x=strs,
+                                      y=strs
     )
     # 变换字体大小
     for i in range(len(fig.layout.annotations)):
-        fig.layout.annotations[i].font.size = 8
-    # fig.show()
+        fig.layout.annotations[i].font.size = font_size
+    fig.show()
     return {
         'data': fig.data,
         'layout': fig.layout
@@ -116,7 +122,8 @@ def plot_time_corr(codes: str):
 if __name__ == '__main__':
     # test demo
     z = np.random.randn(20, 20)
-    fig = plot_heatmap(pd.DataFrame(z))
+    codes = ['257050', '000395','000001', '519050']
+    fig = plot_heatmap(codes)
     print(fig)
     codes = '257050 000395'
     plot_time_corr(codes)
