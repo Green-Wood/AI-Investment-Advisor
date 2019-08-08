@@ -11,7 +11,7 @@ import json
 import pathlib
 
 from plots.plot_efficirnt_frontier import efficient_frontier_data_layout, get_fixed_ans
-from plots.plot_heatmap import plot_heatmap, plot_time_corr
+from plots.plot_heatmap import plot_heatmap_dendrogram
 from plots.ploy_sna import ploy_sna_pic
 from plots.show_barpolar import show_barpolar
 from plots.plot_fund_graph import plot_fund
@@ -93,7 +93,8 @@ app.layout = html.Div(
                 html.Div(
                     # 基金收益图
                     [
-                        dcc.Graph(id="profile_graph")
+                        dcc.Graph(id="profile_graph"),
+
                     ],
                     className='pretty_container six columns'
                 )
@@ -104,10 +105,7 @@ app.layout = html.Div(
             [
                 html.Div(
                     # 相关系数
-                    [dcc.Graph(id="corr_graph", style={
-                        'height': '275px'
-                    }),
-                     dcc.Graph(id='corr_time_line')],
+                    [dcc.Graph(id="corr_graph")],
                     className="pretty_container five columns",
                 ),
                 html.Div(
@@ -335,26 +333,10 @@ def update_corr(choose_list):
     选中的基金列表 -> 热力图
     :return:
     """
-    choose_list = ['519661', '000061', '398061', '519995', '470059']
+    choose_list = ['519661', '000061', '398061', '519995', '470059', '686868','519668','000068','100068','519068','470068']
     if choose_list is None:
         choose_list = best_weight.keys()
-    return plot_heatmap(choose_list)
-
-
-@app.callback(
-    Output('corr_time_line', 'figure'),
-    [Input('corr_graph', 'hoverData')]
-)
-def hover_on_corr(hover_data):
-    if hover_data is None:
-        print('None')
-        return plot_time_corr('519661 519661')
-    print(hover_data['points'])
-    x = hover_data['points'][0]['x'][:6]
-    y = hover_data['points'][0]['y'][:6]
-    d = x + ' ' + y
-    print(d)
-    return plot_time_corr(d)
+    return plot_heatmap_dendrogram(choose_list)
 
 
 @app.callback(
