@@ -7,6 +7,7 @@ from werkzeug.exceptions import NotFound
 from init_optmizer import optimizer
 import pathlib
 from model.custom_optimizer import get_optimizer_by_list
+from model.recommend_market_fund import get_recom_marker_fund
 
 api = Namespace('allocation', description='根据用户的风险指标和总资产，获得资产分配的比例（浮点数列表）')
 
@@ -48,7 +49,6 @@ allocation_model = api.model(
         'allocation_id': fields.String,
         # 'pagination': fields.Nested(page_model),
         'allocation': fields.List(fields.Nested(fund_model)),
-        'recommend': fields.List(fields.Nested()),
         'ratio': fields.Nested(ration_model),
         'return': fields.Float,
         'volatility': fields.Float,
@@ -83,12 +83,12 @@ def calculate_ratio(fund_list):
     return d
 
 
-@api.route('/based_on_risk')
+@api.route('')
 class AllocatorOnRisk(Resource):
 
-    @api.response(200, 'allocate successfully', model=allocation_model)
-    @api.expect(_allocation_risk_parser)
-    @api.marshal_list_with(allocation_model)
+    # @api.response(200, 'allocate successfully', model=allocation_model)
+    # @api.expect(_allocation_risk_parser)
+    # @api.marshal_list_with(allocation_model)
     def post(self):
         """
         新建一种资产配置方案
@@ -97,21 +97,12 @@ class AllocatorOnRisk(Resource):
         """
         args = _allocation_risk_parser.parse_args()
         ret, vol, sr, w = optimizer.get_fixed_ans(fixed='volatility', value=args['risk_index'])
-        w = sorted(w.items(), key=lambda x: x[1], reverse=True)
-        fund_list = [
-            {
-                'code': str(key),
-                'symbol': str(instruments[instruments['code'] == int(key)].iloc[0, 1]),
-                # 'fund_type': str(instruments[instruments['code'] == int(key)].iloc[0, 2]),
-                'ratio': val
-            }
-            for key, val in w
-        ]
-        ratio = calculate_ratio(fund_list)
-        allocation_id = mongo.db.allocation.insert_one({'allocation': fund_list}).inserted_id
+        market_dict, recom_dict, ratio = get_recom_marker_fund(w)
+        # allocation_id = mongo.db.allocation.insert_one({'allocation': market_dict, 'recommend': recom_dict, 'ratio': ratio}).inserted_id
         return {
-                   'allocation_id': allocation_id,
-                   'allocation': fund_list,
+                   # 'allocation_id': allocation_id,
+                   'allocation': market_dict,
+                   'recommend': recom_dict,
                    'ratio': ratio,
                    'return': ret,
                    'volatility': vol,
