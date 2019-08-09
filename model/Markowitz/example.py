@@ -18,7 +18,7 @@ if __name__ == '__main__':
     args=parser.parse_args()
 
     nav_path = args.path
-    #"C:/Users/qin_t/Desktop/PortfolioOptimization/funds/funds/nav"
+    #"C:/Users/qin_t/Desktop/PortfolioOptimization/data/data/nav"
     dateparser = lambda x: pd.datetime.strptime(x, "%Y-%m-%d")
     data_list = []
 

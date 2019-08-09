@@ -13,13 +13,13 @@ def get_weights(data,start_date,end_date,columns,fixed='sharpe',value=0.05):
 
     :param data: DataFrame,
         Full data without missing values, columns are identifiers
-        for different funds, index is datetime.
+        for different data, index is datetime.
     :param start_date: str
         Start date to estimate mu and sigma.
     :param end_date: str
         End date to estimate mu and sigma.
     :param columns: list, ['id1', 'id2',..., 'idn']
-        Identifiers of funds to use to optimize.
+        Identifiers of data to use to optimize.
     :param fixed: str, 'sharpe' or 'volatility' or 'return'
         Optimization constraints, defaults to 'sharpe'.
     :param value: float

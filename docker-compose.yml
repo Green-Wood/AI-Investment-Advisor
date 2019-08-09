@@ -36,11 +36,11 @@ services:
       - MONGO_USERNAME=greenwood
       - MONGO_PASSWORD=123
 #
-  dash:
-    restart: always
-    build:
-      dockerfile: Dockerfile
-      context: ./dash
-    image: greenw00d/investment-advisor-dash
+#  dash:
+#    restart: always
+#    build:
+#      dockerfile: Dockerfile
+#      context: ./dash
+#    image: greenw00d/investment-advisor-dash
 
 

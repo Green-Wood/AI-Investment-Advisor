@@ -8,7 +8,7 @@ from time import time
 import pickle
 
 if __name__ == '__main__':
-    data = pd.read_csv('C:/Users/qin_t/Desktop/PortfolioOptimization/funds/funds/adjusted_net_value.csv',
+    data = pd.read_csv('C:/Users/qin_t/Desktop/PortfolioOptimization/data/data/adjusted_net_value.csv',
                        index_col=0)
 
     print('Loading from file...')
@@ -42,7 +42,7 @@ if __name__ == '__main__':
     print("return = {}, risk = {}, sharpe = {}".format(ret, risk, sharpe))
 
     print('-' * 80)
-    print("Plotting efficient frontier of all funds...")
+    print("Plotting efficient frontier of all data...")
     returns, risks, sharpes, weights_list = optimizer.efficient_frontier(columns='all')
     plt.figure(1)
     plt.plot(risks, returns)
@@ -56,9 +56,9 @@ if __name__ == '__main__':
     plt.scatter(risks1, returns1)
 
     print('-' * 80)
-    print("Plotting efficient frontier of funds with weight > 1e-8...")
+    print("Plotting efficient frontier of data with weight > 1e-8...")
     columns = [key for key, v in weights.items() if v > 1e-8]
-    print("number of funds with weight > 1e-8 is " + str(len(columns)))
+    print("number of data with weight > 1e-8 is " + str(len(columns)))
     returns, risks, sharpes, weights_list = optimizer.efficient_frontier(columns=columns)
     plt.figure(2)
     plt.plot(risks, returns)

@@ -11,13 +11,13 @@ def get_weights(data,start_date,end_date,columns,n_threads=1,fixed='sharpe',valu
 
     :param data: DataFrame,
         Full data without missing values, columns are identifiers
-        for different funds, index is datetime.
+        for different data, index is datetime.
     :param start_date: str
         Start date to estimate mu and sigma.
     :param end_date: str
         End date to estimate mu and sigma.
     :param columns: list, ['id1', 'id2',..., 'idn']
-        Identifiers of funds to use to optimize.
+        Identifiers of data to use to optimize.
     :param n_threads: int
         Number of threads.
     :param fixed: str, 'sharpe' or 'volatility' or 'return'
@@ -49,7 +49,7 @@ def get_weights(data,start_date,end_date,columns,n_threads=1,fixed='sharpe',valu
 
 
 if __name__ == '__main__':
-    data = pd.read_csv('C:/Users/qin_t/Desktop/PortfolioOptimization/funds/funds/adjusted_net_value.csv',
+    data = pd.read_csv('C:/Users/qin_t/Desktop/PortfolioOptimization/data/data/adjusted_net_value.csv',
                        index_col=0)
 
     print(get_weights(data, '2014-01-04', '2016-01-12',

@@ -77,7 +77,7 @@ def FB_Model(train_x, train_y,train_ratio,predict_period,changepoint_prior_scale
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-p", "--path", action='store', type=str, default="D://python/MPT/data/funds/nav/")
+    parser.add_argument("-p", "--path", action='store', type=str, default="D://python/MPT/data/data/nav/")
     parser.add_argument("-s", "--sub_folder", action='store', type=str, default="00")
     parser.add_argument("-f", "--fund_id", action='store', type=str, default="000300")
     parser.add_argument("-t", "--train_ratio", action='store', type=float, default=0.9)

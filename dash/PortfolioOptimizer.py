@@ -18,15 +18,15 @@ class PortfolioOptimizer:
     ----------
     data : DataFrame
         Full data without missing values, columns are identifiers
-        for different funds, index is datetime.
+        for different data, index is datetime.
 
     expected_returns : Series
         Expected returns of assets, index is identifiers
-        for different funds.
+        for different data.
 
     cov_matrix : DataFrame
-        Covariance matrix of funds. Index and columns are identifiers
-        for different funds.
+        Covariance matrix of data. Index and columns are identifiers
+        for different data.
 
     """
 
@@ -106,14 +106,14 @@ class PortfolioOptimizer:
 
     def efficient_frontier(self, columns='all'):
         """
-        Calculate efficient frontier of given funds.
+        Calculate efficient frontier of given data.
 
         Parameters
         ----------
         columns : str or list of str, 'all' or ['id1', 'id2', ...]
                 Funds to use to get efficient frontier. Use 'all' only
                 if optimize() has been called. Otherwise use less than
-                40 funds to make time cost acceptable.
+                40 data to make time cost acceptable.
 
         Returns
         -------
@@ -134,7 +134,7 @@ class PortfolioOptimizer:
             Weights of a portfolio. Weights corresponding to fixed risk = 0.05
             is recommended.
         :param num_funds: int
-            Number of funds used to sample random portfolios.
+            Number of data used to sample random portfolios.
         :param num_portfolios: int
             Number of portfolios to sample.
         :return: list,list,list

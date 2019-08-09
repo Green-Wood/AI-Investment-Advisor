@@ -6,8 +6,8 @@ from os import getenv
 from db import mongo
 
 from resources.allocation import api as ns_allocation
-from resources.fund import api as ns_fund
-from resources.info import api as ns_info
+from resources.portfolio import api as ns_fund
+from resources.wx import api as ns_info
 
 APP_ENV = getenv('APP_ENV', 'dev')
 app = Flask(__name__)

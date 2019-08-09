@@ -10,7 +10,7 @@ services:
       - MONGO_URI=mongodb://mongo:27017/investment-advisor
     image: greenw00d/investment-advisor-backend:latest
     volumes:
-      - ./backend/funds/nav:/usr/app/funds/nav
+      - ./backend/data/nav:/usr/app/data/nav
 
 
   nginx:
@@ -27,9 +27,9 @@ services:
     environment:
       - MONGO_USERNAME=greenwood
       - MONGO_PASSWORD=123
-  dash:
-    restart: always
-    image: greenw00d/investment-advisor-dash
-  ml:
-    restart: always
-    image: greenw00d/flask-demo-model:latest
+#  dash:
+#    restart: always
+#    image: greenw00d/investment-advisor-dash
+#  ml:
+#    restart: always
+#    image: greenw00d/flask-demo-model:latest
