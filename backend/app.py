@@ -8,6 +8,8 @@ from db import mongo
 from resources.allocation import api as ns_allocation
 from resources.portfolio import api as ns_fund
 from resources.wx import api as ns_info
+from resources.heatmap import api as ns_heatmap
+from resources.efficient_frontier import api as ns_ef
 
 APP_ENV = getenv('APP_ENV', 'dev')
 app = Flask(__name__)
@@ -29,6 +31,8 @@ def after_request(response):
 api.add_namespace(ns_allocation)
 api.add_namespace(ns_fund)
 api.add_namespace(ns_info)
+api.add_namespace(ns_heatmap)
+api.add_namespace(ns_ef)
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)

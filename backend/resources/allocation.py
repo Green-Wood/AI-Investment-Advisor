@@ -101,7 +101,7 @@ class AllocatorOnRisk(Resource):
             {
                 'code': str(key),
                 'symbol': str(instruments[instruments['code'] == int(key)].iloc[0, 1]),
-                'fund_type': str(instruments[instruments['code'] == int(key)].iloc[0, 2]),
+                # 'fund_type': str(instruments[instruments['code'] == int(key)].iloc[0, 2]),
                 'ratio': val
             }
             for key, val in w
