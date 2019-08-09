@@ -19,9 +19,10 @@ ef_model = api.model(
 
 @api.route('/best')
 class Best(Resource):
+    @api.marshal_with(ef_model)
     def get(self):
         """
-        返回最佳的ef曲线
+        返回最佳的ef曲线，以及散点
         :param code:
         :return:
         """
@@ -43,9 +44,11 @@ _ef_parser.add_argument('fund_list', type=str, action='append', help='基金code
 
 @api.route('/user')
 class User(Resource):
+    @api.expect(_ef_parser)
+    @api.marshal_with(ef_model)
     def get(self):
         """
-        根据基金列表返回ef曲线
+        根据基金列表返回ef曲线，以及散点
         :return:
         """
         args = _ef_parser.parse_args()

@@ -10,9 +10,10 @@ _heatmap_parser.add_argument('fund_list', type=str, action='append', help='基�
 
 @api.route('')
 class HeatMap(Resource):
+    @api.expect(_heatmap_parser)
     def get(self):
         """
-        根据基金代码获取该基金的详细信息（一个月、半年、一年）
+        根据基金代码列表，得到相关系数矩阵
         :param code:
         :return:
         """

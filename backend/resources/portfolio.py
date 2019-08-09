@@ -76,16 +76,17 @@ best_portfolio_model = api.model(
 class SingleFund(Resource):
 
     @api.response(200, 'get fund info successfully', model=fund_info_model)
-    @api.response(404, 'fund not found')
-    @api.response(400, 'This fund does not contain net_value, only daily_profit')
-    @api.marshal_list_with(fund_info_model)
+    @api.marshal_with(fund_info_model)
     def get(self, code):
         """
         根据基金代码获取该基金的详细信息
         :param code:
         :return:
         """
-        his_x, his_y, forecast_x, lower_y, forecast_y, upper_y = get_single_fund_data(code)
+        try:
+            his_x, his_y, forecast_x, lower_y, forecast_y, upper_y = get_single_fund_data(code)
+        except KeyError:
+            raise NotFound('Fund not found')
         return {
             'his_x': his_x,
             'his_y': his_y,
@@ -113,7 +114,7 @@ _fund_list_parser.add_argument('fund_list', type=str, action='append', help='基
 @api.route('/user')
 class UserPortfolio(Resource):
 
-    @api.marshal_list_with(best_portfolio_model)
+    @api.marshal_with(best_portfolio_model)
     @api.expect(_fund_list_parser)
     def get(self):
         """
