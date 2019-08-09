@@ -1,7 +1,7 @@
 from flask_restplus import Resource, Namespace, reqparse, fields
 from model.efficient_frontier import get_best_ef_data, get_user_ef_data
 
-api = Namespace('ef', description='根据基金代码列表，得到相关系数矩阵')
+api = Namespace('ef', description='根据基金代码列表，efficient frontier')
 
 ef_model = api.model(
     'ef_model',

@@ -3,19 +3,9 @@ import pandas as pd
 import datetime
 from werkzeug.exceptions import NotFound, BadRequest
 
-api = Namespace('portfolio', description='基金的详细信息')
+api = Namespace('portfolio', description='基金的单只和累计收益信息')
 
 _fund_parser = reqparse.RequestParser()
-_fund_parser.add_argument('net_value_type',
-                          default='unit_net_value',
-                          type=str,
-                          help='净值类型',
-                          choices=('unit_net_value', 'acc_net_value', 'adjusted_net_value'))
-_fund_parser.add_argument('recent_time',
-                          default='month',
-                          type=str,
-                          help='最近一个月、半年、一年',
-                          choices=('month', 'half year', 'year'))
 
 fund_info_model = api.model(
     'fund_info_model',
@@ -44,7 +34,7 @@ class Allocator(Resource):
     @api.marshal_list_with(fund_info_model, envelope='info_list')
     def get(self, code):
         """
-        根据基金代码获取该基金的详细信息（一个月、半年、一年）
+        根据基金代码获取该基金的详细信息
         :param code:
         :return:
         """

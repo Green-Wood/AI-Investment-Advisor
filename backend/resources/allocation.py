@@ -48,6 +48,7 @@ allocation_model = api.model(
         'allocation_id': fields.String,
         # 'pagination': fields.Nested(page_model),
         'allocation': fields.List(fields.Nested(fund_model)),
+        'recommend': fields.List(fields.Nested()),
         'ratio': fields.Nested(ration_model),
         'return': fields.Float,
         'volatility': fields.Float,
@@ -90,7 +91,7 @@ class AllocatorOnRisk(Resource):
     @api.marshal_list_with(allocation_model)
     def post(self):
         """
-        新建一种资产配置方案，并以分页的形式返回
+        新建一种资产配置方案
         :param risk, page_size
         :return id, pagination, allocation, ratio
         """
