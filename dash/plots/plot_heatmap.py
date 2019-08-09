@@ -5,7 +5,7 @@ import plotly.figure_factory as ff
 from pypfopt import risk_models
 import pathlib
 from scipy.spatial.distance import pdist, squareform
-import matplotlib.pyplot as plt
+
 
 PATH = pathlib.Path(__file__).parent.parent
 DATA_PATH = PATH.joinpath("data").resolve()
@@ -32,14 +32,34 @@ def mean_solve(df: pd.DataFrame):
     return df
 
 
-def get_corr(org_data):
-    cov = risk_models.CovarianceShrinkage(org_data).ledoit_wolf()
+def get_corr(code_list: list = None, adjusted_df : pd.DataFrame = None):
+    """
+    note： 参数二选一
+    :param (list) code_list: 基金列表
+    :param (DataFrame) org_data: 净值信息
+    :return: (ndarray) corr: 协方差矩阵
+    eg:     codes = ['257050', '000395', '000001', '519050']
+            corr = get_corr(codes)
+            print(corr)
+    """
+    if code_list is None:
+        pass
+    if adjusted_df is None:
+        adjusted_df = pd.read_csv(path_adjusted_net_value)[code_list]
+    cov = risk_models.CovarianceShrinkage(adjusted_df).ledoit_wolf()
     var = np.eye(cov.shape[0]) * cov
     std = np.power(var, 0.5)
     I = np.linalg.inv(std)
     corr = I.dot(cov).dot(I)
     return corr
 
+
+def save_corr():
+    df = pd.read_csv(path_adjusted_net_value)
+    df = df.drop('datetime', axis=1)
+    corr = get_corr(adjusted_df=df)
+    corr_df = pd.DataFrame(corr, columns=df.columns.values, index=df.columns.values)
+    corr_df.to_csv('../../data/corr.csv')
 
 def plot_heatmap(codelist: list):
     """
@@ -241,9 +261,12 @@ def plot_heatmap_dendrogram(code_list: list):
 if __name__ == '__main__':
     # test demo
     z = np.random.randn(20, 20)
+    # save_corr()
     codes = ['257050', '000395', '000001', '519050']
-    fig = plot_heatmap_dendrogram(codes)
-    print(fig)
+    corr = get_corr(codes)
+    print(corr)
+    # fig = plot_heatmap_dendrogram(codes)
+    # print(fig)
     # codes = '257050 000395'
     # plot_time_corr(codes)
 
