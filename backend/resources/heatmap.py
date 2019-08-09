@@ -1,10 +1,5 @@
 from flask_restplus import Resource, Namespace, reqparse, fields
-import pandas as pd
-from bson.objectid import ObjectId
-from bson.errors import InvalidId
-from werkzeug.exceptions import NotFound
-from init_optmizer import optimizer
-import pathlib
+from model.corr_map import get_corr
 
 api = Namespace('heatmap', description='根据基金代码列表，得到相关系数矩阵')
 
@@ -22,6 +17,7 @@ class HeatMap(Resource):
         """
         args = _heatmap_parser.parse_args()
         fund_list = args['fund_list']
-        pass
+        df = get_corr(fund_list).to_json()
+        return df
 
 
