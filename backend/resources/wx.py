@@ -3,6 +3,9 @@ from init_optmizer import optimizer
 import pathlib
 import pandas as pd
 
+from model.recommend_market_fund import get_recom_marker_fund
+from model.portfolio import get_portfolio_data
+
 PATH = pathlib.Path(__file__).parent.parent
 DATA_PATH = PATH.joinpath("data").resolve()
 instruments = DATA_PATH.joinpath('instruments.csv')
@@ -12,9 +15,9 @@ api = Namespace('wx', description='小程序分配页的信息')
 _info_parser = reqparse.RequestParser()
 _info_parser.add_argument('risk_value',
                           required=True,
-                          type=int,
+                          type=float,
                           help='风险承受能力',
-                          choices=(1, 2, 3, 4, 5))
+                          choices=(0.01, 0.02, 0.03, 0.04, 0.05))
 
 
 ration_model = api.model(
@@ -51,50 +54,28 @@ info_model = api.model(
 @api.route('')
 class Allocator(Resource):
 
-    @api.response(200, 'get info successfully', model=info_model)
     @api.expect(_info_parser)
-    @api.marshal_list_with(info_model, envelope='info')
     def get(self):
         """
-        根据用户风险获取基金分配的信息
-        :param code:
+        获得小程序所需的信息
+        :param
         :return:
         """
         args = _info_parser.parse_args()
-        risk_val = args['risk_value'] / 100
-        ret, vol, sharp, weight = optimizer.get_fixed_ans('volatility', risk_val)
-
-        try:
-            data = pd.read_csv(instruments)
-        except:
-            print('Error!:instruments.csv的路径错误，请核对')
-            return ''
-        data_dic = {
-            'Hybrid': 0,
-            'Bond': 0,
-            'Stock': 0,
-            'QDII': 0,
-            'Money': 0,
-            'Related': 0,
-            'Other': 0
+        ret, vol, sr, w = optimizer.get_fixed_ans(fixed='volatility', value=args['risk_index'])
+        market_dict, recom_dict, ratio = get_recom_marker_fund(w)
+        # allocation_id = mongo.db.allocation.insert_one({'allocation': market_dict, 'recommend': recom_dict, 'ratio': ratio}).inserted_id
+        top_7 = sorted(market_dict.items(), key=lambda x: x[1], reverse=True)[:7]
+        top_7 = {
+            k: v
+            for k, v in top_7
         }
-        for key in weight.keys():
-            idx = list(data['code']).index(int(key))
-            a_type = data['fund_type'][idx]
-            data_dic[a_type] = data_dic[a_type] + weight[key]
-        # sum = 0
-        # for key in data_dic.keys():
-        #     sum = sum + data_dic[key]
-        # for key in data_dic.keys():
-        #     data_dic[key] = data_dic[key] / sum
-
         return {
-            'ans': {
-                'Return': ret,
-                'Volatility': vol,
-                'SharpRatio': sharp
-            },
-            'ratio': data_dic
-        }, 200
-
+                   # 'allocation_id': allocation_id,
+                   'allocation': top_7,
+                   'ratio': ratio,
+                   'return': ret,
+                   'volatility': vol,
+                   'sharp_ratio': sr
+               }, 200
 

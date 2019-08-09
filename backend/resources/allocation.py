@@ -70,8 +70,7 @@ instruments = pd.read_csv(DATA_PATH.joinpath('instruments.csv'), usecols=['code'
 
 # 新增一种配置
 _allocation_risk_parser = reqparse.RequestParser()
-_allocation_risk_parser.add_argument('risk_index', type=float, help='能够接受的风险')
-_allocation_risk_parser.add_argument('page_size', default=5, type=int, help='一页的大小')
+_allocation_risk_parser.add_argument('risk_index', type=float, help='能够接受的风险', choices=(0.01, 0.02, 0.03, 0.04, 0.05))
 
 
 def calculate_ratio(fund_list):

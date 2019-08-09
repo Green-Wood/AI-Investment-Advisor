@@ -8,6 +8,10 @@ PATH = pathlib.Path(__file__).parent.parent
 DATA_PATH = PATH.joinpath("data").resolve()
 
 
+def get_best_portfolio():
+    pass
+
+
 def get_portfolio_data(codes):
     with open(DATA_PATH.joinpath('date.csv')) as f:
         start_end = pd.read_csv(f, index_col=0)
