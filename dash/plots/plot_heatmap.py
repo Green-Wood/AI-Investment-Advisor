@@ -32,12 +32,12 @@ def mean_solve(df: pd.DataFrame):
     return df
 
 
-def get_corr(code_list: list = None, adjusted_df : pd.DataFrame = None):
+def get_corr(code_list: list = None, adjusted_df: pd.DataFrame = None):
     """
     note： 参数二选一
     :param (list) code_list: 基金列表
-    :param (DataFrame) org_data: 净值信息
-    :return: (ndarray) corr: 协方差矩阵
+    :param (DataFrame) adjusted_df: 净值信息
+    :return: (DataFrame) corr_df: 协方差矩阵
     eg:     codes = ['257050', '000395', '000001', '519050']
             corr = get_corr(codes)
             print(corr)
@@ -51,7 +51,8 @@ def get_corr(code_list: list = None, adjusted_df : pd.DataFrame = None):
     std = np.power(var, 0.5)
     I = np.linalg.inv(std)
     corr = I.dot(cov).dot(I)
-    return corr
+    corr_df = pd.DataFrame(corr, columns=adjusted_df.columns.values, index=adjusted_df.columns.values)
+    return corr_df
 
 
 def save_corr():
