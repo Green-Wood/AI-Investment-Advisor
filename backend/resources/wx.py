@@ -94,7 +94,7 @@ class Portfolio(Resource):
         """
         args = _info_parser.parse_args()
         risk_val = args['risk_index']
-        small_df = best_portfolio.iloc[-20:]
+        small_df = best_portfolio.iloc[::40]
         p = small_df['portfolio_{}'.format(risk_val)].values
         b = small_df['baseline_{}'.format(risk_val)].values
         info = best_portfolio_info[str(risk_val)]
