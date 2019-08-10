@@ -44,7 +44,7 @@ def get_weights(data,start_date,end_date,columns,fixed='sharpe',value=0.05):
     subdata=data.loc[start_date:end_date,columns]
     optimizer=PortfolioOptimizer(expected_returns.ema_historical_return(subdata),
                                  risk_models.CovarianceShrinkage(subdata).ledoit_wolf())
-    optimizer.optimize()
+    optimizer.optimize(N=50, n_threads=6)
     return optimizer.get_fixed_ans(fixed,value)
 
 

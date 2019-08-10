@@ -29,12 +29,12 @@ services:
       - "443:443"
     image: greenw00d/investment-advisor-nginx
 
-  mongo:
-    restart: always
-    image: mongo
-    environment:
-      - MONGO_USERNAME=greenwood
-      - MONGO_PASSWORD=123
+#  mongo:
+#    restart: always
+#    image: mongo
+#    environment:
+#      - MONGO_USERNAME=greenwood
+#      - MONGO_PASSWORD=123
 #
 #  dash:
 #    restart: always

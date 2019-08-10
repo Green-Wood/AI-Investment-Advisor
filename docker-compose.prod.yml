@@ -21,12 +21,12 @@ services:
     image: greenw00d/investment-advisor-nginx:latest
 
 
-  mongo:
-    restart: always
-    image: mongo
-    environment:
-      - MONGO_USERNAME=greenwood
-      - MONGO_PASSWORD=123
+#  mongo:
+#    restart: always
+#    image: mongo
+#    environment:
+#      - MONGO_USERNAME=greenwood
+#      - MONGO_PASSWORD=123
 #  dash:
 #    restart: always
 #    image: greenw00d/investment-advisor-dash
