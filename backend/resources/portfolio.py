@@ -3,6 +3,7 @@ import pandas as pd
 import datetime
 from werkzeug.exceptions import NotFound, BadRequest
 from model.portfolio import get_single_fund_data, get_portfolio_data, best_portfolio, best_portfolio_info
+from resources.efficient_frontier import _fund_list_parser
 
 api = Namespace('portfolio', description='基金的单只和累计收益信息')
 
@@ -122,10 +123,6 @@ class BestPortfolio(Resource):
         }
 
 
-_fund_list_parser = reqparse.RequestParser()
-_fund_list_parser.add_argument('fund_list', type=str, action='append', help='基金code列表', required=True)
-
-
 @api.route('/user')
 class UserPortfolio(Resource):
 
@@ -137,7 +134,8 @@ class UserPortfolio(Resource):
         :return:
         """
         args = _fund_list_parser.parse_args()
-        p_x, p_y, b_y, info = get_portfolio_data(args['fund_list'])
+        fund_list = args['fund_list'].split()
+        p_x, p_y, b_y, info = get_portfolio_data(fund_list)
         return {
             'x': p_x,
             'p_y': p_y,

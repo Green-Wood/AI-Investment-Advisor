@@ -38,21 +38,22 @@ class Best(Resource):
         }
 
 
-_ef_parser = reqparse.RequestParser()
-_ef_parser.add_argument('fund_list', type=str, action='append', help='基金code列表')
+_fund_list_parser = reqparse.RequestParser()
+_fund_list_parser.add_argument('fund_list', type=str, help='基金code列表(split by space)')
 
 
 @api.route('/user')
 class User(Resource):
-    @api.expect(_ef_parser)
+    @api.expect(_fund_list_parser)
     @api.marshal_with(ef_model)
     def get(self):
         """
         根据基金列表返回ef曲线，以及散点
         :return:
         """
-        args = _ef_parser.parse_args()
-        choose_frontier, text, choose_data = get_user_ef_data(args['fund_list'])
+        args = _fund_list_parser.parse_args()
+        fund_list = args['fund_list'].split()
+        choose_frontier, text, choose_data = get_user_ef_data(fund_list)
         return {
             'line_ret': choose_frontier[0],
             'line_vol': choose_frontier[1],
