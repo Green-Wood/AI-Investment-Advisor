@@ -82,7 +82,7 @@ def calculate_ratio(fund_list):
     return d
 
 
-@api.route('')
+@api.route('/choose')
 class AllocatorOnRisk(Resource):
 
     # @api.response(200, 'allocate successfully', model=allocation_model)

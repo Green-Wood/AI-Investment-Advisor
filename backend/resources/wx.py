@@ -84,6 +84,7 @@ class Allocator(Resource):
 
 @api.route('/portfolio')
 class Portfolio(Resource):
+
     @api.expect(_info_parser)
     @api.marshal_with(best_portfolio_model)
     def get(self):
@@ -93,11 +94,12 @@ class Portfolio(Resource):
         """
         args = _info_parser.parse_args()
         risk_val = args['risk_index']
-        p = best_portfolio['portfolio_{}'.format(risk_val)]
-        b = best_portfolio['baseline_{}'.format(risk_val)]
+        small_df = best_portfolio.iloc[-20:]
+        p = small_df['portfolio_{}'.format(risk_val)].values
+        b = small_df['baseline_{}'.format(risk_val)].values
         info = best_portfolio_info[str(risk_val)]
         return {
-            'x': best_portfolio['datetime'],
+            'x': small_df['datetime'].values,
             'p_y': p,
             'b_y': b,
             'info': info

@@ -9,7 +9,7 @@ _heatmap_parser = reqparse.RequestParser()
 _heatmap_parser.add_argument('fund_list', type=str, action='append', help='基金code列表')
 
 
-@api.route('')
+@api.route('/choose')
 class HeatMap(Resource):
     @api.expect(_heatmap_parser)
     def get(self):
