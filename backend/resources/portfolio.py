@@ -2,7 +2,7 @@ from flask_restplus import Resource, Namespace, reqparse, fields
 import pandas as pd
 import datetime
 from werkzeug.exceptions import NotFound, BadRequest
-from model.portfolio import get_single_fund_data, get_portfolio_data
+from model.portfolio import get_single_fund_data, get_portfolio_data, best_portfolio, best_portfolio_info
 
 api = Namespace('portfolio', description='基金的单只和累计收益信息')
 
@@ -62,9 +62,8 @@ date_model = api.model(
 best_portfolio_model = api.model(
     'portfolio_model',
     {
-        'p_x': fields.List(fields.Date),
+        'x': fields.List(fields.Date),
         'p_y': fields.List(fields.Float),
-        'b_x': fields.List(fields.Date),
         'b_y': fields.List(fields.Float),
         'info': fields.Nested(date_model)
     }
@@ -97,14 +96,30 @@ class SingleFund(Resource):
         }
 
 
+_best_portfolio_parser = reqparse.RequestParser()
+_best_portfolio_parser.add_argument('risk_index', type=float, help='能够接受的风险', choices=(0.01, 0.02, 0.03, 0.04, 0.05))
+
+
 @api.route('/best')
 class BestPortfolio(Resource):
+    @api.expect(_best_portfolio_parser)
+    @api.marshal_with(best_portfolio_model)
     def get(self):
         """
         获得最好的组合收益
         :return:
         """
-        pass
+        args = _best_portfolio_parser.parse_args()
+        risk_val = args['risk_index']
+        p = best_portfolio['portfolio_{}'.format(risk_val)]
+        b = best_portfolio['baseline_{}'.format(risk_val)]
+        info = best_portfolio_info[str(risk_val)]
+        return {
+            'x': best_portfolio['datetime'],
+            'p_y': p,
+            'b_y': b,
+            'info': info
+        }
 
 
 _fund_list_parser = reqparse.RequestParser()
@@ -122,11 +137,10 @@ class UserPortfolio(Resource):
         :return:
         """
         args = _fund_list_parser.parse_args()
-        p_x, p_y, b_x, b_y, info = get_portfolio_data(args['fund_list'])
+        p_x, p_y, b_y, info = get_portfolio_data(args['fund_list'])
         return {
-            'p_x': p_x,
+            'x': p_x,
             'p_y': p_y,
-            'b_x': b_x,
             'b_y': b_y,
             'info': info
         }

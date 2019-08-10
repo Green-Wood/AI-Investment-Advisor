@@ -3,13 +3,15 @@ import pandas as pd
 from time import time
 from model.backtesting import get_performance
 from datetime import datetime
+from init_optmizer import optimizer
+import json
 
 PATH = pathlib.Path(__file__).parent.parent
 DATA_PATH = PATH.joinpath("data").resolve()
 
-
-def get_best_portfolio():
-    pass
+best_portfolio = pd.read_csv(DATA_PATH.joinpath('best_portfolio.csv'))
+with open(DATA_PATH.joinpath('info.txt'), 'r') as json_file:
+    best_portfolio_info = json.load(json_file)
 
 
 def get_portfolio_data(codes):
@@ -29,8 +31,7 @@ def get_portfolio_data(codes):
     #                                "Max drawdown", "Sharpe Ratio", "Sortino Ratio"])
     # for k, v in results.items():
     #     index_df[k] = parse_info(v)
-    return data['return_p'].index.to_pydatetime(), data['return_p'].values, \
-           data['return_b'].index.to_pydatetime(), data['return_b'].values, data['index']
+    return data['return_p'].index.to_pydatetime(), data['return_p'].values, data['return_b'].values, data['index']
 
 
 def get_single_fund_data(code):
@@ -51,10 +52,28 @@ def get_single_fund_data(code):
 
 
 if __name__ == '__main__':
-    # p, b, index = get_portfolio_data(['000059', '000395'])
+    risk_list = [0.01, 0.02, 0.03, 0.04, 0.05]
+    df_list = []
+    info = dict()
+    for risk in risk_list:
+        _, _, _, weight = optimizer.get_fixed_ans('volatility', risk)
+        fund_list = [k for k, v in weight.items() if v > 1e-7]
+        p, b, index = get_portfolio_data(fund_list)
+        internal_df = pd.concat([p, b], axis=1)
+        internal_df.columns = ['portfolio_{}'.format(risk), 'baseline_{}'.format(risk)]
+        df_list.append(internal_df)
+        info[risk] = index
+
+    risk_df = pd.concat(df_list, axis=1)
+    risk_df.to_csv(DATA_PATH.joinpath('best_portfolio.csv'))
+    with open(DATA_PATH.joinpath('info.txt'), 'w') as json_file:
+        json.dump(info, json_file)
+
+
+
     # p.to_csv(DATA_PATH.joinpath('best_portfolio.csv'))
     # b.to_csv(DATA_PATH.joinpath('baseline.csv'))
     # print(index)
-
-    his_x, his_y, forecast_x, lower_y, forecast_y, upper_y = get_single_fund_data('000059')
-    print(his_x)
+    #
+    # his_x, his_y, forecast_x, lower_y, forecast_y, upper_y = get_single_fund_data('000059')
+    # print(his_x)
