@@ -96,7 +96,6 @@ class AllocatorOnRisk(Resource):
         :return id, pagination, allocation, ratio
         """
         args = _allocation_risk_parser.parse_args()
-        print(args['risk_index'])
         ret, vol, sr, w = optimizer.get_fixed_ans(fixed='volatility', value=args['risk_index'])
         market_dict, recom_dict, ratio = get_recom_marker_fund(w)
         # allocation_id = mongo.db.allocation.insert_one({'allocation': market_dict, 'recommend': recom_dict, 'ratio': ratio}).inserted_id
