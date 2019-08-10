@@ -20,9 +20,9 @@ def get_best_ef_data():
     :return:
     """
     best_frontier = optimizer.efficient_frontier('all')
-    vol_list = best_frontier[1] + fix_random_data[1]
-    ret_list = best_frontier[0] + fix_random_data[0]
-    sharp_ratio_list = best_frontier[2] + fix_random_data[2]
+    vol_list = fix_random_data[1]
+    ret_list = fix_random_data[0]
+    sharp_ratio_list = fix_random_data[2]
     return best_frontier, get_text_info(best_frontier), (vol_list, ret_list, sharp_ratio_list)
 
 
