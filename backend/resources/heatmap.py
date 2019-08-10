@@ -1,6 +1,7 @@
 from flask_restplus import Resource, Namespace, reqparse, fields
 from model.corr_map import get_corr
 import json
+from werkzeug.exceptions import NotFound
 
 api = Namespace('heatmap', description='根据基金代码列表，得到相关系数矩阵')
 
@@ -19,7 +20,10 @@ class HeatMap(Resource):
         """
         args = _heatmap_parser.parse_args()
         fund_list = args['fund_list']
-        json_str = get_corr(fund_list).to_json(orient='index')
+        try:
+            json_str = get_corr(fund_list).to_json(orient='index')
+        except KeyError:
+            raise NotFound('Fund not find')
         return json.loads(json_str)
 
 

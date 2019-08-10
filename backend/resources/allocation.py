@@ -88,6 +88,7 @@ class AllocatorOnRisk(Resource):
     # @api.response(200, 'allocate successfully', model=allocation_model)
     # @api.expect(_allocation_risk_parser)
     # @api.marshal_list_with(allocation_model)
+    @api.expect(_allocation_risk_parser)
     def get(self):
         """
         新建一种资产配置方案
