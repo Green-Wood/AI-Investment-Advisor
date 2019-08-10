@@ -32,8 +32,8 @@ class Best(Resource):
             'line_vol': best_frontier[1],
             'line_sharp_ratio': best_frontier[2],
             'line_text': text,
-            'scatter_ret': best_data[0],
-            'scatter_vol': best_data[1],
+            'scatter_ret': best_data[1],
+            'scatter_vol': best_data[0],
             'scatter_sharp_ratio': best_data[2],
         }
 
