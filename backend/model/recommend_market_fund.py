@@ -71,7 +71,7 @@ def get_recom_marker_fund(fund_weight):
             'weight': fund_weight[str(i).zfill(6)] / sum(fund_weight.values())
         }
 
-    for i in recom_fund_list:
+    for i in recom_fund_list[:10]:
         recom_dict[str(i).zfill(6)] = {
             'fund_symbol': show_df.loc[i]['基金名称'],
             'fund_type': show_df.loc[i]['基金类型'],
