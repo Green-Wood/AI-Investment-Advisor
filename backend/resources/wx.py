@@ -65,12 +65,11 @@ class Allocator(Resource):
         args = _info_parser.parse_args()
         risk_val = args['risk_index']
         ret, vol, sr, w = optimizer.get_fixed_ans(fixed='volatility', value=risk_val)
-        market_dict, recom_dict, ratio = get_recom_marker_fund(w)
+        market_dict, recom_dict, ratio = get_recom_marker_fund(w, sort_by='weight')
         # allocation_id = mongo.db.allocation.insert_one({'allocation': market_dict, 'recommend': recom_dict, 'ratio': ratio}).inserted_id
-        top_7 = sorted(market_dict.items(), key=lambda x: x[1]['weight'], reverse=True)[:7]
         top_7 = {
             k: v
-            for k, v in top_7
+            for k, v in market_dict[:7]
         }
         return {
                    # 'allocation_id': allocation_id,

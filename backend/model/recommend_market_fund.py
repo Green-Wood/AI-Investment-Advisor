@@ -6,11 +6,13 @@ PATH = pathlib.Path(__file__).parent.parent
 DATA_PATH = PATH.joinpath("data").resolve()
 
 
-def get_recom_marker_fund(fund_weight):
+def get_recom_marker_fund(fund_weight, sort_by='risk'):
     """
     :param fund_weight:
     dict
     {'161603': 0.3879186308239624, '161693': 9.121650701464391e-07, '161618': 2.090769995577721e-06}
+    :param sort_by:
+    choice = ('risk', 'weight')
 
     :return:
     three dict
@@ -84,7 +86,6 @@ def get_recom_marker_fund(fund_weight):
         '高风险': 0,
         '中高风险': 0,
         '中低风险': 0,
-        '低风险': 0,
         '中风险': 0,
         '未知': 0
     }
@@ -93,6 +94,12 @@ def get_recom_marker_fund(fund_weight):
 
     ratio_dict = dict(raw_dict, **ratio_dict)
     ratio_dict = {k: int(v) for k, v in ratio_dict.items()}
+
+    if sort_by == 'risk':
+        market_dict = sorted(market_dict.items(), key=lambda x: x[1]['fund_risk'])
+        ratio_dict = sorted(ratio_dict.items(), key=lambda x: x[0])
+    else:
+        market_dict = sorted(market_dict.items(), key=lambda x: x[1]['weight'], reverse=True)
     return market_dict, recom_dict, ratio_dict
 
 

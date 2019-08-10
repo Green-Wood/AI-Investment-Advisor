@@ -97,7 +97,7 @@ class AllocatorOnRisk(Resource):
         """
         args = _allocation_risk_parser.parse_args()
         ret, vol, sr, w = optimizer.get_fixed_ans(fixed='volatility', value=args['risk_index'])
-        market_dict, recom_dict, ratio = get_recom_marker_fund(w)
+        market_dict, recom_dict, ratio = get_recom_marker_fund(w, sort_by='risk')
         # allocation_id = mongo.db.allocation.insert_one({'allocation': market_dict, 'recommend': recom_dict, 'ratio': ratio}).inserted_id
         return {
                    # 'allocation_id': allocation_id,

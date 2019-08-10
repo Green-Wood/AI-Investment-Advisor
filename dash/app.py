@@ -266,29 +266,29 @@ def update_user_weight():
     """
     pass
 
+#
+# @app.callback(
+#     Output(),
+#     [Input()]
+# )
+# def update_detail():
+#     """
+#     在一环上点选。来显示属于该风险的四个基金、显示推荐的相关基金
+#     :return:
+#     """
+#     pass
 
-@app.callback(
-    Output(),
-    [Input()]
-)
-def update_detail():
-    """
-    在一环上点选。来显示属于该风险的四个基金、显示推荐的相关基金
-    :return:
-    """
-    pass
-
-
-@app.callback(
-    Output(),
-    [Input('user_list', 'data')]
-)
-def update_ring_two():
-    """
-    用户所选择的列表 更新  二环图
-    :return:
-    """
-    pass
+#
+# @app.callback(
+#     Output(),
+#     [Input('user_list', 'data')]
+# )
+# def update_ring_two():
+#     """
+#     用户所选择的列表 更新  二环图
+#     :return:
+#     """
+#     pass
 
 
 @app.callback(
