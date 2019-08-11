@@ -33,7 +33,7 @@ class Best(Resource):
         """
         args = _fund_list_parser.parse_args()
         if args['fund_list'] is None:
-            user_frontier, user_text, user_data = None, None, None
+            user_frontier, user_text, user_data = (None, None, None), None, None
         else:
             fund_list = args['fund_list'].split()
             user_frontier, user_text, user_data = get_user_ef_data(fund_list)
