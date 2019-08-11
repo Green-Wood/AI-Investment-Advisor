@@ -71,6 +71,7 @@ instruments = pd.read_csv(DATA_PATH.joinpath('instruments.csv'), usecols=['code'
 # 新增一种配置
 _allocation_risk_parser = reqparse.RequestParser()
 _allocation_risk_parser.add_argument('risk_index', type=float, help='能够接受的风险', choices=(0.01, 0.02, 0.03, 0.04, 0.05))
+_allocation_risk_parser.add_argument('fund_risk', type=int, help='用于筛选的基金风险（5表示全部，默认）', choices=(1, 2, 3, 4, 5), default=5)
 
 
 def calculate_ratio(fund_list):
@@ -96,8 +97,17 @@ class AllocatorOnRisk(Resource):
         :return id, pagination, allocation, ratio
         """
         args = _allocation_risk_parser.parse_args()
+        fund_risk = args['fund_risk']
         ret, vol, sr, w = optimizer.get_fixed_ans(fixed='volatility', value=args['risk_index'])
         market_dict, recom_dict, ratio = get_recom_marker_fund(w, sort_by='risk')
+        if fund_risk == 1:
+            market_dict = [x for x in market_dict if x[1]['fund_risk'] == '中低风险']
+        elif fund_risk == 2:
+            market_dict = [x for x in market_dict if x[1]['fund_risk'] == '中风险']
+        elif fund_risk == 3:
+            market_dict = [x for x in market_dict if x[1]['fund_risk'] == '中高风险']
+        elif fund_risk == 4:
+            market_dict = [x for x in market_dict if x[1]['fund_risk'] == '高风险']
         # allocation_id = mongo.db.allocation.insert_one({'allocation': market_dict, 'recommend': recom_dict, 'ratio': ratio}).inserted_id
         return {
                    # 'allocation_id': allocation_id,
