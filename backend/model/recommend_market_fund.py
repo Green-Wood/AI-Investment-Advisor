@@ -80,20 +80,18 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
             'fund_risk': show_df.loc[i]['风险']
         }
 
-    raw_dict = {
-        '高风险': 0,
-        '中高风险': 0,
-        '中低风险': 0,
-        '中风险': 0,
-        '未知': 0
-    }
-
     if sort_by == 'risk':
         ratio_dict = dict(show_df.loc[market_fund_list].groupby('风险')['values'].sum())
-        ratio_dict = dict(raw_dict, **ratio_dict)
         market_dict = sorted(market_dict.items(), key=lambda x: x[1]['fund_risk'])
         ratio_dict = sorted(ratio_dict.items(), key=lambda x: x[0])
     else:
+        raw_dict = {
+            '高风险': 0,
+            '中高风险': 0,
+            '中低风险': 0,
+            '中风险': 0,
+            '未知': 0
+        }
         ratio_dict = dict(show_df.loc[market_fund_list].groupby('风险')['values'].count())
         ratio_dict = dict(raw_dict, **ratio_dict)
         ratio_dict = {k: int(v) for k, v in ratio_dict.items()}
