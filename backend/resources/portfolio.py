@@ -125,8 +125,11 @@ class BestPortfolio(Resource):
         """
         args = _best_portfolio_parser.parse_args()
         risk_val = args['risk_index']
-        fund_list = args['fund_list'].split()
-        p_x, p_y, b_y, user_info = get_portfolio_data(fund_list)
+        if args['fund_list'] is None:
+            p_x, p_y, b_y, user_info = None, None, None, None
+        else:
+            fund_list = args['fund_list'].split()
+            p_x, p_y, b_y, user_info = get_portfolio_data(fund_list)
         p = best_portfolio['portfolio_{}'.format(risk_val)]
         b = best_portfolio['baseline_{}'.format(risk_val)]
         info = best_portfolio_info[str(risk_val)]
