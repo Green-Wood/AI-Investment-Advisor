@@ -58,7 +58,7 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
 
     market_dict = {}
     recom_dict = {}
-    show_df = pd.read_csv(DATA_PATH.joinpath('new_fund_type_manager.csv'), index_col=2, encoding='gb18030')
+    show_df = pd.read_csv(DATA_PATH.joinpath('new_fund_type_manager.csv'), index_col=1)
     show_df = pd.concat((show_df, fund_weight_df), axis=1)
 
     for i in market_fund_list:
@@ -89,8 +89,7 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
             '高风险': 0,
             '中高风险': 0,
             '中低风险': 0,
-            '中风险': 0,
-            '未知': 0
+            '中风险': 0
         }
         ratio_dict = dict(show_df.loc[market_fund_list].groupby('风险')['values'].count())
         ratio_dict = dict(raw_dict, **ratio_dict)

@@ -70,6 +70,18 @@ best_portfolio_model = api.model(
     }
 )
 
+best_and_user_model = api.model(
+    'best_and_user',
+    {
+        'x': fields.List(fields.Date),
+        'p_y': fields.List(fields.Float),
+        'b_y': fields.List(fields.Float),
+        'user_y': fields.List(fields.Float),
+        'best_info': fields.Nested(date_model),
+        'user_info': fields.Nested(date_model)
+    }
+)
+
 
 @api.route('/<string:code>')
 @api.doc(params={'code': '该基金的代码（字符串）'})
@@ -99,12 +111,13 @@ class SingleFund(Resource):
 
 _best_portfolio_parser = reqparse.RequestParser()
 _best_portfolio_parser.add_argument('risk_index', type=float, help='能够接受的风险', choices=(0.01, 0.02, 0.03, 0.04, 0.05))
+_best_portfolio_parser.add_argument('fund_list', type=str, help='基金code列表(split by space)')
 
 
 @api.route('/best')
 class BestPortfolio(Resource):
     @api.expect(_best_portfolio_parser)
-    @api.marshal_with(best_portfolio_model)
+    @api.marshal_with(best_and_user_model)
     def get(self):
         """
         获得最好的组合收益
@@ -112,6 +125,8 @@ class BestPortfolio(Resource):
         """
         args = _best_portfolio_parser.parse_args()
         risk_val = args['risk_index']
+        fund_list = args['fund_list'].split()
+        p_x, p_y, b_y, user_info = get_portfolio_data(fund_list)
         p = best_portfolio['portfolio_{}'.format(risk_val)]
         b = best_portfolio['baseline_{}'.format(risk_val)]
         info = best_portfolio_info[str(risk_val)]
@@ -119,7 +134,9 @@ class BestPortfolio(Resource):
             'x': best_portfolio['datetime'],
             'p_y': p,
             'b_y': b,
-            'info': info
+            'user_y': p_y,
+            'best_info': info,
+            'user_info': user_info
         }
 
 
