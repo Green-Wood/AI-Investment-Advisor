@@ -13,10 +13,8 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
     {'161603': 0.3879186308239624, '161693': 9.121650701464391e-07, '161618': 2.090769995577721e-06}
     :param sort_by:
     choice = ('risk', 'weight')
-
     :return:
     three dict
-
     market_dict
     {'320021':
         {'fund_symbol': '诺安双利债券发起',
@@ -30,7 +28,6 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
         'fund_return': '43.83%',
         'other_ave': '45.71%',
         'weight': 0.3879190162512064}}
-
     recom_dict
     {'000191':
         {'fund_symbol': '富国信用债债券A/B',
@@ -42,7 +39,6 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
         'fund_type': '定开债券',
         'fund_return': '30.18%',
         'other_ave': '22.98%'}}
-
     ratio_dict
         {'中低风险': 9,
         '中风险': 1,
@@ -51,7 +47,8 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
     fund_weight_df = pd.DataFrame.from_dict(fund_weight, orient='index', columns=['values'])
     fund_weight_df = fund_weight_df[fund_weight_df['values'] > 1e-07]
     fund_weight_df = fund_weight_df.sort_values(by="values", ascending=False)
-    market_fund_list = [int(i) for i in list(fund_weight_df.index)]
+    fund_weight_df.index = [int(i) for i in fund_weight_df.index]
+    market_fund_list = list(fund_weight_df.index)
 
     corr_df = pd.read_csv(DATA_PATH.joinpath('corr.csv'), index_col=0)
     corr_df.drop(market_fund_list, inplace=True)
@@ -62,6 +59,7 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
     market_dict = {}
     recom_dict = {}
     show_df = pd.read_csv(DATA_PATH.joinpath('new_fund_type_manager.csv'), index_col=2, encoding='gb18030')
+    show_df = pd.concat((show_df, fund_weight_df), axis=1)
 
     for i in market_fund_list:
         market_dict[str(i).zfill(6)] = {
@@ -90,16 +88,17 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
         '未知': 0
     }
 
-    ratio_dict = dict(show_df.loc[market_fund_list].groupby('风险')['风险'].count())
-
-    ratio_dict = dict(raw_dict, **ratio_dict)
-    ratio_dict = {k: int(v) for k, v in ratio_dict.items()}
-
     if sort_by == 'risk':
+        ratio_dict = dict(show_df.loc[market_fund_list].groupby('风险')['values'].sum())
+        ratio_dict = dict(raw_dict, **ratio_dict)
         market_dict = sorted(market_dict.items(), key=lambda x: x[1]['fund_risk'])
         ratio_dict = sorted(ratio_dict.items(), key=lambda x: x[0])
     else:
+        ratio_dict = dict(show_df.loc[market_fund_list].groupby('风险')['values'].count())
+        ratio_dict = dict(raw_dict, **ratio_dict)
+        ratio_dict = {k: int(v) for k, v in ratio_dict.items()}
         market_dict = sorted(market_dict.items(), key=lambda x: x[1]['weight'], reverse=True)
+        
     return market_dict, recom_dict, ratio_dict
 
 
