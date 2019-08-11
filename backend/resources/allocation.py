@@ -108,10 +108,10 @@ class AllocatorOnRisk(Resource):
             market_dict = [x for x in market_dict if x[1]['fund_risk'] == '中高风险']
         elif fund_risk == 4:
             market_dict = [x for x in market_dict if x[1]['fund_risk'] == '高风险']
-        # allocation_id = mongo.db.allocation.insert_one({'allocation': market_dict, 'recommend': recom_dict, 'ratio': ratio}).inserted_id
         return {
                    # 'allocation_id': allocation_id,
-                   'allocation': market_dict,
+                   'allocation': market_dict,        # allocation_id = mongo.db.allocation.insert_one({'allocation': market_dict, 'recommend': recom_dict, 'ratio': ratio}).inserted_id
+
                    'recommend': recom_dict,
                    'ratio': ratio,
                    'return': ret,

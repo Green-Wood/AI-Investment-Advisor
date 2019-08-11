@@ -97,6 +97,8 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
         ratio_dict = {k: int(v) for k, v in ratio_dict.items()}
         market_dict = sorted(market_dict.items(), key=lambda x: x[1]['weight'], reverse=True)
 
+    recom_dict = sorted(recom_dict.items(), key=lambda x: x[1]['fund_return'], reverse=True)
+
     return market_dict, recom_dict, ratio_dict
 
 
