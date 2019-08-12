@@ -48,25 +48,12 @@ one_model = api.model(
     }
 )
 
-date_model = api.model(
-    'date_model',
-    {
-        'all': fields.Nested(one_model),
-        '1': fields.Nested(one_model),
-        '3': fields.Nested(one_model),
-        '6': fields.Nested(one_model),
-        '12': fields.Nested(one_model),
-        'ytd': fields.Nested(one_model),
-    }
-)
-
 best_portfolio_model = api.model(
     'portfolio_model',
     {
         'x': fields.List(fields.Date),
         'p_y': fields.List(fields.Float),
         'b_y': fields.List(fields.Float),
-        'info': fields.Nested(date_model)
     }
 )
 
@@ -76,9 +63,13 @@ best_and_user_model = api.model(
         'x': fields.List(fields.Date),
         'p_y': fields.List(fields.Float),
         'b_y': fields.List(fields.Float),
-        'user_y': fields.List(fields.Float),
-        'best_info': fields.Nested(date_model),
-        'user_info': fields.Nested(date_model)
+    }
+)
+
+best_info_model = api.model(
+    'best_info_model',
+    {
+        'best_info': fields.Nested(one_model)
     }
 )
 
@@ -107,8 +98,8 @@ class SingleFund(Resource):
         #     print(code)
         #     raise NotFound('Fund not found')
         return {
-            'his_x': his_x,
-            'his_y': his_y,
+            'his_x': his_x[::2],
+            'his_y': his_y[::2],
             'forecast_x': forecast_x,
             'lower_y': lower_y,
             'forecast_y': forecast_y,
@@ -118,7 +109,6 @@ class SingleFund(Resource):
 
 _best_portfolio_parser = reqparse.RequestParser()
 _best_portfolio_parser.add_argument('risk_index', type=float, help='能够接受的风险', choices=(0.01, 0.02, 0.03, 0.04, 0.05))
-_best_portfolio_parser.add_argument('fund_list', type=str, help='基金code列表(split by space)')
 
 
 @api.route('/best')
@@ -132,40 +122,48 @@ class BestPortfolio(Resource):
         """
         args = _best_portfolio_parser.parse_args()
         risk_val = args['risk_index']
-        if args['fund_list'] is None:
-            p_x, p_y, b_y, user_info = None, None, None, None
-        else:
-            fund_list = args['fund_list'].split()
-            p_x, p_y, b_y, user_info = get_portfolio_data(fund_list)
         p = best_portfolio['portfolio_{}'.format(risk_val)]
         b = best_portfolio['baseline_{}'.format(risk_val)]
-        info = best_portfolio_info[str(risk_val)]
         return {
-            'x': best_portfolio['datetime'],
-            'p_y': p,
-            'b_y': b,
-            'user_y': p_y,
-            'best_info': info,
-            'user_info': user_info
+            'x': best_portfolio['datetime'].values[::2],
+            'p_y': p.values[::2],
+            'b_y': b.values[::2],
         }
 
 
-@api.route('/user')
-class UserPortfolio(Resource):
-
-    @api.marshal_with(best_portfolio_model)
-    @api.expect(_fund_list_parser)
+@api.route('/best_info')
+class BestInfo(Resource):
+    @api.expect(_best_portfolio_parser)
+    @api.marshal_with(best_info_model)
     def get(self):
         """
-        根据代码列表，获得组合的收益图
+        获得最好的组合的相关信息
         :return:
         """
-        args = _fund_list_parser.parse_args()
-        fund_list = args['fund_list'].split()
-        p_x, p_y, b_y, info = get_portfolio_data(fund_list)
+        args = _best_portfolio_parser.parse_args()
+        risk_val = args['risk_index']
+        info = best_portfolio_info[str(risk_val)]
         return {
-            'x': p_x,
-            'p_y': p_y,
-            'b_y': b_y,
-            'info': info
+            'best_info': info['all']
         }
+
+#
+# @api.route('/user')
+# class UserPortfolio(Resource):
+#
+#     @api.marshal_with(best_portfolio_model)
+#     @api.expect(_fund_list_parser)
+#     def get(self):
+#         """
+#         根据代码列表，获得组合的收益图
+#         :return:
+#         """
+#         args = _fund_list_parser.parse_args()
+#         fund_list = args['fund_list'].split()
+#         p_x, p_y, b_y, info = get_portfolio_data(fund_list)
+#         return {
+#             'x': p_x,
+#             'p_y': p_y,
+#             'b_y': b_y,
+#             'info': info
+#         }
