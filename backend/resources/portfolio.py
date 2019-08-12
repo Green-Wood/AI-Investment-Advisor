@@ -82,19 +82,24 @@ best_and_user_model = api.model(
     }
 )
 
+_code_parser = reqparse.RequestParser()
+_code_parser.add_argument('code', type=str, help='单只基金代码code')
 
-@api.route('/<string:code>')
-@api.doc(params={'code': '该基金的代码（字符串）'})
+
+@api.route('/single')
 class SingleFund(Resource):
 
+    @api.expect(_code_parser)
     @api.response(200, 'get fund info successfully', model=fund_info_model)
     @api.marshal_with(fund_info_model)
-    def get(self, code):
+    def get(self):
         """
         根据基金代码获取该基金的详细信息
         :param code:
         :return:
         """
+        args = _code_parser.parse_args()
+        code = args['code']
         try:
             his_x, his_y, forecast_x, lower_y, forecast_y, upper_y = get_single_fund_data(code)
         except KeyError:
@@ -112,6 +117,7 @@ class SingleFund(Resource):
 _best_portfolio_parser = reqparse.RequestParser()
 _best_portfolio_parser.add_argument('risk_index', type=float, help='能够接受的风险', choices=(0.01, 0.02, 0.03, 0.04, 0.05))
 _best_portfolio_parser.add_argument('fund_list', type=str, help='基金code列表(split by space)')
+_best_portfolio_parser.add_argument('weights', type=str, help='权重列表(split by space)')
 
 
 @api.route('/best')
@@ -128,6 +134,7 @@ class BestPortfolio(Resource):
         if args['fund_list'] is None:
             p_x, p_y, b_y, user_info = None, None, None, None
         else:
+            weights = [float(x) for x in args['weights'].split()]
             fund_list = args['fund_list'].split()
             p_x, p_y, b_y, user_info = get_portfolio_data(fund_list)
         p = best_portfolio['portfolio_{}'.format(risk_val)]
