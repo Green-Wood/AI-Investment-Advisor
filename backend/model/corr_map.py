@@ -7,6 +7,7 @@ PATH = pathlib.Path(__file__).parent.parent
 DATA_PATH = PATH.joinpath("data").resolve()
 path_adjusted_net_value = DATA_PATH.joinpath('adjusted_net_value.csv')
 path_instruments = DATA_PATH.joinpath('instruments.csv')
+instruments_df = pd.read_csv(path_instruments)
 
 
 def get_corr(code_list: list = None, adjusted_df: pd.DataFrame = None):
@@ -19,7 +20,6 @@ def get_corr(code_list: list = None, adjusted_df: pd.DataFrame = None):
             corr = get_corr(codes)
             print(corr)
     """
-    instruments_df = pd.read_csv(path_instruments)
 
     if code_list is None:
         pass
