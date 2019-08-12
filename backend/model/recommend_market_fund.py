@@ -4,6 +4,8 @@ import pathlib
 
 PATH = pathlib.Path(__file__).parent.parent
 DATA_PATH = PATH.joinpath("data").resolve()
+corr_df = pd.read_csv(DATA_PATH.joinpath('corr.csv'), index_col=0)
+show_df = pd.read_csv(DATA_PATH.joinpath('new_fund_type_manager.csv'), index_col=1)
 
 
 def get_recom_marker_fund(fund_weight, sort_by='risk'):
@@ -50,7 +52,7 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
     fund_weight_df.index = [int(i) for i in fund_weight_df.index]
     market_fund_list = list(fund_weight_df.index)
 
-    corr_df = pd.read_csv(DATA_PATH.joinpath('corr.csv'), index_col=0)
+
     corr_df.drop(market_fund_list, inplace=True)
     recom_fund_list = list(
         corr_df[[str(market_fund_list[0]).zfill(6)]].sort_values(by=[str(market_fund_list[0]).zfill(6)],
@@ -58,30 +60,30 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
 
     market_dict = {}
     recom_dict = {}
-    show_df = pd.read_csv(DATA_PATH.joinpath('new_fund_type_manager.csv'), index_col=1)
-    show_df = pd.concat((show_df, fund_weight_df), axis=1)
+
+    concated_show_df = pd.concat((show_df, fund_weight_df), axis=1)
 
     for i in market_fund_list:
         market_dict[i] = {
-            'fund_symbol': show_df.loc[i]['基金名称'],
-            'fund_type': show_df.loc[i]['基金类型'],
-            'fund_return': show_df.loc[i]['任职回报'],
-            'other_ave': show_df.loc[i]['同类平均'],
-            'fund_risk': show_df.loc[i]['风险'],
+            'fund_symbol': concated_show_df.loc[i]['基金名称'],
+            'fund_type': concated_show_df.loc[i]['基金类型'],
+            'fund_return': concated_show_df.loc[i]['任职回报'],
+            'other_ave': concated_show_df.loc[i]['同类平均'],
+            'fund_risk': concated_show_df.loc[i]['风险'],
             'weight': fund_weight[str(i).zfill(6)] / sum(fund_weight.values())
         }
 
     for i in recom_fund_list[:10]:
         recom_dict[i] = {
-            'fund_symbol': show_df.loc[i]['基金名称'],
-            'fund_type': show_df.loc[i]['基金类型'],
-            'fund_return': show_df.loc[i]['任职回报'],
-            'other_ave': show_df.loc[i]['同类平均'],
-            'fund_risk': show_df.loc[i]['风险']
+            'fund_symbol': concated_show_df.loc[i]['基金名称'],
+            'fund_type': concated_show_df.loc[i]['基金类型'],
+            'fund_return': concated_show_df.loc[i]['任职回报'],
+            'other_ave': concated_show_df.loc[i]['同类平均'],
+            'fund_risk': concated_show_df.loc[i]['风险']
         }
 
     if sort_by == 'risk':
-        ratio_dict = dict(show_df.loc[market_fund_list].groupby('风险')['values'].sum())
+        ratio_dict = dict(concated_show_df.loc[market_fund_list].groupby('风险')['values'].sum())
         market_dict = sorted(market_dict.items(), key=lambda x: x[1]['fund_risk'])
         ratio_dict = sorted(ratio_dict.items(), key=lambda x: x[0])
     else:
@@ -91,7 +93,7 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
             '中低风险': 0,
             '中风险': 0
         }
-        ratio_dict = dict(show_df.loc[market_fund_list].groupby('风险')['values'].count())
+        ratio_dict = dict(concated_show_df.loc[market_fund_list].groupby('风险')['values'].count())
         ratio_dict = dict(raw_dict, **ratio_dict)
         ratio_dict = {k: int(v) for k, v in ratio_dict.items()}
         market_dict = sorted(market_dict.items(), key=lambda x: x[1]['weight'], reverse=True)

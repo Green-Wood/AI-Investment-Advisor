@@ -9,16 +9,20 @@ import json
 PATH = pathlib.Path(__file__).parent.parent
 DATA_PATH = PATH.joinpath("data").resolve()
 
+df0 = pd.read_csv(DATA_PATH.joinpath("adjusted_net_value.csv"), parse_dates=["datetime"], index_col=0)
+upper = pd.read_csv(DATA_PATH.joinpath("yhat_upper_total.csv"))
+lower = pd.read_csv(DATA_PATH.joinpath("yhat_lower_total.csv"))
+df1 = pd.read_csv(DATA_PATH.joinpath("yhat_total.csv"), parse_dates=["datetime"])
+
+start_end = pd.read_csv(DATA_PATH.joinpath('date.csv'), index_col=0)
+nav = pd.read_csv(DATA_PATH.joinpath('adjusted_net_value.csv'), index_col=0)
+
 best_portfolio = pd.read_csv(DATA_PATH.joinpath('best_portfolio.csv'))
 with open(DATA_PATH.joinpath('info.txt'), 'r') as json_file:
     best_portfolio_info = json.load(json_file)
 
 
 def get_portfolio_data(codes):
-    with open(DATA_PATH.joinpath('date.csv')) as f:
-        start_end = pd.read_csv(f, index_col=0)
-    with open(DATA_PATH.joinpath('adjusted_net_value.csv')) as f:
-        nav = pd.read_csv(f, index_col=0)
     if codes == 'all':
         codes = nav.columns
     print("Getting portfolio backtest results...")
@@ -35,15 +39,11 @@ def get_portfolio_data(codes):
 
 
 def get_single_fund_data(code):
-    df0 = pd.read_csv(DATA_PATH.joinpath("adjusted_net_value.csv"), parse_dates=["datetime"], index_col=0)
-    upper = pd.read_csv(DATA_PATH.joinpath("yhat_upper_total.csv"))
-    lower = pd.read_csv(DATA_PATH.joinpath("yhat_lower_total.csv"))
-    df1 = pd.read_csv(DATA_PATH.joinpath("yhat_total.csv"), parse_dates=["datetime"])
     forecast_time = df1['datetime']
-    df0 = df0.loc['2017-01-01':'2018-12-11']
-    history = df0[code]
+    small_df0 = df0.loc['2017-01-01':'2018-12-11']
+    history = small_df0[code]
     last = history[-1:]
-    his_x, his_y = df0.index, history
+    his_x, his_y = small_df0.index, history
     forecast_x, forecast_y = forecast_time, pd.concat((last, df1[code]))
     upper_y = pd.concat((last, upper[code]))
     lower_y = pd.concat((last, lower[code]))
