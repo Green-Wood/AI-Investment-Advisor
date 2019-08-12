@@ -1,7 +1,4 @@
-#FROM python:alpine
-#
-#RUN apk add --update curl gcc g++
-#RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
+#FROM python:3.7.4
 #
 #COPY ./requirements.txt ./
 #RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --no-cache-dir -r requirements.txt
@@ -11,4 +8,4 @@ COPY ./requirements.txt ./
 RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 COPY ./ ./
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "wsgi:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "3", "--worker-class", "gevent", "wsgi:app"]

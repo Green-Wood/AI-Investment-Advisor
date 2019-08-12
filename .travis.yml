@@ -25,5 +25,5 @@ after_success:
 
 after_script:
   - docker-compose -f docker-compose.yml down
-  - sshpass -e ssh $SERVER_USER@$SERVER_IP -o stricthostkeychecking=no 'cd ~/AI-Investment-Advisor && git pull origin dash && sh deploy.sh'
-  - sshpass -e ssh $TENCENT_USER@$TENCENT_IP -o stricthostkeychecking=no 'cd ~/AI-Investment-Advisor && git pull origin dash && sh deploy.sh'
+  - sshpass -p $SSHPASS ssh $SERVER_USER@$SERVER_IP -o stricthostkeychecking=no 'cd ~/AI-Investment-Advisor && git pull origin dash && sh deploy.sh'
+  - sshpass -p $TENCENT_SEC ssh $TENCENT_USER@$TENCENT_IP -o stricthostkeychecking=no 'cd ~/AI-Investment-Advisor && git pull origin dash && sh deploy.sh'

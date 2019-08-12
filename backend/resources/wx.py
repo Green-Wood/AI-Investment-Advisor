@@ -1,7 +1,6 @@
 from flask_restplus import Resource, Namespace, reqparse, fields
 from init_optmizer import optimizer
 import pathlib
-import pandas as pd
 
 from model.recommend_market_fund import get_recom_marker_fund
 from model.portfolio import best_portfolio, best_portfolio_info

@@ -5,6 +5,6 @@ requests
 Werkzeug
 pandas
 PyportfolioOpt
-flask-pymongo
 cvxopt
 sklearn
+gevent

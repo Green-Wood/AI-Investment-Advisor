@@ -1,9 +1,5 @@
 from flask_restplus import Resource, Namespace, reqparse, fields
-import pandas as pd
-import datetime
-from werkzeug.exceptions import NotFound, BadRequest
 from model.portfolio import get_single_fund_data, get_portfolio_data, best_portfolio, best_portfolio_info
-from resources.efficient_frontier import _fund_list_parser
 
 api = Namespace('portfolio', description='基金的单只和累计收益信息')
 
@@ -98,8 +94,8 @@ class SingleFund(Resource):
         #     print(code)
         #     raise NotFound('Fund not found')
         return {
-            'his_x': his_x[::2],
-            'his_y': his_y[::2],
+            'his_x': his_x[::3],
+            'his_y': his_y[::3],
             'forecast_x': forecast_x,
             'lower_y': lower_y,
             'forecast_y': forecast_y,

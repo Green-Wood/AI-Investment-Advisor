@@ -1,12 +1,7 @@
 from flask_restplus import Resource, Namespace, reqparse, fields
 import pandas as pd
-from db import mongo
-from bson.objectid import ObjectId
-from bson.errors import InvalidId
-from werkzeug.exceptions import NotFound
 from init_optmizer import optimizer
 import pathlib
-from model.custom_optimizer import get_optimizer_by_list
 from model.recommend_market_fund import get_recom_marker_fund
 
 api = Namespace('allocation', description='根据用户的风险指标和总资产，获得资产分配的比例（浮点数列表）')
@@ -50,9 +45,6 @@ allocation_model = api.model(
         # 'pagination': fields.Nested(page_model),
         'allocation': fields.List(fields.Nested(fund_model)),
         'ratio': fields.Nested(ration_model),
-        'return': fields.Float,
-        'volatility': fields.Float,
-        'sharp_ratio': fields.Float
     }
 )
 #
@@ -114,9 +106,6 @@ class AllocatorOnRisk(Resource):
 
                    'recommend': recom_dict,
                    'ratio': ratio,
-                   'return': ret,
-                   'volatility': vol,
-                   'sharp_ratio': sr
                }, 200
 
 #
