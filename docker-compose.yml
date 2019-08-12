@@ -1,7 +1,6 @@
 version: '3'
 services:
   api:
-    restart: always
     build:
       dockerfile: Dockerfile
       context: ./backend
@@ -27,6 +26,7 @@ services:
       context: ./nginx
     ports:
       - "80:80"
+      - "443:443"
     image: greenw00d/investment-advisor-nginx
 
 #  mongo:
