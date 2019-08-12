@@ -103,6 +103,7 @@ class SingleFund(Resource):
         try:
             his_x, his_y, forecast_x, lower_y, forecast_y, upper_y = get_single_fund_data(code)
         except KeyError:
+            print(code)
             raise NotFound('Fund not found')
         return {
             'his_x': his_x,
@@ -117,7 +118,6 @@ class SingleFund(Resource):
 _best_portfolio_parser = reqparse.RequestParser()
 _best_portfolio_parser.add_argument('risk_index', type=float, help='能够接受的风险', choices=(0.01, 0.02, 0.03, 0.04, 0.05))
 _best_portfolio_parser.add_argument('fund_list', type=str, help='基金code列表(split by space)')
-_best_portfolio_parser.add_argument('weights', type=str, help='权重列表(split by space)')
 
 
 @api.route('/best')
@@ -134,7 +134,6 @@ class BestPortfolio(Resource):
         if args['fund_list'] is None:
             p_x, p_y, b_y, user_info = None, None, None, None
         else:
-            weights = [float(x) for x in args['weights'].split()]
             fund_list = args['fund_list'].split()
             p_x, p_y, b_y, user_info = get_portfolio_data(fund_list)
         p = best_portfolio['portfolio_{}'.format(risk_val)]
