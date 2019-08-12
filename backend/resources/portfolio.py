@@ -100,11 +100,11 @@ class SingleFund(Resource):
         """
         args = _code_parser.parse_args()
         code = args['code']
-        try:
-            his_x, his_y, forecast_x, lower_y, forecast_y, upper_y = get_single_fund_data(code)
-        except KeyError:
-            print(code)
-            raise NotFound('Fund not found')
+        # try:
+        his_x, his_y, forecast_x, lower_y, forecast_y, upper_y = get_single_fund_data(code)
+        # except KeyError:
+        #     print(code)
+        #     raise NotFound('Fund not found')
         return {
             'his_x': his_x,
             'his_y': his_y,
