@@ -83,7 +83,7 @@ best_and_user_model = api.model(
 )
 
 _code_parser = reqparse.RequestParser()
-_code_parser.add_argument('code', type=str, help='单只基金代码code')
+_code_parser.add_argument('code', type=int, help='单只基金代码code')
 
 
 @api.route('/single')
@@ -100,6 +100,7 @@ class SingleFund(Resource):
         """
         args = _code_parser.parse_args()
         code = args['code']
+        code = str(code).zfill(6)
         # try:
         his_x, his_y, forecast_x, lower_y, forecast_y, upper_y = get_single_fund_data(code)
         # except KeyError:

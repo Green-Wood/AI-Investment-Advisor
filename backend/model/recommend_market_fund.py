@@ -62,7 +62,7 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
     show_df = pd.concat((show_df, fund_weight_df), axis=1)
 
     for i in market_fund_list:
-        market_dict[str(i).zfill(6)] = {
+        market_dict[i] = {
             'fund_symbol': show_df.loc[i]['基金名称'],
             'fund_type': show_df.loc[i]['基金类型'],
             'fund_return': show_df.loc[i]['任职回报'],
@@ -72,7 +72,7 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
         }
 
     for i in recom_fund_list[:10]:
-        recom_dict[str(i).zfill(6)] = {
+        recom_dict[i] = {
             'fund_symbol': show_df.loc[i]['基金名称'],
             'fund_type': show_df.loc[i]['基金类型'],
             'fund_return': show_df.loc[i]['任职回报'],
