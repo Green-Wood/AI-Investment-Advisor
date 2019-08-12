@@ -1,6 +1,7 @@
 version: '3'
 services:
   api:
+    restart: always
     environment:
       - APP_ENV=prod
       - MODEL_HOST=ml
@@ -17,7 +18,6 @@ services:
     restart: always
     ports:
       - "80:80"
-      - "443:443"
     image: greenw00d/investment-advisor-nginx:latest
 
 
