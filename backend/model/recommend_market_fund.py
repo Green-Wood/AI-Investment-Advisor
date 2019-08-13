@@ -52,8 +52,8 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
     fund_weight_df.index = [int(i) for i in fund_weight_df.index]
     market_fund_list = list(fund_weight_df.index)
 
-
-    corr_df.drop(market_fund_list, inplace=True)
+    corr_df_copy = corr_df.copy()
+    corr_df_copy.drop(market_fund_list, inplace=True)
     recom_fund_list = list(
         corr_df[[str(market_fund_list[0]).zfill(6)]].sort_values(by=[str(market_fund_list[0]).zfill(6)],
                                                                  ascending=False).index)
@@ -64,7 +64,7 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
     concated_show_df = pd.concat((show_df, fund_weight_df), axis=1)
 
     for i in market_fund_list:
-        market_dict[i] = {
+        market_dict[str(i).zfill(6)] = {
             'fund_symbol': concated_show_df.loc[i]['基金名称'],
             'fund_type': concated_show_df.loc[i]['基金类型'],
             'fund_return': concated_show_df.loc[i]['任职回报'],
@@ -74,7 +74,7 @@ def get_recom_marker_fund(fund_weight, sort_by='risk'):
         }
 
     for i in recom_fund_list[:10]:
-        recom_dict[i] = {
+        recom_dict[str(i).zfill(6)] = {
             'fund_symbol': concated_show_df.loc[i]['基金名称'],
             'fund_type': concated_show_df.loc[i]['基金类型'],
             'fund_return': concated_show_df.loc[i]['任职回报'],
