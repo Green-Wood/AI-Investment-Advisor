@@ -1,6 +1,6 @@
 from flask_restplus import Resource, Namespace, reqparse, fields
 from model.portfolio import get_single_fund_data, get_portfolio_data, best_portfolio, best_portfolio_info
-from model.get_name_by_code import get_name
+from model.code_name import code_name_dict
 
 api = Namespace('portfolio', description='基金的单只和累计收益信息')
 
@@ -107,7 +107,7 @@ class SingleFund(Resource):
 name_model = api.model(
     'name_model',
     {
-        'name': fields.String
+        'value': fields.String
     }
 )
 
@@ -115,16 +115,17 @@ name_model = api.model(
 @api.route('/single_name')
 class SingleName(Resource):
     @api.expect(_code_parser)
-    @api.marshal_with(name_model)
+    @api.marshal_list_with(name_model)
     def get(self):
         """
         通过int基金代码获取该基金的名称
         :return:
         """
         args = _code_parser.parse_args()
-        return {
-            'name': get_name(args['code'])
-        }
+        code = str(args['code'])
+        return [{
+            'value': code_name_dict[code]
+        }]
 
 
 _best_portfolio_parser = reqparse.RequestParser()
