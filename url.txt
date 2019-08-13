@@ -1,0 +1,6 @@
+http://49.234.212.86/api/allocation/choose?risk_index=0.01&fund_risk=5
+http://49.234.212.86/api/allocation/list?risk_index=0.01
+http://49.234.212.86/api/portfolio/best?risk_index=0.03
+http://49.234.212.86/api/portfolio/best_info?risk_index=0.04
+http://49.234.212.86/api/wx?risk_index=0.01
+http://49.234.212.86/api/wx/portfolio?risk_index=0.02

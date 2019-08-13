@@ -111,6 +111,22 @@ _risk_parser.add_argument('risk_index', type=float, help='能够接受的风险'
                           required=True)
 
 
+@api.route('/chart')
+class Pie(Resource):
+    @api.expect(_risk_parser)
+    def get(self):
+        """
+        专门用于chart的基金分配
+        :return:
+        """
+        args = _allocation_risk_parser.parse_args()
+        ret, vol, sr, w = optimizer.get_fixed_ans(fixed='volatility', value=args['risk_index'])
+        market_dict, recom_dict, ratio = get_recom_marker_fund(w, sort_by='risk')
+        return {
+            'allocation': market_dict
+        }
+
+
 @api.route('/list')
 class List(Resource):
     @api.expect(_risk_parser)
