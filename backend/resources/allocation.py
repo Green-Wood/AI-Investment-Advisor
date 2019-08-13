@@ -63,7 +63,8 @@ instruments = pd.read_csv(DATA_PATH.joinpath('instruments.csv'), usecols=['code'
 # 新增一种配置
 _allocation_risk_parser = reqparse.RequestParser()
 _allocation_risk_parser.add_argument('risk_index', type=float, help='能够接受的风险', choices=(0.01, 0.02, 0.03, 0.04, 0.05))
-_allocation_risk_parser.add_argument('fund_risk', type=int, help='用于筛选的基金风险（5表示全部，默认）', choices=(1, 2, 3, 4, 5), default=5)
+_allocation_risk_parser.add_argument('fund_risk', type=int, help='用于筛选的基金风险（5表示全部，默认）', choices=(1, 2, 3, 4, 5),
+                                     default=5)
 
 
 def calculate_ratio(fund_list):
@@ -101,75 +102,42 @@ class AllocatorOnRisk(Resource):
         elif fund_risk == 4:
             market_dict = [x for x in market_dict if x[1]['fund_risk'] == '高风险']
         return {
-                   # 'allocation_id': allocation_id,
-                   'allocation': market_dict,        # allocation_id = mongo.db.allocation.insert_one({'allocation': market_dict, 'recommend': recom_dict, 'ratio': ratio}).inserted_id
-
-                   'recommend': recom_dict,
-                   'ratio': ratio,
+                   'allocation': market_dict,
                }, 200
 
-#
-# _allocation_user_parser = reqparse.RequestParser()
-# _allocation_user_parser.add_argument('fund_list', type=str, action='append', help='基金code列表', required=True)
-# _allocation_user_parser.add_argument('risk_index', type=float, help='能够接受的风险')
-# _allocation_user_parser.add_argument('page_size', default=5, type=int, help='一页的大小')
-#
-#
-# @api.route('/based_on_user')
-# class AllocationOnUserChoose(Resource):
-#
-#     @api.response(200, 'allocate successfully', model=allocation_model)
-#     @api.expect(_allocation_risk_parser)
-#     @api.marshal_list_with(allocation_model)
-#     def post(self):
-#         """
-#         根据用户所选的基金进行分配,并以分页的形式返回
-#         :return:
-#         """
-#         args = _allocation_user_parser.parse_args()
-#         fund_list = args['fund_list']
-#
-#         op = get_optimizer_by_list(fund_list)
-#         return get_allocation(op, args['risk_index'])
+
+_risk_parser = reqparse.RequestParser()
+_risk_parser.add_argument('risk_index', type=float, help='能够接受的风险', choices=(0.01, 0.02, 0.03, 0.04, 0.05),
+                          required=True)
 
 
-# 从缓存中获得资产配置信息
-# _allo_info_parser = reqparse.RequestParser()
-# _allo_info_parser.add_argument('page', required=True, type=int, help='需要第几页')
-# _allo_info_parser.add_argument('page_size', required=True, type=int, help='一页的大小')
-#
-#
-# @api.route('/<string:allocation_id>')
-# @api.doc(params={'allocation_id': '资产分配的id'})
-# class AllocationInfo(Resource):
-#
-#     @api.response(200, 'allocate successfully', model=allocation_info_model)
-#     @api.response(404, 'Allocation id doest not exist')
-#     @api.expect(_allo_info_parser)
-#     @api.marshal_list_with(allocation_info_model)
-#     def get(self, allocation_id):
-#         """
-#         通过id获取资产配置方案，以分页的形式返回
-#         :param allocation_id:
-#         :return:
-#         """
-#         args = _allo_info_parser.parse_args()
-#         page = args['page']
-#         page_size = args['page_size']
-#
-#         try:
-#             allocation = mongo.db.allocation.find_one({'_id': ObjectId(allocation_id)})
-#         except InvalidId:
-#             raise NotFound('Allocation id doest not exist')
-#         if allocation is None:
-#             raise NotFound('Allocation id doest not exist')
-#
-#         fund_list = allocation['allocation']
-#         return {
-#                    'pagination': {
-#                        'page': page,
-#                        'page_size': page_size,
-#                        'total_size': len(fund_list)
-#                    },
-#                    'allocation': fund_list[page * page_size: (page + 1) * page_size]
-#                }, 200
+@api.route('/recommend')
+class Recommend(Resource):
+    @api.expect(_risk_parser)
+    def get(self):
+        """
+        获得推荐的基金列表
+        :return:
+        """
+        args = _risk_parser.parse_args()
+        ret, vol, sr, w = optimizer.get_fixed_ans(fixed='volatility', value=args['risk_index'])
+        market_dict, recom_dict, ratio = get_recom_marker_fund(w, sort_by='risk')
+        return {
+            'recommend': recom_dict
+        }
+
+
+@api.route('/ratio')
+class Ratio(Resource):
+    @api.expect(_risk_parser)
+    def get(self):
+        """
+        获得基金分配的比例
+        :return:
+        """
+        args = _risk_parser.parse_args()
+        ret, vol, sr, w = optimizer.get_fixed_ans(fixed='volatility', value=args['risk_index'])
+        market_dict, recom_dict, ratio = get_recom_marker_fund(w, sort_by='risk')
+        return {
+            'ratio': ratio
+        }

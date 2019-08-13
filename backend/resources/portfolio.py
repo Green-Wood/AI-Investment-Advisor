@@ -51,6 +51,7 @@ best_portfolio_model = api.model(
         'x': fields.List(fields.Date),
         'p_y': fields.List(fields.Float),
         'b_y': fields.List(fields.Float),
+        'info': fields.Nested(one_model)
     }
 )
 
@@ -165,7 +166,7 @@ class BestInfo(Resource):
         risk_val = args['risk_index']
         info = best_portfolio_info[str(risk_val)]
         return {
-            'best_info': info['all']
+            'best_info': info
         }
 
 #
