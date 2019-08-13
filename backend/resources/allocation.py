@@ -111,6 +111,25 @@ _risk_parser.add_argument('risk_index', type=float, help='能够接受的风险'
                           required=True)
 
 
+@api.route('/list')
+class List(Resource):
+    @api.expect(_risk_parser)
+    def get(self):
+        """
+        新建一种资产配置方案，按权重排序
+        :return:
+        """
+        args = _risk_parser.parse_args()
+        ret, vol, sr, w = optimizer.get_fixed_ans(fixed='volatility', value=args['risk_index'])
+        market_dict, recom_dict, ratio = get_recom_marker_fund(w, sort_by='risk')
+        market_dict = sorted(market_dict, key=lambda x: x[1]['weight'], reverse=True)
+        return {
+            'allocation': market_dict
+        }
+
+
+
+
 @api.route('/recommend')
 class Recommend(Resource):
     @api.expect(_risk_parser)
