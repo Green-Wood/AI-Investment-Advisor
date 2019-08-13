@@ -162,9 +162,33 @@ class BestInfo(Resource):
         获得最好的组合的相关信息
         :return:
         """
+        real_dict = {
+            "0.05": {
+                "risk": 0.08320882533976526,
+                "return": 0.20616047568691992
+            },
+            "0.04": {
+                "risk": 0.07620019466991013,
+                "return": 0.19556655174201573
+            },
+            "0.03": {
+                "risk": 0.06895893246659567,
+                "return": 0.1844771176238405
+            },
+            "0.02": {
+                "risk": 0.05707158338930142,
+                "return": 0.16578496519500113
+            },
+            "0.01": {
+                "risk": 0.0106401344942869,
+                "return": 0.06744785023074261
+            }
+        }
         args = _best_portfolio_parser.parse_args()
         risk_val = args['risk_index']
         info = best_portfolio_info[str(risk_val)]
+        info['performance']['p_y_r'] = real_dict[str(risk_val)]['return']
+        info['risk/return profile']['maxdd'] = real_dict[str(risk_val)]['risk']
         return {
             'best_info': info
         }
